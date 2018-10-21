@@ -2,8 +2,9 @@
 
 namespace gienek {
 
-doommap::doommap(display_config& display_config)
+doommap::doommap(display_config& display_config, user_interactions& user_interactions)
     : _display_config(display_config)
+    , _user_interactions(user_interactions)
     , fully_loaded(false){};
 
 void doommap::add_vertex(vertex v) {
@@ -33,6 +34,7 @@ subsector& doommap::add_subsector() {
 
 void doommap::clear() {
     std::lock_guard guard(map_access_mutex);
+    _user_interactions.reset();
     ssectors.clear();
     verts.clear();
     fully_loaded = false;
