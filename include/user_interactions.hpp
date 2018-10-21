@@ -5,15 +5,17 @@
 
 namespace gienek {
 
+using clicked_triangle_t = std::pair<std::size_t, std::size_t>;
+
 class user_interactions {
-    std::pair<std::size_t, std::size_t> _clicked_triangle = { std::numeric_limits<std::size_t>::max(),
-                                                              std::numeric_limits<std::size_t>::max() };
+    clicked_triangle_t _clicked_triangle = { std::numeric_limits<std::size_t>::max(),
+                                             std::numeric_limits<std::size_t>::max() };
 
   public:
     void reset();
-    void set_clicked_traingle(std::pair<std::size_t, std::size_t> clicked_triangle);
+    void set_clicked_traingle(clicked_triangle_t clicked_triangle);
     bool is_triangle_clicked() const;
-    const std::pair<std::size_t, std::size_t>& get_clicked_triangle() const;
+    const clicked_triangle_t& get_clicked_triangle() const;
 };
 
 } // namespace gienek

@@ -68,7 +68,7 @@ void painter::draw_clicked_triangle() {
     if (!_user_interactions.is_triangle_clicked()) {
         return;
     }
-    const std::pair<std::size_t, std::size_t>& clicked_triangle = _user_interactions.get_clicked_triangle();
+    const clicked_triangle_t& clicked_triangle = _user_interactions.get_clicked_triangle();
 
     const auto& ssectors = _map.get_ssectors();
     const auto& coord1 = ssectors[clicked_triangle.first].triangles[clicked_triangle.second].coords[0];
@@ -87,7 +87,7 @@ void painter::draw_clicked_subsector() {
     if (!_user_interactions.is_triangle_clicked()) {
         return;
     }
-    const std::pair<std::size_t, std::size_t>& clicked_triangle = _user_interactions.get_clicked_triangle();
+    const clicked_triangle_t& clicked_triangle = _user_interactions.get_clicked_triangle();
     const auto& ssectors = _map.get_ssectors();
     const auto& triangle = ssectors[clicked_triangle.first].triangles[clicked_triangle.second];
     draw_subsector_interior(*triangle.parent, al_map_rgb(0, 64, 0));
