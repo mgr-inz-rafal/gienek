@@ -11,8 +11,7 @@
 #include "mouse.hpp"
 #include "scaler.hpp"
 #include "toolbox.hpp"
-
-extern std::pair<std::size_t, std::size_t> clicked_triangle;
+#include "user_interactions.hpp"
 
 namespace gienek {
 
@@ -23,6 +22,7 @@ class painter {
     const doommap& _map;
     mouse& _mouse;
     scaler& _scaler;
+    const user_interactions& _user_interactions;
 
     void draw_clicked_subsector();
     void draw_clicked_triangle();
@@ -34,10 +34,7 @@ class painter {
     void draw_mouse_pointer();
 
   public:
-    painter(doommap& map, mouse& mouse, scaler& scaler)
-        : _map(map)
-        , _mouse(mouse)
-        , _scaler(scaler){};
+    painter(doommap& map, mouse& mouse, scaler& scaler, const user_interactions& user_interactions);
 
     void operator()(bool& quit);
     scaler& get_scaler();

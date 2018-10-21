@@ -6,6 +6,7 @@
 #include <vector>
 
 #include "display_config.hpp"
+#include "user_interactions.hpp"
 
 namespace gienek {
 
@@ -40,6 +41,7 @@ class doommap {
     bool fully_loaded = false;
     std::vector<vertex> verts;
     std::vector<subsector> ssectors;
+    user_interactions& _user_interactions;
 
   public:
     mutable std::mutex map_access_mutex;
@@ -47,7 +49,7 @@ class doommap {
     std::pair<int16_t, int16_t> max_vertex_coords = { INT16_MIN, INT16_MIN };
 
   public:
-    doommap(display_config& display_config);
+    doommap(display_config& display_config, user_interactions& user_interactions);
     void clear();
     bool is_fully_loaded() const;
     void set_fully_loaded();

@@ -53,6 +53,7 @@ source_group("Header Files" FILES
 	include/display_config.hpp
 	include/scaler.hpp
 	include/toolbox.hpp
+	include/user_interactions.hpp
 	)
 	
 source_group("Header Files - Handlers" FILES 
@@ -83,6 +84,7 @@ add_executable(gienek
 	src/display_config.cc
 	src/scaler.cc
 	src/toolbox.cc
+	src/user_interactions.cc
 	include/decoder.hpp
 	include/handler.hpp
 	include/handler_vertex.hpp
@@ -101,6 +103,7 @@ add_executable(gienek
 	include/display_config.hpp
 	include/scaler.hpp
 	include/toolbox.hpp
+	include/user_interactions.hpp
 	)
 
 target_link_libraries(gienek ${CMAKE_THREAD_LIBS_INIT})

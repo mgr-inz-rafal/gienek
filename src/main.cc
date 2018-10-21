@@ -24,11 +24,9 @@
 #include "painter.hpp"
 #include "scaler.hpp"
 #include "socket_reader.hpp"
+#include "user_interactions.hpp"
 
 using boost::asio::ip::tcp;
-
-std::pair<std::size_t, std::size_t> clicked_triangle = { std::numeric_limits<std::size_t>::max(),
-                                                         std::numeric_limits<std::size_t>::max() };
 
 ALLEGRO_EVENT_QUEUE* event_queue;
 ALLEGRO_EVENT ev;
@@ -46,10 +44,13 @@ struct event_loop {
     gienek::mouse& _mouse;
     gienek::painter& _painter;
     gienek::doommap& _map;
-    event_loop(gienek::mouse& mouse, gienek::painter& painter, gienek::doommap& map)
+    gienek::user_interactions& _user_interactions;
+    event_loop(gienek::mouse& mouse, gienek::painter& painter, gienek::doommap& map,
+               gienek::user_interactions& user_interactions)
         : _mouse(mouse)
         , _painter(painter)
-        , _map(map) {}
+        , _map(map)
+        , _user_interactions(user_interactions) {}
     void operator()() {
         for (;;) {
             if (!al_event_queue_is_empty(event_queue)) {
@@ -57,7 +58,8 @@ struct event_loop {
                 if (ALLEGRO_EVENT_MOUSE_BUTTON_UP == ev.type) {
                     _mouse.mouse_click.x = static_cast<double>(ev.mouse.x);
                     _mouse.mouse_click.y = static_cast<double>(ev.mouse.y);
-                    clicked_triangle = gienek::toolbox::determine_clicked_triangle(_mouse, _painter.get_scaler(), _map);
+                    _user_interactions.set_clicked_traingle(
+                        gienek::toolbox::determine_clicked_triangle(_mouse, _painter.get_scaler(), _map));
                 }
             }
         }
@@ -69,7 +71,8 @@ int main() {
     const unsigned int WINDOW_HEIGHT = 768;
 
     gienek::display_config discfg{ WINDOW_WIDTH, WINDOW_HEIGHT };
-    gienek::doommap map(discfg);
+    gienek::user_interactions user_interactions;
+    gienek::doommap map(discfg, user_interactions);
     gienek::scaler scaler(discfg);
 
     if (!al_init()) {
@@ -93,11 +96,11 @@ int main() {
     bool exit_application = false;
 
     gienek::mouse mouse;
-    gienek::painter painter{ map, mouse, scaler };
+    gienek::painter painter{ map, mouse, scaler, user_interactions };
     std::thread drawer(painter, std::ref(exit_application));
     drawer.detach();
 
-    event_loop loop(mouse, painter, map);
+    event_loop loop(mouse, painter, map, user_interactions);
 
     std::thread mainloop(loop);
     mainloop.detach();
