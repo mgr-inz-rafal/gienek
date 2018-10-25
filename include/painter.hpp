@@ -24,13 +24,13 @@ class painter {
     scaler& _scaler;
     const user_interactions& _user_interactions;
 
-    void draw_clicked_subsector();
+    void draw_clicked_subsector(bool no_interior = false);
     void draw_clicked_triangle();
     void draw_vertexes();
     void calculate_display_adaptors();
     void draw_subsectors();
     void draw_subsector_interior(const subsector& ss, ALLEGRO_COLOR color);
-    void draw_subsector_border(const subsector& ss);
+    void draw_subsector_border(const subsector& ss, float width = 1.0f);
     void draw_mouse_pointer();
 
   public:
