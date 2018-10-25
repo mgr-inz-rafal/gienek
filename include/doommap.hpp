@@ -43,8 +43,9 @@ class doommap {
     std::vector<subsector> ssectors;
     user_interactions& _user_interactions;
 
-  public:
     mutable std::mutex map_access_mutex;
+
+  public:
     std::pair<int16_t, int16_t> min_vertex_coords = { INT16_MAX, INT16_MAX };
     std::pair<int16_t, int16_t> max_vertex_coords = { INT16_MIN, INT16_MIN };
 
@@ -54,6 +55,7 @@ class doommap {
     bool is_fully_loaded() const;
     void set_fully_loaded();
     void calculate_triangles();
+    std::mutex& get_map_access_mutex() const;
 
     void add_vertex(vertex v);
     const std::vector<vertex>& get_verts() const;

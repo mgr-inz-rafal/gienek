@@ -19,7 +19,7 @@ void painter::operator()(bool& quit) {
         al_clear_to_color(al_map_rgb(0, 0, 0));
 
         if (_map.is_fully_loaded()) {
-            std::lock_guard guard(_map.map_access_mutex);
+            std::lock_guard guard(_map.get_map_access_mutex());
             if (_scaler.get_display_config().SCALE < 0.0f) {
                 calculate_display_adaptors();
             }
