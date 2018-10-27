@@ -78,10 +78,14 @@ std::mutex& doommap::get_map_access_mutex() const {
 }
 
 void doommap::add_thing(thing t) {
-    things.emplace_back(std::move(t));
+    things.emplace(t.index, std::move(t));
 }
 
-const std::vector<thing>& doommap::get_things() const {
+void doommap::update_thing(thing t) {
+    things[t.index] = t;
+}
+
+const std::map<uint16_t, thing>& doommap::get_things() const {
     return things;
 }
 

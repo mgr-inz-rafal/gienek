@@ -65,6 +65,7 @@ source_group("Header Files - Handlers" FILES
 	include/handler_clear.hpp
 	include/handler_map_received.hpp
 	include/handler_thing.hpp 
+	include/handler_thing_update.hpp
 	)
 	
 add_executable(gienek
@@ -87,6 +88,7 @@ add_executable(gienek
 	src/toolbox.cc
 	src/user_interactions.cc
 	src/handler_thing.cc
+	src/handler_thing_update.cc
 	include/decoder.hpp
 	include/handler.hpp
 	include/handler_vertex.hpp
@@ -107,6 +109,7 @@ add_executable(gienek
 	include/toolbox.hpp
 	include/user_interactions.hpp
 	include/handler_thing.hpp 
+	include/handler_thing_update.hpp
 	)
 
 target_link_libraries(gienek ${CMAKE_THREAD_LIBS_INIT})

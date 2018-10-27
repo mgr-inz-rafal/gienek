@@ -2,6 +2,7 @@
 
 #include <array>
 #include <cstdint>
+#include <map>
 #include <mutex>
 #include <vector>
 
@@ -50,7 +51,7 @@ class doommap {
     bool fully_loaded = false;
     std::vector<vertex> verts;
     std::vector<subsector> ssectors;
-    std::vector<thing> things;
+    std::map<uint16_t, thing> things; // TODO: Should be map to allow trivial udpate_thing()
     user_interactions& _user_interactions;
 
     mutable std::mutex map_access_mutex;
@@ -72,7 +73,8 @@ class doommap {
     subsector& add_subsector();
     const std::vector<subsector>& get_ssectors() const;
     void add_thing(thing t);
-    const std::vector<thing>& get_things() const;
+    void update_thing(thing t);
+    const std::map<uint16_t, thing>& get_things() const;
 };
 
 } // namespace gienek
