@@ -12,7 +12,10 @@ handler_result handler_thing_remove::handle() const {
 
     memcpy(&index, &buffer[0], 2);
 
-    _map->remove_thing(index);
+    {
+        std::lock_guard guard(_map->get_map_access_mutex());
+        _map->remove_thing(index);
+    }
 
     return handler_result{};
 };

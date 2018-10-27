@@ -17,7 +17,10 @@ handler_result handler_thing::handle() const {
     memcpy(&t.posy, &buffer[8], 2);
     memcpy(&t.posz, &buffer[10], 2);
 
-    _map->add_thing(std::move(t));
+    {
+        std::lock_guard guard(_map->get_map_access_mutex());
+        _map->add_thing(std::move(t));
+    }
 
     return handler_result{};
 };
