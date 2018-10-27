@@ -10,7 +10,8 @@ enum CMD {
     CLEAR = 'x',
     MAP_RECEIVED = 'f',
     THING = 'c',
-    THING_UPDATE = 'd'
+    THING_UPDATE = 'd',
+    THING_REMOVE = 'e'
 };
 
 }

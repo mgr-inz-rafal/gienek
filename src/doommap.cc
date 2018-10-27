@@ -85,6 +85,10 @@ void doommap::update_thing(thing t) {
     things[t.index] = t;
 }
 
+void doommap::remove_thing(uint16_t index) {
+    things.erase(index);
+}
+
 const std::map<uint16_t, thing>& doommap::get_things() const {
     return things;
 }

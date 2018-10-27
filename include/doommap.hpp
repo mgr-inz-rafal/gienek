@@ -74,6 +74,7 @@ class doommap {
     const std::vector<subsector>& get_ssectors() const;
     void add_thing(thing t);
     void update_thing(thing t);
+    void remove_thing(uint16_t index);
     const std::map<uint16_t, thing>& get_things() const;
 };
 
