@@ -21,6 +21,15 @@ struct seg {
     int16_t eti;
 };
 
+struct thing {
+    uint16_t index;
+    int16_t health;
+    int16_t direction;
+    int16_t posx;
+    int16_t posy;
+    int16_t posz;
+};
+
 struct seg_triangle;
 
 struct subsector {
@@ -41,11 +50,12 @@ class doommap {
     bool fully_loaded = false;
     std::vector<vertex> verts;
     std::vector<subsector> ssectors;
+    std::vector<thing> things;
     user_interactions& _user_interactions;
 
     mutable std::mutex map_access_mutex;
 
-  public:
+  public: // TODO: Make private
     std::pair<int16_t, int16_t> min_vertex_coords = { INT16_MAX, INT16_MAX };
     std::pair<int16_t, int16_t> max_vertex_coords = { INT16_MIN, INT16_MIN };
 
@@ -61,6 +71,7 @@ class doommap {
     const std::vector<vertex>& get_verts() const;
     subsector& add_subsector();
     const std::vector<subsector>& get_ssectors() const;
+    void add_thing(thing t);
 };
 
 } // namespace gienek

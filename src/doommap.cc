@@ -76,4 +76,8 @@ std::mutex& doommap::get_map_access_mutex() const {
     return map_access_mutex;
 }
 
+void doommap::add_thing(thing t) {
+    things.emplace_back(std::move(t));
+}
+
 } // namespace gienek
