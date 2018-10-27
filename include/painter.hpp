@@ -27,6 +27,7 @@ class painter {
     void draw_clicked_subsector(bool no_interior = false);
     void draw_clicked_triangle();
     void draw_vertexes();
+    void draw_things();
     void calculate_display_adaptors();
     void draw_subsectors();
     void draw_subsector_interior(const subsector& ss, ALLEGRO_COLOR color);

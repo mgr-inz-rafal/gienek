@@ -28,6 +28,7 @@ void painter::operator()(bool& quit) {
             draw_subsectors();
             draw_clicked_triangle();
             draw_clicked_subsector(true);
+            draw_things();
             draw_mouse_pointer();
         }
         // std::this_thread::sleep_for(std::chrono::milliseconds(1000 / 60)); // ~60FPS
@@ -61,6 +62,13 @@ void painter::draw_vertexes() {
     for (const auto& v : _map.get_verts()) {
         point p = _scaler.scale({ static_cast<double>(v.x), static_cast<double>(v.y) });
         al_put_pixel(p.x, p.y, al_map_rgb(255, 255, 255));
+    }
+}
+
+void painter::draw_things() {
+    for (const auto& t : _map.get_things()) {
+        point p = _scaler.scale({ static_cast<double>(t.posx), static_cast<double>(t.posy) });
+        al_draw_rectangle(p.x - 4, p.y - 4, p.x + 4, p.y + 4, al_map_rgb(255, 255, 255), 1.0f);
     }
 }
 

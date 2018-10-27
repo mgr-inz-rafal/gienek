@@ -72,6 +72,7 @@ class doommap {
     subsector& add_subsector();
     const std::vector<subsector>& get_ssectors() const;
     void add_thing(thing t);
+    const std::vector<thing>& get_things() const;
 };
 
 } // namespace gienek

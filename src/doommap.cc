@@ -37,6 +37,7 @@ void doommap::clear() {
     _user_interactions.reset();
     ssectors.clear();
     verts.clear();
+    things.clear();
     fully_loaded = false;
     _display_config.SCALE = -1.0f; // Force scale recalculation
     min_vertex_coords = { INT16_MAX, INT16_MAX };
@@ -78,6 +79,10 @@ std::mutex& doommap::get_map_access_mutex() const {
 
 void doommap::add_thing(thing t) {
     things.emplace_back(std::move(t));
+}
+
+const std::vector<thing>& doommap::get_things() const {
+    return things;
 }
 
 } // namespace gienek
