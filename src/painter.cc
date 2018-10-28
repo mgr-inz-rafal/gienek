@@ -68,7 +68,7 @@ void painter::draw_vertexes() {
 void painter::draw_things() {
     for (const auto& t : _map.get_things()) {
         point p = _scaler.scale({ static_cast<double>(t.second.posx), static_cast<double>(t.second.posy) });
-        al_draw_rectangle(p.x - 4, p.y - 4, p.x + 4, p.y + 4, al_map_rgb(255, 255, 255), 1.0f);
+        al_draw_triangle(p.x - 6, p.y - 4, p.x + 6, p.y, p.x - 6, p.y + 4, al_map_rgb(255, 255, 255), 1.0f);
     }
 }
 
