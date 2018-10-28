@@ -1,5 +1,7 @@
 #include "painter.hpp"
 
+#include <boost/math/constants/constants.hpp>
+
 namespace gienek {
 
 painter::painter(doommap& map, mouse& mouse, scaler& scaler, const user_interactions& user_interactions)
@@ -72,7 +74,7 @@ void painter::draw_things() {
         ALLEGRO_TRANSFORM tr;
         al_identity_transform(&tr);
         al_translate_transform(&tr, -p.x, -p.y);
-        al_rotate_transform(&tr, 0.785398163f);
+        al_rotate_transform(&tr, thing_angle_to_radians(t.second.direction));
         al_translate_transform(&tr, p.x, p.y);
         al_use_transform(&tr);
 
@@ -151,6 +153,10 @@ void painter::draw_mouse_pointer() {
 
 scaler& painter::get_scaler() {
     return _scaler;
+}
+
+double painter::thing_angle_to_radians(int16_t direction) {
+    return (static_cast<double>(-direction) * boost::math::constants::pi<double>()) / 180;
 }
 
 } // namespace gienek

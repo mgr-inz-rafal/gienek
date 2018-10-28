@@ -33,6 +33,7 @@ class painter {
     void draw_subsector_interior(const subsector& ss, ALLEGRO_COLOR color);
     void draw_subsector_border(const subsector& ss, float width = 1.0f);
     void draw_mouse_pointer();
+    double thing_angle_to_radians(int16_t direction);
 
   public:
     painter(doommap& map, mouse& mouse, scaler& scaler, const user_interactions& user_interactions);
