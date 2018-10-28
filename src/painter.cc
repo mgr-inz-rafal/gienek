@@ -68,7 +68,18 @@ void painter::draw_vertexes() {
 void painter::draw_things() {
     for (const auto& t : _map.get_things()) {
         point p = _scaler.scale({ static_cast<double>(t.second.posx), static_cast<double>(t.second.posy) });
+
+        ALLEGRO_TRANSFORM tr;
+        al_identity_transform(&tr);
+        al_translate_transform(&tr, -p.x, -p.y);
+        al_rotate_transform(&tr, 0.785398163f);
+        al_translate_transform(&tr, p.x, p.y);
+        al_use_transform(&tr);
+
         al_draw_triangle(p.x - 6, p.y - 4, p.x + 6, p.y, p.x - 6, p.y + 4, al_map_rgb(255, 255, 255), 1.0f);
+
+        al_identity_transform(&tr);
+        al_use_transform(&tr);
     }
 }
 
