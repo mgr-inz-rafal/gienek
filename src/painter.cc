@@ -115,6 +115,12 @@ void painter::draw_clicked_subsector(bool no_interior) {
         draw_subsector_interior(*triangle.parent, al_map_rgb(0, 64, 0));
     }
     draw_subsector_border(*triangle.parent, 3.5f);
+
+    const auto& adjacent = _map.get_adjacent_subsectors(triangle.parent);
+    for (const auto& ss : adjacent) {
+        draw_subsector_interior(ssectors[ss], al_map_rgb(64, 0, 0));
+        draw_subsector_border(ssectors[ss], 3.5f);
+    }
 }
 
 void painter::draw_subsector_interior(const subsector& ss, ALLEGRO_COLOR color) {
@@ -141,9 +147,10 @@ void painter::draw_subsector_border(const subsector& ss, float width) {
 }
 
 void painter::draw_subsectors() {
-    for (const auto& subsector : _map.get_ssectors()) {
-        draw_subsector_interior(subsector, al_map_rgb(0, 32, 0));
-        draw_subsector_border(subsector);
+    const auto& subsectors = _map.get_ssectors();
+    for (std::size_t i = 0; i < subsectors.size(); ++i) {
+        draw_subsector_interior(subsectors[i], al_map_rgb(0, 32, 0));
+        draw_subsector_border(subsectors[i]);
     }
 }
 
