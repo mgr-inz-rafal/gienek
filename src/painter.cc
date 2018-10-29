@@ -28,6 +28,7 @@ void painter::operator()(bool& quit) {
 
             // draw_vertexes();
             draw_subsectors();
+            draw_clicked_subsector();
             draw_clicked_triangle();
             draw_clicked_subsector(true);
             draw_things();
@@ -101,7 +102,7 @@ void painter::draw_clicked_triangle() {
     const auto& coord3 = ssectors[clicked_triangle.first].triangles[clicked_triangle.second].coords[2];
     point pt3 = _scaler.scale({ static_cast<double>(coord3.x), static_cast<double>(coord3.y) });
 
-    al_draw_filled_triangle(pt1.x, pt1.y, pt2.x, pt2.y, pt3.x, pt3.y, al_map_rgb(0, 64 + 8, 0));
+    al_draw_filled_triangle(pt1.x, pt1.y, pt2.x, pt2.y, pt3.x, pt3.y, al_map_rgb(96, 0, 0));
 }
 
 void painter::draw_clicked_subsector(bool no_interior) {
@@ -112,7 +113,7 @@ void painter::draw_clicked_subsector(bool no_interior) {
     const auto& ssectors = _map.get_ssectors();
     const auto& triangle = ssectors[clicked_triangle.first].triangles[clicked_triangle.second];
     if (!no_interior) {
-        draw_subsector_interior(*triangle.parent, al_map_rgb(0, 64, 0));
+        draw_subsector_interior(*triangle.parent, al_map_rgb(80, 0, 0));
     }
     draw_subsector_border(*triangle.parent, 3.5f);
 
