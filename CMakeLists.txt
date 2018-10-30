@@ -33,6 +33,7 @@ endif (WIN32)
 if (UNIX)
 link_libraries(
 	${ALLEGRO_LIBS}/liballegro.so
+	${ALLEGRO_LIBS}/liballegro_primitives.so
 	${BOOST_LIBS}/libboost_system.so
 )
 endif (UNIX)
