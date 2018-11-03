@@ -78,7 +78,7 @@ void painter::draw_things() {
         point p = _scaler.scale({ static_cast<double>(t.second.posx), static_cast<double>(t.second.posy) });
 
         al_draw_text(font, al_map_rgb(255, 255, 255), p.x + item_tag_offset.x, p.y + item_tag_offset.y, 0,
-                     std::to_string(t.first).c_str());
+                     t.second.get_tag().c_str());
 
         ALLEGRO_TRANSFORM tr;
         al_identity_transform(&tr);

@@ -4,6 +4,7 @@
 #include <cstdint>
 #include <map>
 #include <mutex>
+#include <string>
 #include <vector>
 
 #include "display_config.hpp"
@@ -33,6 +34,9 @@ struct thing {
     int16_t posx;
     int16_t posy;
     int16_t posz;
+
+  public:
+    std::string get_tag() const { return std::to_string(index); }
 };
 
 struct seg_triangle;
