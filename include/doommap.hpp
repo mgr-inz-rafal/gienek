@@ -20,6 +20,10 @@ struct seg {
     // Start and end vertex index
     int16_t sti;
     int16_t eti;
+
+    bool operator==(const seg& rhs) const {
+        return (sti == rhs.sti && eti == rhs.eti) || (eti == rhs.sti && sti == rhs.eti);
+    }
 };
 
 struct thing {
@@ -72,6 +76,7 @@ class doommap {
     const std::vector<vertex>& get_verts() const;
     subsector& add_subsector();
     const std::vector<subsector>& get_ssectors() const;
+    const std::vector<std::size_t> get_adjacent_subsectors(subsector* ss) const;
     void add_thing(thing t);
     void update_thing(thing t);
     void remove_thing(uint16_t index);

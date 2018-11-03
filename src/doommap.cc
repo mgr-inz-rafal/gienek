@@ -93,4 +93,22 @@ const std::map<uint16_t, thing>& doommap::get_things() const {
     return things;
 }
 
+const std::vector<std::size_t> doommap::get_adjacent_subsectors(subsector* ss) const {
+    std::vector<std::size_t> result;
+    std::size_t index = 0;
+    for (std::size_t index = 0; index < ssectors.size(); ++index) {
+        if (&ssectors[index] == ss) {
+            continue;
+        }
+        for (const auto& seg1 : ssectors[index].segs) {
+            for (const auto& seg2 : ss->segs) {
+                if (seg1 == seg2) {
+                    result.push_back(index);
+                }
+            }
+        }
+    }
+    return result;
+}
+
 } // namespace gienek
