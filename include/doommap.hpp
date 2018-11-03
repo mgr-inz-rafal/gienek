@@ -20,6 +20,10 @@ struct seg {
     // Start and end vertex index
     int16_t sti;
     int16_t eti;
+
+    bool operator==(const seg& rhs) const {
+        return (sti == rhs.sti && eti == rhs.eti) || (eti == rhs.sti && sti == rhs.eti);
+    }
 };
 
 struct thing {

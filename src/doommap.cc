@@ -96,20 +96,17 @@ const std::map<uint16_t, thing>& doommap::get_things() const {
 const std::vector<std::size_t> doommap::get_adjacent_subsectors(subsector* ss) const {
     std::vector<std::size_t> result;
     std::size_t index = 0;
-    for (const auto& subsector : ssectors) {
-        if (&subsector == ss) {
-            ++index;
+    for (std::size_t index = 0; index < ssectors.size(); ++index) {
+        if (&ssectors[index] == ss) {
             continue;
         }
-        for (const auto& seg1 : subsector.segs) {
+        for (const auto& seg1 : ssectors[index].segs) {
             for (const auto& seg2 : ss->segs) {
-                if (((seg1.sti == seg2.sti) && (seg1.eti == seg2.eti)) ||
-                    ((seg1.sti == seg2.eti) && (seg1.eti == seg2.sti))) {
+                if (seg1 == seg2) {
                     result.push_back(index);
                 }
             }
         }
-        ++index;
     }
     return result;
 }
