@@ -10,6 +10,7 @@
 #include "display_config.hpp"
 #include "doommap.hpp"
 #include "mouse.hpp"
+#include "point.hpp"
 #include "scaler.hpp"
 #include "toolbox.hpp"
 #include "user_interactions.hpp"
@@ -24,8 +25,8 @@ class painter {
     mouse& _mouse;
     scaler& _scaler;
     const user_interactions& _user_interactions;
-
     ALLEGRO_FONT* font = NULL;
+    point item_tag_offset = { 5, 5 };
 
     void draw_clicked_subsector(bool no_interior = false);
     void draw_clicked_triangle();
