@@ -6,7 +6,9 @@
 // 'q' - quit
 
 #include <allegro5/allegro.h>
-#include <primitives/allegro5/allegro_primitives.h>
+#include <allegro5/allegro_font.h>
+#include <allegro5/allegro_image.h>
+#include <allegro5/allegro_primitives.h>
 
 #include <boost/asio.hpp>
 #include <cstddef>
@@ -86,6 +88,13 @@ int main() {
     if (!al_install_mouse()) {
         throw std::runtime_error("al_install_mouse() failed");
     }
+    if (!al_init_font_addon()) {
+        throw std::runtime_error("al_init_font_addon() failed");
+    }
+    if (!al_init_image_addon()) {
+        throw std::runtime_error("al_init_image_addon() failed");
+    }
+
     event_queue = al_create_event_queue();
     if (!event_queue) {
         throw std::runtime_error("al_create_event_queue() failed");

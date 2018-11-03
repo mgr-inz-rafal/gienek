@@ -1,7 +1,8 @@
 #pragma once
 
 #include <allegro5/allegro.h>
-#include <primitives/allegro5/allegro_primitives.h>
+#include <allegro5/allegro_font.h>
+#include <allegro5/allegro_primitives.h>
 
 #include <algorithm>
 #include <thread>
@@ -23,6 +24,8 @@ class painter {
     mouse& _mouse;
     scaler& _scaler;
     const user_interactions& _user_interactions;
+
+    ALLEGRO_FONT* font = NULL;
 
     void draw_clicked_subsector(bool no_interior = false);
     void draw_clicked_triangle();

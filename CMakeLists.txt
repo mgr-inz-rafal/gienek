@@ -18,7 +18,9 @@ find_package(Threads)
 include_directories(
 	${BOOST_INCLUDE}
 	${ALLEGRO_INCLUDE}
-	${ALLEGRO_ADDONS_INCLUDE}
+	${ALLEGRO_ADDONS_INCLUDE}/font
+	${ALLEGRO_ADDONS_INCLUDE}/image
+	${ALLEGRO_ADDONS_INCLUDE}/primitives
 	${ALLEGRO_PLATFORM_INCLUDE}
 	include/
 )
@@ -27,6 +29,8 @@ if (WIN32)
 link_libraries(
 	${ALLEGRO_LIBS}/allegro.lib
 	${ALLEGRO_LIBS}/allegro_primitives.lib
+	${ALLEGRO_LIBS}/allegro_font.lib
+	${ALLEGRO_LIBS}/allegro_image.lib
 )
 endif (WIN32)
 
