@@ -7,6 +7,8 @@
 #include <string>
 #include <vector>
 
+#include <boost/format.hpp>
+
 #include "display_config.hpp"
 #include "user_interactions.hpp"
 
@@ -27,6 +29,8 @@ struct seg {
     }
 };
 
+extern std::map<int16_t, std::string> typename_to_id_map;
+
 struct thing {
     uint16_t index;
     int16_t health;
@@ -34,9 +38,10 @@ struct thing {
     int16_t posx;
     int16_t posy;
     int16_t posz;
+    int16_t type;
 
   public:
-    std::string get_tag() const { return std::to_string(index); }
+    std::string get_tag() const { return (boost::format("(%1%, %2%)") % index % typename_to_id_map[type]).str(); }
 };
 
 struct seg_triangle;

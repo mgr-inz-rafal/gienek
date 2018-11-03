@@ -6,7 +6,7 @@ namespace gienek {
 
 handler_result handler_thing::handle() const {
     std::string buffer;
-    _reader->read(buffer, 12);
+    _reader->read(buffer, 14);
 
     thing t;
 
@@ -16,6 +16,7 @@ handler_result handler_thing::handle() const {
     memcpy(&t.posx, &buffer[6], 2);
     memcpy(&t.posy, &buffer[8], 2);
     memcpy(&t.posz, &buffer[10], 2);
+    memcpy(&t.type, &buffer[12], 2);
 
     {
         std::lock_guard guard(_map->get_map_access_mutex());
