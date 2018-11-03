@@ -8,7 +8,9 @@ painter::painter(doommap& map, mouse& mouse, scaler& scaler, const user_interact
     : _map(map)
     , _mouse(mouse)
     , _scaler(scaler)
-    , _user_interactions(user_interactions){};
+    , _user_interactions(user_interactions) {
+    font = al_load_bitmap_font("d:\\Git\\gienek\\fonts\\a4_font.tga");
+};
 
 void painter::operator()(bool& quit) {
     ALLEGRO_DISPLAY* display = NULL;
@@ -33,8 +35,11 @@ void painter::operator()(bool& quit) {
             draw_clicked_subsector(true);
             draw_things();
             draw_mouse_pointer();
+
+            al_draw_text(font, al_map_rgb(255, 255, 255), 0, 0, 0, "Map loaded");
+        } else {
+            al_draw_text(font, al_map_rgb(255, 255, 255), 0, 0, 0, "Gienek is waiting for map to be received");
         }
-        // std::this_thread::sleep_for(std::chrono::milliseconds(1000 / 60)); // ~60FPS
 
         al_flip_display();
     }
