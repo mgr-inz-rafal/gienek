@@ -4,7 +4,7 @@ namespace gienek {
 
 std::map<int16_t, std::string> typename_to_id_map = { { 142, "CellPack" }, { 75, "Cell" },        { 134, "Berserk" },
                                                       { 28, "Chaingun" },  { 30, "PlasmaRifle" }, { 51, "PlasmaBall" },
-                                                      { 4, "Zombieman" },  { 131, "BulletPuff" } };
+                                                      { 4, "Zombieman" },  { 131, "BulletPuff" }, { 11, "Clip" } };
 
 doommap::doommap(display_config& display_config, user_interactions& user_interactions)
     : _display_config(display_config)
