@@ -84,6 +84,9 @@ std::mutex& doommap::get_map_access_mutex() const {
 
 void doommap::add_thing(thing t) {
     things.emplace(t.index, std::move(t));
+    if (t.type == 29999) {
+        player_thing_key = t.index;
+    }
 }
 
 void doommap::update_thing(thing t) {
@@ -117,7 +120,7 @@ const std::vector<std::size_t> doommap::get_adjacent_subsectors(subsector* ss) c
 }
 
 void doommap::update_player_angle(int16_t angle) {
-    things[0].direction = angle; // 0 = Player
+    things[player_thing_key].direction = angle; // 0 = Player
 }
 
 } // namespace gienek

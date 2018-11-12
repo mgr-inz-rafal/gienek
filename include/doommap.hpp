@@ -66,6 +66,7 @@ class doommap {
     std::vector<subsector> ssectors;
     std::map<uint16_t, thing> things; // TODO: Should be map to allow trivial udpate_thing()
     user_interactions& _user_interactions;
+    uint16_t player_thing_key{ 0 };
 
     mutable std::mutex map_access_mutex;
 
