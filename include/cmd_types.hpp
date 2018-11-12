@@ -11,7 +11,8 @@ enum CMD {
     MAP_RECEIVED = 'f',
     THING = 'c',
     THING_UPDATE = 'd',
-    THING_REMOVE = 'e'
+    THING_REMOVE = 'e',
+    PLAYER_ANGLE = 'g',
 };
 
 }

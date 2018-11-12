@@ -90,6 +90,7 @@ class doommap {
     void update_thing(thing t);
     void remove_thing(uint16_t index);
     const std::map<uint16_t, thing>& get_things() const;
+    void update_player_angle(int16_t angle);
 };
 
 } // namespace gienek

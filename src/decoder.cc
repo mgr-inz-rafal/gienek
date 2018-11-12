@@ -3,6 +3,7 @@
 #include "handler.hpp"
 #include "handler_clear.hpp"
 #include "handler_map_received.hpp"
+#include "handler_player_angle.hpp"
 #include "handler_quit.hpp"
 #include "handler_subsector.hpp"
 #include "handler_thing.hpp"
@@ -28,6 +29,8 @@ std::unique_ptr<handler> decoder::get_handler(unsigned char input) {
             return std::unique_ptr<handler>(new handler_thing_update);
         case CMD::THING_REMOVE:
             return std::unique_ptr<handler>(new handler_thing_remove);
+        case CMD::PLAYER_ANGLE:
+            return std::unique_ptr<handler>(new handler_player_angle);
         case CMD::QUIT:
             return std::unique_ptr<handler>(new handler_quit);
         case CMD::CLEAR:
