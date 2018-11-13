@@ -1,6 +1,7 @@
 #include "painter.hpp"
 
 #include <boost/math/constants/constants.hpp>
+#include <chrono>
 
 namespace gienek {
 
@@ -13,6 +14,7 @@ painter::painter(doommap& map, mouse& mouse, scaler& scaler, const user_interact
 };
 
 void painter::operator()(bool& quit) {
+    using namespace std::chrono_literals;
     ALLEGRO_DISPLAY* display = NULL;
     display = al_create_display(_scaler.get_display_config().WIDTH, _scaler.get_display_config().HEIGHT);
     if (!display) {
@@ -42,6 +44,7 @@ void painter::operator()(bool& quit) {
         }
 
         al_flip_display();
+        std::this_thread::sleep_for(4ms);
     }
     al_destroy_display(display);
 }
