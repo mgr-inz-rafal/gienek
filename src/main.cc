@@ -31,11 +31,15 @@
 using boost::asio::ip::tcp;
 
 ALLEGRO_EVENT_QUEUE* event_queue;
+ALLEGRO_DISPLAY* display = NULL;
 ALLEGRO_EVENT ev;
 
 unsigned char get_command(gienek::socket_reader& sr) {
     std::string buffer;
-    sr.read(buffer, 1);
+    bool data_available = sr.read(buffer, 1);
+    if (!data_available) {
+        return ' ';
+    }
     if (buffer.size() != 1) {
         throw std::runtime_error("Unexpected transmission (command length != 1)");
     }
@@ -101,6 +105,11 @@ int main() {
     }
     al_register_event_source(event_queue, al_get_mouse_event_source());
 
+    if (false == al_install_keyboard()) {
+        throw std::runtime_error("al_install_keyboard() failed");
+    }
+    al_register_event_source(event_queue, al_get_keyboard_event_source());
+
     gienek::decoder decoder;
     bool exit_application = false;
 
@@ -116,29 +125,30 @@ int main() {
 
     for (;;) {
         try {
-            bool quit = false;
+            bool quit_current_map = false;
 
             boost::asio::io_context io_context;
             tcp::acceptor acceptor(io_context, tcp::endpoint(tcp::v4(), 13));
 
-            while (!quit) {
+            while (!quit_current_map) {
                 std::cout << "Awaiting connection..." << std::endl;
                 tcp::socket socket(io_context);
                 acceptor.accept(socket);
                 std::cout << "Connection established, waiting for commands..." << std::endl;
                 gienek::socket_reader sr(socket);
-
                 for (;;) {
                     unsigned char command = get_command(sr);
-                    auto handler = decoder.get_handler(command);
+                    if (' ' != command) {
+                        auto handler = decoder.get_handler(command);
 
-                    handler->set_socket_reader(sr);
-                    handler->set_doommap(map);
-                    auto result = handler->handle();
-                    if (result.disconnect) {
-                        std::cout << "Closing connection on request by client" << std::endl;
-                        quit = true;
-                        break;
+                        handler->set_socket_reader(sr);
+                        handler->set_doommap(map);
+                        auto result = handler->handle();
+                        if (result.disconnect) {
+                            std::cout << "Closing connection on request by client" << std::endl;
+                            quit_current_map = true;
+                            break;
+                        }
                     }
                 }
             }

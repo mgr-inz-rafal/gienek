@@ -11,7 +11,7 @@ class socket_reader {
 
   public:
     socket_reader(tcp::socket& socket);
-    void read(std::string& buffer, std::size_t size);
+    bool read(std::string& buffer, std::size_t size);
 };
 
 } // namespace gienek
