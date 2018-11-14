@@ -57,8 +57,8 @@ struct event_loop {
         , _painter(painter)
         , _map(map)
         , _user_interactions(user_interactions) {}
-    void operator()() {
-        for (;;) {
+    void operator()(bool& quit) {
+        while (!quit) {
             if (!al_event_queue_is_empty(event_queue)) {
                 al_get_next_event(event_queue, &ev);
                 if (ALLEGRO_EVENT_MOUSE_BUTTON_UP == ev.type) {
@@ -66,6 +66,8 @@ struct event_loop {
                     _mouse.mouse_click.y = static_cast<double>(ev.mouse.y);
                     _user_interactions.set_clicked_traingle(
                         gienek::toolbox::determine_clicked_triangle(_mouse, _painter.get_scaler(), _map));
+                } else if (ALLEGRO_EVENT_DISPLAY_CLOSE == ev.type) {
+                    quit = true;
                 }
             }
         }
@@ -115,15 +117,14 @@ int main() {
 
     gienek::mouse mouse;
     gienek::painter painter{ map, mouse, scaler, user_interactions };
-    std::thread drawer(painter, std::ref(exit_application));
+    std::thread drawer(painter, std::ref(exit_application), event_queue);
     drawer.detach();
 
     event_loop loop(mouse, painter, map, user_interactions);
-
-    std::thread mainloop(loop);
+    std::thread mainloop(loop, std::ref(exit_application));
     mainloop.detach();
 
-    for (;;) {
+    while (!exit_application) {
         try {
             bool quit_current_map = false;
 

@@ -13,13 +13,14 @@ painter::painter(doommap& map, mouse& mouse, scaler& scaler, const user_interact
     font = al_load_bitmap_font("d:\\Git\\gienek\\fonts\\a4_font.tga");
 };
 
-void painter::operator()(bool& quit) {
+void painter::operator()(bool& quit, ALLEGRO_EVENT_QUEUE* event_queue) {
     using namespace std::chrono_literals;
     ALLEGRO_DISPLAY* display = NULL;
     display = al_create_display(_scaler.get_display_config().WIDTH, _scaler.get_display_config().HEIGHT);
     if (!display) {
         // return -1;
     }
+    al_register_event_source(event_queue, al_get_display_event_source(display));
     al_set_window_title(display, "Gienek AssAssYn");
     while (!quit) {
         al_clear_to_color(al_map_rgb(0, 0, 0));

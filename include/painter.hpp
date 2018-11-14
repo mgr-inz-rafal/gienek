@@ -42,7 +42,7 @@ class painter {
   public:
     painter(doommap& map, mouse& mouse, scaler& scaler, const user_interactions& user_interactions);
 
-    void operator()(bool& quit);
+    void operator()(bool& quit, ALLEGRO_EVENT_QUEUE* event_queue);
     scaler& get_scaler();
 };
 
