@@ -59,6 +59,7 @@ source_group("Header Files" FILES
 	include/scaler.hpp
 	include/toolbox.hpp
 	include/user_interactions.hpp
+	include/event_loop.hpp
 	)
 	
 source_group("Header Files - Handlers" FILES 
@@ -98,6 +99,7 @@ add_executable(gienek
 	src/handler_thing_update.cc
 	src/handler_thing_remove.cc 
 	src/handler_player_angle.cc
+	src/event_loop.cc
 	include/decoder.hpp
 	include/handler.hpp
 	include/handler_vertex.hpp
@@ -121,6 +123,7 @@ add_executable(gienek
 	include/handler_thing_update.hpp
 	include/handler_thing_remove.hpp
 	include/handler_player_angle.hpp
+	include/event_loop.hpp
 	)
 
 target_link_libraries(gienek ${CMAKE_THREAD_LIBS_INIT})

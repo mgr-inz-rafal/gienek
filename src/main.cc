@@ -21,6 +21,7 @@
 
 #include "decoder.hpp"
 #include "display_config.hpp"
+#include "event_loop.hpp"
 #include "handler.hpp"
 #include "mouse.hpp"
 #include "painter.hpp"
@@ -32,7 +33,6 @@ using boost::asio::ip::tcp;
 
 ALLEGRO_EVENT_QUEUE* event_queue;
 ALLEGRO_DISPLAY* display = NULL;
-ALLEGRO_EVENT ev;
 
 unsigned char get_command(gienek::socket_reader& sr) {
     std::string buffer;
@@ -45,34 +45,6 @@ unsigned char get_command(gienek::socket_reader& sr) {
     }
     return buffer[0];
 }
-
-struct event_loop {
-    gienek::mouse& _mouse;
-    gienek::painter& _painter;
-    gienek::doommap& _map;
-    gienek::user_interactions& _user_interactions;
-    event_loop(gienek::mouse& mouse, gienek::painter& painter, gienek::doommap& map,
-               gienek::user_interactions& user_interactions)
-        : _mouse(mouse)
-        , _painter(painter)
-        , _map(map)
-        , _user_interactions(user_interactions) {}
-    void operator()(bool& quit) {
-        while (!quit) {
-            if (!al_event_queue_is_empty(event_queue)) {
-                al_get_next_event(event_queue, &ev);
-                if (ALLEGRO_EVENT_MOUSE_BUTTON_UP == ev.type) {
-                    _mouse.mouse_click.x = static_cast<double>(ev.mouse.x);
-                    _mouse.mouse_click.y = static_cast<double>(ev.mouse.y);
-                    _user_interactions.set_clicked_traingle(
-                        gienek::toolbox::determine_clicked_triangle(_mouse, _painter.get_scaler(), _map));
-                } else if (ALLEGRO_EVENT_DISPLAY_CLOSE == ev.type) {
-                    quit = true;
-                }
-            }
-        }
-    }
-};
 
 int main() {
     const unsigned int WINDOW_WIDTH = 1024;
@@ -120,7 +92,7 @@ int main() {
     std::thread drawer(painter, std::ref(exit_application), event_queue);
     drawer.detach();
 
-    event_loop loop(mouse, painter, map, user_interactions);
+    gienek::event_loop loop(mouse, painter, map, user_interactions, event_queue);
     std::thread mainloop(loop, std::ref(exit_application));
     mainloop.detach();
 
