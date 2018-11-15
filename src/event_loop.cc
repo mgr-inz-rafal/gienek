@@ -1,3 +1,5 @@
+#include <boost/asio.hpp>
+
 #include "event_loop.hpp"
 #include "mouse.hpp"
 #include "painter.hpp"
@@ -13,8 +15,8 @@ event_loop::event_loop(gienek::mouse& mouse, gienek::painter& painter, gienek::d
     , _user_interactions(user_interactions)
     , _event_queue(event_queue){};
 
-void event_loop::operator()(bool& quit) {
-    while (!quit) {
+void event_loop::operator()(boost::asio::io_context& context) {
+    for (;;) {
         if (!al_event_queue_is_empty(_event_queue)) {
             al_get_next_event(_event_queue, &_event);
             if (ALLEGRO_EVENT_MOUSE_BUTTON_UP == _event.type) {
@@ -23,7 +25,8 @@ void event_loop::operator()(bool& quit) {
                 _user_interactions.set_clicked_traingle(
                     gienek::toolbox::determine_clicked_triangle(_mouse, _painter.get_scaler(), _map));
             } else if (ALLEGRO_EVENT_DISPLAY_CLOSE == _event.type) {
-                quit = true;
+                context.stop();
+                return;
             }
         }
     }

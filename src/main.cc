@@ -93,47 +93,42 @@ int main() {
     gienek::painter painter{ map, mouse, scaler, user_interactions };
     std::thread drawer(painter, std::ref(exit_application), event_queue);
 
-    gienek::event_loop loop(mouse, painter, map, user_interactions, event_queue);
-    std::thread mainloop(loop, std::ref(exit_application));
+    try {
+        boost::asio::io_context context;
+        tcp::acceptor acceptor(context, tcp::endpoint(tcp::v4(), 13));
 
-    while (!exit_application) {
-        try {
-            bool quit_current_map = false;
+        gienek::event_loop loop(mouse, painter, map, user_interactions, event_queue);
+        std::thread mainloop(loop, std::ref(context));
 
-            boost::asio::io_context context;
-            tcp::acceptor acceptor(context, tcp::endpoint(tcp::v4(), 13));
+        std::cout << "Awaiting connection..." << std::endl;
+        tcp::socket socket(context);
+        acceptor.async_accept(socket, [&](const boost::system::error_code& error) {
+            if (!error) {
+                std::cout << "Connection established, waiting for commands..." << std::endl;
+                gienek::socket_reader sr(socket);
+                for (;;) {
+                    unsigned char command = get_command(sr);
+                    if (' ' != command) {
+                        auto handler = decoder.get_handler(command);
 
-            std::cout << "Awaiting connection..." << std::endl;
-            tcp::socket socket(context);
-            acceptor.async_accept(socket, [&](const boost::system::error_code& error) {
-                if (!error) {
-                    std::cout << "Connection established, waiting for commands..." << std::endl;
-                    gienek::socket_reader sr(socket);
-                    for (;;) {
-                        unsigned char command = get_command(sr);
-                        if (' ' != command) {
-                            auto handler = decoder.get_handler(command);
-
-                            handler->set_socket_reader(sr);
-                            handler->set_doommap(map);
-                            auto result = handler->handle();
-                            if (result.disconnect) {
-                                std::cout << "Closing connection on request by client" << std::endl;
-                                quit_current_map = true;
-                                break;
-                            }
+                        handler->set_socket_reader(sr);
+                        handler->set_doommap(map);
+                        auto result = handler->handle();
+                        if (result.disconnect) {
+                            std::cout << "Closing connection on request by client" << std::endl;
+                            break;
                         }
                     }
                 }
-            });
-            context.run();
-        } catch (const std::exception& e) {
-            std::cerr << "Exception: " << e.what() << std::endl;
-        }
+            }
+        });
+        context.run();
+        exit_application = true;
+        drawer.join();
+        mainloop.join();
+    } catch (const std::exception& e) {
+        std::cerr << "Exception: " << e.what() << std::endl;
     }
-
-    drawer.join();
-    mainloop.join();
 
     return 0;
 }

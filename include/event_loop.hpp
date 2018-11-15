@@ -21,7 +21,7 @@ class event_loop {
   public:
     event_loop(gienek::mouse& mouse, gienek::painter& painter, gienek::doommap& map,
                gienek::user_interactions& user_interactions, ALLEGRO_EVENT_QUEUE* event_queue);
-    void operator()(bool& quit);
+    void operator()(boost::asio::io_context& context);
 };
 
 } // namespace gienek
