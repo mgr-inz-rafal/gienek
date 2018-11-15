@@ -11,6 +11,7 @@
 #include <allegro5/allegro_primitives.h>
 
 #include <boost/asio.hpp>
+#include <chrono>
 #include <cstddef>
 #include <cstdint>
 #include <ctime>
@@ -47,6 +48,7 @@ unsigned char get_command(gienek::socket_reader& sr) {
 }
 
 int main() {
+    using namespace std::chrono_literals;
     const unsigned int WINDOW_WIDTH = 1024;
     const unsigned int WINDOW_HEIGHT = 768;
 
@@ -90,45 +92,48 @@ int main() {
     gienek::mouse mouse;
     gienek::painter painter{ map, mouse, scaler, user_interactions };
     std::thread drawer(painter, std::ref(exit_application), event_queue);
-    drawer.detach();
 
     gienek::event_loop loop(mouse, painter, map, user_interactions, event_queue);
     std::thread mainloop(loop, std::ref(exit_application));
-    mainloop.detach();
 
     while (!exit_application) {
         try {
             bool quit_current_map = false;
 
-            boost::asio::io_context io_context;
-            tcp::acceptor acceptor(io_context, tcp::endpoint(tcp::v4(), 13));
+            boost::asio::io_context context;
+            tcp::acceptor acceptor(context, tcp::endpoint(tcp::v4(), 13));
 
-            while (!quit_current_map) {
-                std::cout << "Awaiting connection..." << std::endl;
-                tcp::socket socket(io_context);
-                acceptor.accept(socket);
-                std::cout << "Connection established, waiting for commands..." << std::endl;
-                gienek::socket_reader sr(socket);
-                for (;;) {
-                    unsigned char command = get_command(sr);
-                    if (' ' != command) {
-                        auto handler = decoder.get_handler(command);
+            std::cout << "Awaiting connection..." << std::endl;
+            tcp::socket socket(context);
+            acceptor.async_accept(socket, [&](const boost::system::error_code& error) {
+                if (!error) {
+                    std::cout << "Connection established, waiting for commands..." << std::endl;
+                    gienek::socket_reader sr(socket);
+                    for (;;) {
+                        unsigned char command = get_command(sr);
+                        if (' ' != command) {
+                            auto handler = decoder.get_handler(command);
 
-                        handler->set_socket_reader(sr);
-                        handler->set_doommap(map);
-                        auto result = handler->handle();
-                        if (result.disconnect) {
-                            std::cout << "Closing connection on request by client" << std::endl;
-                            quit_current_map = true;
-                            break;
+                            handler->set_socket_reader(sr);
+                            handler->set_doommap(map);
+                            auto result = handler->handle();
+                            if (result.disconnect) {
+                                std::cout << "Closing connection on request by client" << std::endl;
+                                quit_current_map = true;
+                                break;
+                            }
                         }
                     }
                 }
-            }
+            });
+            context.run();
         } catch (const std::exception& e) {
             std::cerr << "Exception: " << e.what() << std::endl;
         }
     }
+
+    drawer.join();
+    mainloop.join();
 
     return 0;
 }
