@@ -6,7 +6,7 @@ namespace gienek {
 
 class mouse {
   public:
-    point<double> mouse_click{ 0.0f, 0.0f };
+    point<int16_t> mouse_click{ 0, 0 };
 };
 
 } // namespace gienek

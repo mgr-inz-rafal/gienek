@@ -10,6 +10,7 @@ class painter;
 class doommap;
 class user_interactions;
 class player;
+class scaler;
 
 class event_loop {
     ALLEGRO_EVENT _event;
@@ -20,11 +21,13 @@ class event_loop {
     gienek::keyboard& _keyboard;
     gienek::painter& _painter;
     gienek::doommap& _map;
+    const gienek::scaler& _scaler;
     gienek::user_interactions& _user_interactions;
 
   public:
     event_loop(gienek::player& player, gienek::mouse& mouse, gienek::keyboard& keyboard, gienek::painter& painter,
-               gienek::doommap& map, gienek::user_interactions& user_interactions, ALLEGRO_EVENT_QUEUE* event_queue);
+               gienek::doommap& map, gienek::user_interactions& user_interactions, ALLEGRO_EVENT_QUEUE* event_queue,
+               const gienek::scaler& scaler);
     void operator()(boost::asio::io_context& context, bool& quit);
 };
 

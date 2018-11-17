@@ -141,6 +141,6 @@ add_executable(gienek
 
 target_link_libraries(gienek ${CMAKE_THREAD_LIBS_INIT})
 
-set_property(TARGET gienek PROPERTY CXX_STANDARD 17)
+set_property(TARGET gienek PROPERTY CXX_STANDARD 20)
 set_property(TARGET gienek PROPERTY CXX_STANDARD_REQUIRED ON)
 

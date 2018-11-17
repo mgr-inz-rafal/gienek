@@ -1,5 +1,6 @@
 #include "painter.hpp"
 
+#include <boost/format.hpp>
 #include <boost/math/constants/constants.hpp>
 #include <chrono>
 
@@ -43,6 +44,7 @@ void painter::operator()(bool& quit, ALLEGRO_EVENT_QUEUE* event_queue) {
             draw_pressed_keys();
             draw_mouse_pointer();
             draw_player_target();
+            draw_player_status_text();
 
             al_draw_text(font, al_map_rgb(255, 255, 255), 0, 0, 0, "Map loaded");
         } else {
@@ -196,7 +198,20 @@ double painter::thing_angle_to_radians(int16_t direction) {
 }
 
 void painter::draw_player_target() {
-    al_draw_filled_circle(_player.get_target().x, _player.get_target().y, 3.0f, al_map_rgb(255, 0, 0));
+    auto player_target = _player.get_target();
+    double x = player_target.x;
+    double y = player_target.y;
+
+    auto pt = _scaler.scale({ x, y });
+    al_draw_filled_circle(pt.x, pt.y, 3.0f, al_map_rgb(255, 0, 0));
+}
+
+void painter::draw_player_status_text() const {
+    std::string status = (boost::format("State: %1%, Target=(%2%,%3%)") % _player.get_state().to_string() %
+                          _player.get_target().x % _player.get_target().y)
+                             .str();
+
+    al_draw_text(font, al_map_rgb(255, 255, 255), 0, 32, 0, status.c_str());
 }
 
 } // namespace gienek

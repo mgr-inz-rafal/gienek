@@ -102,7 +102,7 @@ int main() {
         boost::asio::io_context context;
         tcp::acceptor acceptor(context, tcp::endpoint(tcp::v4(), 13));
 
-        gienek::event_loop loop(slayer, mouse, keyboard, painter, map, user_interactions, event_queue);
+        gienek::event_loop loop(slayer, mouse, keyboard, painter, map, user_interactions, event_queue, scaler);
         std::thread mainloop(loop, std::ref(context), std::ref(exit_application));
 
         std::cout << "Awaiting connection..." << std::endl;

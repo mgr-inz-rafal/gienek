@@ -5,20 +5,22 @@
 #include "mouse.hpp"
 #include "painter.hpp"
 #include "player.hpp"
+#include "scaler.hpp"
 #include "user_interactions.hpp"
 
 namespace gienek {
 
 event_loop::event_loop(gienek::player& player, gienek::mouse& mouse, gienek::keyboard& keyboard,
                        gienek::painter& painter, gienek::doommap& map, gienek::user_interactions& user_interactions,
-                       ALLEGRO_EVENT_QUEUE* event_queue)
+                       ALLEGRO_EVENT_QUEUE* event_queue, const gienek::scaler& scaler)
     : _player(player)
     , _mouse(mouse)
     , _keyboard(keyboard)
     , _painter(painter)
     , _map(map)
     , _user_interactions(user_interactions)
-    , _event_queue(event_queue){};
+    , _event_queue(event_queue)
+    , _scaler(scaler){};
 
 void event_loop::operator()(boost::asio::io_context& context, bool& quit) {
     for (;;) {
@@ -32,7 +34,7 @@ void event_loop::operator()(boost::asio::io_context& context, bool& quit) {
 
                 // Go to
                 if (_keyboard.keystate[ALLEGRO_KEY_G]) {
-                    _player.chase(_mouse.mouse_click);
+                    _player.chase(toolbox::window2map(_mouse.mouse_click, _scaler));
                 }
 
             } else if (ALLEGRO_EVENT_DISPLAY_CLOSE == _event.type) {

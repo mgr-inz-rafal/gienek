@@ -44,6 +44,8 @@ class painter {
     void draw_mouse_pointer();
     void draw_pressed_keys();
     void draw_player_target();
+    void draw_player_status_text() const;
+
     double thing_angle_to_radians(int16_t direction);
 
   public:
