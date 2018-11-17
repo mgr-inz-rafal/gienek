@@ -18,10 +18,10 @@ bool socket_reader::read(std::string& buffer, std::size_t size) {
     boost::system::error_code incoming_code;
     boost::asio::read(_socket, boost::asio::buffer(buffer), boost::asio::transfer_at_least(buffer.size()),
                       incoming_code);
-
     if (incoming_code.value()) {
         throw std::runtime_error(incoming_code.message());
     }
+
     return true;
 }
 

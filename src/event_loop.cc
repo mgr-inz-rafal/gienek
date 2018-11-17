@@ -15,7 +15,7 @@ event_loop::event_loop(gienek::mouse& mouse, gienek::painter& painter, gienek::d
     , _user_interactions(user_interactions)
     , _event_queue(event_queue){};
 
-void event_loop::operator()(boost::asio::io_context& context) {
+void event_loop::operator()(boost::asio::io_context& context, bool& quit) {
     for (;;) {
         if (!al_event_queue_is_empty(_event_queue)) {
             al_get_next_event(_event_queue, &_event);
@@ -26,6 +26,7 @@ void event_loop::operator()(boost::asio::io_context& context) {
                     gienek::toolbox::determine_clicked_triangle(_mouse, _painter.get_scaler(), _map));
             } else if (ALLEGRO_EVENT_DISPLAY_CLOSE == _event.type) {
                 context.stop();
+                quit = true;
                 return;
             }
         }

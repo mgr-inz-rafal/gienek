@@ -98,7 +98,7 @@ int main() {
         tcp::acceptor acceptor(context, tcp::endpoint(tcp::v4(), 13));
 
         gienek::event_loop loop(mouse, painter, map, user_interactions, event_queue);
-        std::thread mainloop(loop, std::ref(context));
+        std::thread mainloop(loop, std::ref(context), std::ref(exit_application));
 
         std::cout << "Awaiting connection..." << std::endl;
         tcp::socket socket(context);
@@ -106,7 +106,7 @@ int main() {
             if (!error) {
                 std::cout << "Connection established, waiting for commands..." << std::endl;
                 gienek::socket_reader sr(socket);
-                for (;;) {
+                while (!exit_application) {
                     unsigned char command = get_command(sr);
                     if (' ' != command) {
                         auto handler = decoder.get_handler(command);
@@ -123,7 +123,6 @@ int main() {
             }
         });
         context.run();
-        exit_application = true;
         drawer.join();
         mainloop.join();
     } catch (const std::exception& e) {
