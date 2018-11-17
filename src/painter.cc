@@ -5,9 +5,11 @@
 
 namespace gienek {
 
-painter::painter(doommap& map, mouse& mouse, scaler& scaler, const user_interactions& user_interactions)
+painter::painter(doommap& map, mouse& mouse, keyboard& keyboard, scaler& scaler,
+                 const user_interactions& user_interactions)
     : _map(map)
     , _mouse(mouse)
+    , _keyboard(keyboard)
     , _scaler(scaler)
     , _user_interactions(user_interactions) {
     font = al_load_bitmap_font("d:\\Git\\gienek\\fonts\\a4_font.tga");
@@ -37,6 +39,7 @@ void painter::operator()(bool& quit, ALLEGRO_EVENT_QUEUE* event_queue) {
             draw_clicked_triangle();
             draw_clicked_subsector(true);
             draw_things();
+            draw_pressed_keys();
             draw_mouse_pointer();
 
             al_draw_text(font, al_map_rgb(255, 255, 255), 0, 0, 0, "Map loaded");
@@ -48,6 +51,17 @@ void painter::operator()(bool& quit, ALLEGRO_EVENT_QUEUE* event_queue) {
         std::this_thread::sleep_for(4ms);
     }
     al_destroy_display(display);
+}
+
+void painter::draw_pressed_keys() {
+    pressed_keys.clear();
+    for (const auto& key : _keyboard.keystate) {
+        if (key.second) {
+            pressed_keys += al_keycode_to_name(key.first);
+            pressed_keys += ' ';
+        }
+    }
+    al_draw_text(font, al_map_rgb(255, 255, 255), 0, 16, 0, pressed_keys.c_str());
 }
 
 void painter::calculate_display_adaptors() {
