@@ -5,9 +5,10 @@
 
 namespace gienek {
 
-painter::painter(doommap& map, mouse& mouse, keyboard& keyboard, scaler& scaler,
+painter::painter(doommap& map, const player& player, mouse& mouse, keyboard& keyboard, scaler& scaler,
                  const user_interactions& user_interactions)
     : _map(map)
+    , _player(player)
     , _mouse(mouse)
     , _keyboard(keyboard)
     , _scaler(scaler)
@@ -41,6 +42,7 @@ void painter::operator()(bool& quit, ALLEGRO_EVENT_QUEUE* event_queue) {
             draw_things();
             draw_pressed_keys();
             draw_mouse_pointer();
+            draw_player_target();
 
             al_draw_text(font, al_map_rgb(255, 255, 255), 0, 0, 0, "Map loaded");
         } else {
@@ -191,6 +193,10 @@ scaler& painter::get_scaler() {
 
 double painter::thing_angle_to_radians(int16_t direction) {
     return (static_cast<double>(-direction) * boost::math::constants::pi<double>()) / 180;
+}
+
+void painter::draw_player_target() {
+    al_draw_filled_circle(_player.get_target().x, _player.get_target().y, 3.0f, al_map_rgb(255, 0, 0));
 }
 
 } // namespace gienek

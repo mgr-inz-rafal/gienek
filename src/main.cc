@@ -94,8 +94,8 @@ int main() {
 
     gienek::keyboard keyboard;
     gienek::mouse mouse;
-    gienek::painter painter{ map, mouse, keyboard, scaler, user_interactions };
     gienek::player slayer;
+    gienek::painter painter{ map, slayer, mouse, keyboard, scaler, user_interactions };
     std::thread drawer(painter, std::ref(exit_application), event_queue);
 
     try {

@@ -4,6 +4,7 @@
 #include "keyboard.hpp"
 #include "mouse.hpp"
 #include "painter.hpp"
+#include "player.hpp"
 #include "user_interactions.hpp"
 
 namespace gienek {
@@ -28,6 +29,12 @@ void event_loop::operator()(boost::asio::io_context& context, bool& quit) {
                 _mouse.mouse_click.y = static_cast<double>(_event.mouse.y);
                 _user_interactions.set_clicked_traingle(
                     gienek::toolbox::determine_clicked_triangle(_mouse, _painter.get_scaler(), _map));
+
+                // Go to
+                if (_keyboard.keystate[ALLEGRO_KEY_G]) {
+                    _player.chase(_mouse.mouse_click);
+                }
+
             } else if (ALLEGRO_EVENT_DISPLAY_CLOSE == _event.type) {
                 context.stop();
                 quit = true;
