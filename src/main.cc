@@ -24,6 +24,7 @@
 #include "display_config.hpp"
 #include "event_loop.hpp"
 #include "handler.hpp"
+#include "keyboard.hpp"
 #include "mouse.hpp"
 #include "painter.hpp"
 #include "scaler.hpp"
@@ -89,6 +90,7 @@ int main() {
     gienek::decoder decoder;
     bool exit_application = false;
 
+    gienek::keyboard keyboard;
     gienek::mouse mouse;
     gienek::painter painter{ map, mouse, scaler, user_interactions };
     std::thread drawer(painter, std::ref(exit_application), event_queue);
@@ -97,7 +99,7 @@ int main() {
         boost::asio::io_context context;
         tcp::acceptor acceptor(context, tcp::endpoint(tcp::v4(), 13));
 
-        gienek::event_loop loop(mouse, painter, map, user_interactions, event_queue);
+        gienek::event_loop loop(mouse, keyboard, painter, map, user_interactions, event_queue);
         std::thread mainloop(loop, std::ref(context), std::ref(exit_application));
 
         std::cout << "Awaiting connection..." << std::endl;

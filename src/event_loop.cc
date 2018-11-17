@@ -1,15 +1,17 @@
 #include <boost/asio.hpp>
 
 #include "event_loop.hpp"
+#include "keyboard.hpp"
 #include "mouse.hpp"
 #include "painter.hpp"
 #include "user_interactions.hpp"
 
 namespace gienek {
 
-event_loop::event_loop(gienek::mouse& mouse, gienek::painter& painter, gienek::doommap& map,
+event_loop::event_loop(gienek::mouse& mouse, gienek::keyboard& keyboard, gienek::painter& painter, gienek::doommap& map,
                        gienek::user_interactions& user_interactions, ALLEGRO_EVENT_QUEUE* event_queue)
     : _mouse(mouse)
+    , _keyboard(keyboard)
     , _painter(painter)
     , _map(map)
     , _user_interactions(user_interactions)
@@ -28,6 +30,10 @@ void event_loop::operator()(boost::asio::io_context& context, bool& quit) {
                 context.stop();
                 quit = true;
                 return;
+            } else if (ALLEGRO_EVENT_KEY_DOWN == _event.type) {
+                _keyboard.keystate[_event.keyboard.keycode] = true;
+            } else if (ALLEGRO_EVENT_KEY_UP == _event.type) {
+                _keyboard.keystate[_event.keyboard.keycode] = false;
             }
         }
     }

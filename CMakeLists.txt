@@ -60,6 +60,7 @@ source_group("Header Files" FILES
 	include/toolbox.hpp
 	include/user_interactions.hpp
 	include/event_loop.hpp
+	include/keyboard.hpp
 	)
 	
 source_group("Header Files - Handlers" FILES 
@@ -100,6 +101,8 @@ add_executable(gienek
 	src/handler_thing_remove.cc 
 	src/handler_player_angle.cc
 	src/event_loop.cc
+	src/keyboard.cc
+	include/keyboard.hpp
 	include/decoder.hpp
 	include/handler.hpp
 	include/handler_vertex.hpp
