@@ -2,9 +2,10 @@
 
 namespace gienek {
 
+template <typename T>
 struct point {
-    double x;
-    double y;
+    T x;
+    T y;
 };
 
 } // namespace gienek

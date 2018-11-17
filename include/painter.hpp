@@ -28,7 +28,7 @@ class painter {
     scaler& _scaler;
     const user_interactions& _user_interactions;
     ALLEGRO_FONT* font = NULL;
-    point item_tag_offset = { 5, 5 };
+    point<double> item_tag_offset = { 5, 5 };
     std::string pressed_keys;
 
     void draw_clicked_subsector(bool no_interior = false);

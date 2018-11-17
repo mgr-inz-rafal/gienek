@@ -61,6 +61,9 @@ source_group("Header Files" FILES
 	include/user_interactions.hpp
 	include/event_loop.hpp
 	include/keyboard.hpp
+	include/player.hpp
+	include/actor_actions.hpp
+	include/actor.hpp
 	)
 	
 source_group("Header Files - Handlers" FILES 
@@ -102,6 +105,9 @@ add_executable(gienek
 	src/handler_player_angle.cc
 	src/event_loop.cc
 	src/keyboard.cc
+	src/player.cc
+	src/actor.cc
+	include/player.hpp
 	include/keyboard.hpp
 	include/decoder.hpp
 	include/handler.hpp
@@ -127,6 +133,8 @@ add_executable(gienek
 	include/handler_thing_remove.hpp
 	include/handler_player_angle.hpp
 	include/event_loop.hpp
+	include/actor_actions.hpp
+	include/actor.hpp
 	)
 
 target_link_libraries(gienek ${CMAKE_THREAD_LIBS_INIT})

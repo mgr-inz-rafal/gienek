@@ -8,9 +8,11 @@
 
 namespace gienek {
 
-event_loop::event_loop(gienek::mouse& mouse, gienek::keyboard& keyboard, gienek::painter& painter, gienek::doommap& map,
-                       gienek::user_interactions& user_interactions, ALLEGRO_EVENT_QUEUE* event_queue)
-    : _mouse(mouse)
+event_loop::event_loop(gienek::player& player, gienek::mouse& mouse, gienek::keyboard& keyboard,
+                       gienek::painter& painter, gienek::doommap& map, gienek::user_interactions& user_interactions,
+                       ALLEGRO_EVENT_QUEUE* event_queue)
+    : _player(player)
+    , _mouse(mouse)
     , _keyboard(keyboard)
     , _painter(painter)
     , _map(map)

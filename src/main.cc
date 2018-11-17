@@ -27,6 +27,8 @@
 #include "keyboard.hpp"
 #include "mouse.hpp"
 #include "painter.hpp"
+#include "player.hpp"
+#include "point.hpp"
 #include "scaler.hpp"
 #include "socket_reader.hpp"
 #include "user_interactions.hpp"
@@ -93,13 +95,14 @@ int main() {
     gienek::keyboard keyboard;
     gienek::mouse mouse;
     gienek::painter painter{ map, mouse, keyboard, scaler, user_interactions };
+    gienek::player slayer;
     std::thread drawer(painter, std::ref(exit_application), event_queue);
 
     try {
         boost::asio::io_context context;
         tcp::acceptor acceptor(context, tcp::endpoint(tcp::v4(), 13));
 
-        gienek::event_loop loop(mouse, keyboard, painter, map, user_interactions, event_queue);
+        gienek::event_loop loop(slayer, mouse, keyboard, painter, map, user_interactions, event_queue);
         std::thread mainloop(loop, std::ref(context), std::ref(exit_application));
 
         std::cout << "Awaiting connection..." << std::endl;
