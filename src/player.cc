@@ -26,7 +26,7 @@ void player::chase(point<int16_t> target) {
     set_state(player_states::MOVING_TO);
 }
 
-point<int16_t> player::get_target() const {
+std::optional<point<int16_t>> player::get_target() const {
     return _target;
 }
 

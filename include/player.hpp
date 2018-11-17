@@ -6,12 +6,13 @@
 
 #include <map>
 #include <memory>
+#include <optional>
 
 namespace gienek {
 
 class player {
     actor _player;
-    point<int16_t> _target{ -1, -1 };
+    std::optional<point<int16_t>> _target;
     player_states _state;
     std::unique_ptr<BasePlayerState> _state_implementation;
 
@@ -19,7 +20,7 @@ class player {
 
   public:
     player();
-    point<int16_t> get_target() const;
+    std::optional<point<int16_t>> get_target() const;
     const BasePlayerState& get_state() const;
     void chase(point<int16_t> target);
 };

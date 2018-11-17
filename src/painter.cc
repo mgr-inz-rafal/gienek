@@ -199,17 +199,25 @@ double painter::thing_angle_to_radians(int16_t direction) {
 
 void painter::draw_player_target() {
     auto player_target = _player.get_target();
-    double x = player_target.x;
-    double y = player_target.y;
+    if (player_target.has_value()) {
+        auto target = player_target.value();
 
-    auto pt = _scaler.scale({ x, y });
-    al_draw_filled_circle(pt.x, pt.y, 3.0f, al_map_rgb(255, 0, 0));
+        auto pt = _scaler.scale({ static_cast<double>(target.x), static_cast<double>(target.y) });
+        al_draw_filled_circle(pt.x, pt.y, 3.0f, al_map_rgb(255, 0, 0));
+    }
 }
 
 void painter::draw_player_status_text() const {
-    std::string status = (boost::format("State: %1%, Target=(%2%,%3%)") % _player.get_state().to_string() %
-                          _player.get_target().x % _player.get_target().y)
-                             .str();
+    auto player_target = _player.get_target();
+    std::string target_string;
+    if (player_target.has_value()) {
+        target_string = (boost::format("(%1%,%2%)") % player_target.value().x % player_target.value().y).str();
+    } else {
+        target_string = "unspecified";
+    }
+
+    std::string status =
+        (boost::format("State: %1%, Target=%2%") % _player.get_state().to_string() % target_string).str();
 
     al_draw_text(font, al_map_rgb(255, 255, 255), 0, 32, 0, status.c_str());
 }
