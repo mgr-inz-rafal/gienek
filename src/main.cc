@@ -119,6 +119,7 @@ int main() {
 
                         handler->set_socket_reader(sr);
                         handler->set_doommap(map);
+                        handler->set_player(slayer);
                         auto result = handler->handle();
                         if (result.disconnect) {
                             std::cout << "Closing connection on request by client" << std::endl;

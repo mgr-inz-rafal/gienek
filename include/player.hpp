@@ -38,6 +38,7 @@ class player {
   public:
     explicit player(gienek::doommap& map);
     void operator()();
+    actor& get_actor();
     std::optional<point<int16_t>> get_target() const;
     const BasePlayerState& get_state() const;
     void go_to(point<int16_t> target);

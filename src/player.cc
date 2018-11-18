@@ -51,4 +51,8 @@ void player::operator()() {
     }
 }
 
+actor& player::get_actor() {
+    return _player;
+}
+
 } // namespace gienek

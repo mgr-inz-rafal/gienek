@@ -10,4 +10,8 @@ void handler::set_doommap(doommap& map) {
     _map = &map;
 }
 
+void handler::set_player(player& player) {
+    _player = &player;
+}
+
 } // namespace gienek
