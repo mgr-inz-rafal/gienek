@@ -94,16 +94,17 @@ int main() {
 
     gienek::keyboard keyboard;
     gienek::mouse mouse;
-    gienek::player slayer;
+    gienek::player slayer{ map };
     gienek::painter painter{ map, slayer, mouse, keyboard, scaler, user_interactions };
-    std::thread drawer(painter, std::ref(exit_application), event_queue);
+    std::thread drawer(std::ref(painter), std::ref(exit_application), event_queue);
+    std::thread player_ai(std::ref(slayer));
 
     try {
         boost::asio::io_context context;
         tcp::acceptor acceptor(context, tcp::endpoint(tcp::v4(), 13));
 
         gienek::event_loop loop(slayer, mouse, keyboard, painter, map, user_interactions, event_queue, scaler);
-        std::thread mainloop(loop, std::ref(context), std::ref(exit_application));
+        std::thread mainloop(std::ref(loop), std::ref(context), std::ref(exit_application));
 
         std::cout << "Awaiting connection..." << std::endl;
         tcp::socket socket(context);
@@ -130,6 +131,7 @@ int main() {
         context.run();
         drawer.join();
         mainloop.join();
+        player_ai.join();
     } catch (const std::exception& e) {
         std::cerr << "Exception: " << e.what() << std::endl;
     }

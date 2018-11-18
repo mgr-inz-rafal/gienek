@@ -1,10 +1,12 @@
 #include "player.hpp"
+#include "doommap.hpp"
 #include "player_states.hpp"
 
 namespace gienek {
 
-player::player()
-    : _state(player_states::IDLE)
+player::player(gienek::doommap& map)
+    : _map(map)
+    , _state(player_states::IDLE)
     , _state_implementation(new IdlePlayerState) {}
 
 void player::set_state(player_states state) {
@@ -21,7 +23,7 @@ void player::set_state(player_states state) {
     }
 };
 
-void player::chase(point<int16_t> target) {
+void player::go_to(point<int16_t> target) {
     _target = target;
     set_state(player_states::MOVING_TO);
 }
@@ -32,6 +34,21 @@ std::optional<point<int16_t>> player::get_target() const {
 
 const BasePlayerState& player::get_state() const {
     return *_state_implementation;
+}
+
+void player::operator()() {
+    for (;;) {
+        switch (_state) {
+            case player_states::IDLE:
+                break;
+            case player_states::MOVING_TO:
+                if (!_path.calculated) {
+                    _path._route.clear();
+                    _path._route.emplace_back(_player.pos);
+                }
+                break;
+        }
+    }
 }
 
 } // namespace gienek

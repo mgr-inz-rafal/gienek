@@ -34,7 +34,7 @@ void event_loop::operator()(boost::asio::io_context& context, bool& quit) {
 
                 // Go to
                 if (_keyboard.keystate[ALLEGRO_KEY_G]) {
-                    _player.chase(toolbox::window2map(_mouse.mouse_click, _scaler));
+                    _player.go_to(toolbox::window2map(_mouse.mouse_click, _scaler));
                 }
 
             } else if (ALLEGRO_EVENT_DISPLAY_CLOSE == _event.type) {
