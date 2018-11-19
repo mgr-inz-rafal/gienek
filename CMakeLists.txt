@@ -38,6 +38,8 @@ if (UNIX)
 link_libraries(
 	${ALLEGRO_LIBS}/liballegro.so
 	${ALLEGRO_LIBS}/liballegro_primitives.so
+	${ALLEGRO_LIBS}/liballegro_font.so
+	${ALLEGRO_LIBS}/liballegro_image.so
 	${BOOST_LIBS}/libboost_system.so
 )
 endif (UNIX)
@@ -141,6 +143,6 @@ add_executable(gienek
 
 target_link_libraries(gienek ${CMAKE_THREAD_LIBS_INIT})
 
-set_property(TARGET gienek PROPERTY CXX_STANDARD 20)
+set_property(TARGET gienek PROPERTY CXX_STANDARD 17)
 set_property(TARGET gienek PROPERTY CXX_STANDARD_REQUIRED ON)
 
