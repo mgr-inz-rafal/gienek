@@ -16,6 +16,7 @@ class path {
     bool calculated{ false };
     using route_t = std::vector<point<int16_t>>;
     route_t _route;
+    void calculate(point<int16_t> start, point<int16_t> end);
 };
 
 class doommap;

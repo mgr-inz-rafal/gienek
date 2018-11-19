@@ -31,6 +31,7 @@
 #include "point.hpp"
 #include "scaler.hpp"
 #include "socket_reader.hpp"
+#include "toolbox.hpp"
 #include "user_interactions.hpp"
 
 using boost::asio::ip::tcp;
@@ -59,6 +60,8 @@ int main() {
     gienek::user_interactions user_interactions;
     gienek::doommap map(discfg, user_interactions);
     gienek::scaler scaler(discfg);
+    gienek::toolbox::_map = &map;
+    gienek::toolbox::_scaler = &scaler;
 
     if (!al_init()) {
         std::cout << "al_init() failed" << std::endl;

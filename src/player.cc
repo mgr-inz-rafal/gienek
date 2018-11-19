@@ -1,8 +1,17 @@
 #include "player.hpp"
 #include "doommap.hpp"
 #include "player_states.hpp"
+#include "toolbox.hpp"
 
 namespace gienek {
+
+void path::calculate(point<int16_t> start, point<int16_t> end) {
+    const auto& str = toolbox::position_to_triangle(start);
+    const auto& etr = toolbox::position_to_triangle(end);
+
+    int asd = 0;
+    ++asd;
+}
 
 player::player(gienek::doommap& map)
     : _map(map)
@@ -44,7 +53,7 @@ void player::operator()() {
             case player_states::MOVING_TO:
                 if (!_path.calculated) {
                     _path._route.clear();
-                    _path._route.emplace_back(_player.pos);
+                    _path.calculate(_player.pos, _target.value());
                 }
                 break;
         }

@@ -43,6 +43,7 @@ class painter {
     void draw_subsector_border(const subsector& ss, float width = 1.0f);
     void draw_mouse_pointer();
     void draw_pressed_keys();
+    void draw_clicked_subsector_info();
     void draw_player_target();
     void draw_player_status_text() const;
 

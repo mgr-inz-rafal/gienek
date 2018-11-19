@@ -41,10 +41,13 @@ void painter::operator()(bool& quit, ALLEGRO_EVENT_QUEUE* event_queue) {
             draw_clicked_triangle();
             draw_clicked_subsector(true);
             draw_things();
-            draw_pressed_keys();
             draw_mouse_pointer();
             draw_player_target();
+
+            // Console info
+            draw_clicked_subsector_info();
             draw_player_status_text();
+            draw_pressed_keys();
 
             al_draw_text(font, al_map_rgb(255, 255, 255), 0, 0, 0, "Map loaded");
         } else {
@@ -58,14 +61,14 @@ void painter::operator()(bool& quit, ALLEGRO_EVENT_QUEUE* event_queue) {
 }
 
 void painter::draw_pressed_keys() {
-    pressed_keys.clear();
+    pressed_keys = "Keys: ";
     for (const auto& key : _keyboard.keystate) {
         if (key.second) {
             pressed_keys += al_keycode_to_name(key.first);
             pressed_keys += ' ';
         }
     }
-    al_draw_text(font, al_map_rgb(255, 255, 255), 0, 16, 0, pressed_keys.c_str());
+    al_draw_text(font, al_map_rgb(255, 255, 255), 256, 16, 0, pressed_keys.c_str());
 }
 
 void painter::calculate_display_adaptors() {
@@ -164,6 +167,15 @@ void painter::draw_subsector_interior(const subsector& ss, ALLEGRO_COLOR color) 
             _scaler.scale({ static_cast<double>(triangle.coords[2].x), static_cast<double>(triangle.coords[2].y) });
         al_draw_filled_triangle(pt1.x, pt1.y, pt2.x, pt2.y, pt3.x, pt3.y, color);
     }
+}
+
+void painter::draw_clicked_subsector_info() {
+    if (!_user_interactions.is_triangle_clicked()) {
+        return;
+    }
+    const clicked_triangle_t& clicked_triangle = _user_interactions.get_clicked_triangle();
+    al_draw_text(font, al_map_rgb(255, 255, 255), 0, 16, 0,
+                 ("Selected subsector: " + std::to_string(clicked_triangle.first)).c_str());
 }
 
 void painter::draw_subsector_border(const subsector& ss, float width) {

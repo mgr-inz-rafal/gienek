@@ -29,12 +29,11 @@ void event_loop::operator()(boost::asio::io_context& context, bool& quit) {
             if (ALLEGRO_EVENT_MOUSE_BUTTON_UP == _event.type) {
                 _mouse.mouse_click.x = static_cast<double>(_event.mouse.x);
                 _mouse.mouse_click.y = static_cast<double>(_event.mouse.y);
-                _user_interactions.set_clicked_traingle(
-                    gienek::toolbox::determine_clicked_triangle(_mouse, _painter.get_scaler(), _map));
+                _user_interactions.set_clicked_traingle(gienek::toolbox::position_to_triangle(_mouse));
 
                 // Go to
                 if (_keyboard.keystate[ALLEGRO_KEY_G]) {
-                    _player.go_to(toolbox::window2map(_mouse.mouse_click, _scaler));
+                    _player.go_to(toolbox::window2map(_mouse.mouse_click));
                 }
 
             } else if (ALLEGRO_EVENT_DISPLAY_CLOSE == _event.type) {
