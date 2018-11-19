@@ -120,7 +120,7 @@ const std::vector<std::size_t> doommap::get_adjacent_subsectors(subsector* ss) c
 }
 
 void doommap::update_player_angle(int16_t angle) {
-    things[player_thing_key].direction = angle; // 0 = Player
+    things[player_thing_key].direction = angle;
 }
 
 } // namespace gienek
