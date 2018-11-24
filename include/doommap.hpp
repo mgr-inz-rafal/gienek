@@ -86,7 +86,7 @@ class doommap {
     const std::vector<vertex>& get_verts() const;
     subsector& add_subsector();
     const std::vector<subsector>& get_ssectors() const;
-    const std::vector<std::size_t> get_adjacent_subsectors(subsector* ss) const;
+    const std::vector<std::int16_t> get_adjacent_subsectors(const subsector* ss) const;
     void add_thing(thing t);
     void update_thing(thing t);
     void remove_thing(uint16_t index);

@@ -5,18 +5,38 @@
 
 namespace gienek {
 
+class treenode {
+  public:
+    int16_t my_index;
+    std::vector<treenode> leafs;
+};
+
+void path::generate_children(treenode& node) const {
+    const auto& ss = _map->get_ssectors();
+    const auto& subsector = ss[node.my_index];
+    const auto& children = _map->get_adjacent_subsectors(&subsector);
+
+    for (std::size_t i = 0; i < children.size(); ++i) {
+        treenode new_node{ static_cast<int16_t>(children[i]) };
+        new_node.leafs.emplace_back(new_node);
+        generate_children(new_node);
+    }
+}
+
 void path::calculate(point<int16_t> start, point<int16_t> end) {
     const auto& str = toolbox::position_to_triangle(start);
     const auto& etr = toolbox::position_to_triangle(end);
 
-    int asd = 0;
-    ++asd;
+    treenode root{ static_cast<int16_t>(str.first) };
+    generate_children(root);
 }
 
 player::player(gienek::doommap& map)
     : _map(map)
     , _state(player_states::IDLE)
-    , _state_implementation(new IdlePlayerState) {}
+    , _state_implementation(new IdlePlayerState) {
+    _path.set_map(_map);
+}
 
 void player::set_state(player_states state) {
     _state = state;

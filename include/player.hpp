@@ -11,15 +11,26 @@
 
 namespace gienek {
 
+class doommap;
+class treenode;
+
 class path {
+    const doommap* _map;
+
   public:
+    // ------------------------------------------
+    // TODO: This is to be refactored
+    // ------------------------------------------
+    void generate_children(treenode& node) const;
+    // ------------------------------------------
+
+  public:
+    void set_map(const doommap& map) { _map = &map; }
     bool calculated{ false };
     using route_t = std::vector<point<int16_t>>;
     route_t _route;
     void calculate(point<int16_t> start, point<int16_t> end);
 };
-
-class doommap;
 
 class player {
     actor _player;
