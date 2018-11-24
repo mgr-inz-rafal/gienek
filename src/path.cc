@@ -17,7 +17,7 @@ bool path::generate_children(treenode& node, int16_t target_ssector, treenode*& 
 
     for (std::size_t i = 0; i < children.size(); ++i) {
         if (visited_subsectors.end() == visited_subsectors.find(children[i])) {
-            treenode new_node{ node.my_index, static_cast<int16_t>(children[i]) };
+            treenode new_node{ &node, static_cast<int16_t>(children[i]) };
             visited_subsectors.insert(static_cast<int16_t>(children[i]));
             auto& emplaced = node.leafs.emplace_back(new_node);
             if (generate_children(emplaced, target_ssector, target_node)) {
@@ -35,7 +35,7 @@ void path::calculate(point<int16_t> start, point<int16_t> end) {
 
     visited_subsectors.clear();
     visited_subsectors.insert(static_cast<int16_t>(str.first));
-    treenode root{ -1, static_cast<int16_t>(str.first) };
+    treenode root{ nullptr, static_cast<int16_t>(str.first) };
     treenode* target = nullptr;
     generate_children(root, static_cast<int16_t>(etr.first), target);
 }

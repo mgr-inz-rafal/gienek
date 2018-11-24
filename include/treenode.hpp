@@ -7,7 +7,7 @@ namespace gienek {
 
 class treenode {
   public:
-    int16_t parent;
+    treenode* parent;
     int16_t my_index;
     std::vector<treenode> leafs;
 };
