@@ -206,10 +206,12 @@ void painter::draw_path() {
     if (!path.calculated) {
         return;
     }
+    const auto& subsectors = _map.get_ssectors();
     const auto& route = path.get_route_elements();
-
-    int asd = 0;
-    ++asd;
+    for (const auto& element : route) {
+        draw_subsector_interior(subsectors[element], al_map_rgb(0, 0, 255));
+        draw_subsector_border(subsectors[element]);
+    }
 }
 
 void painter::draw_mouse_pointer() {
