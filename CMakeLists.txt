@@ -67,6 +67,8 @@ source_group("Header Files" FILES
 	include/actor_actions.hpp
 	include/actor.hpp
 	include/player_states.hpp
+	include/path.hpp
+	include/treenode.hpp
 	)
 	
 source_group("Header Files - Handlers" FILES 
@@ -110,6 +112,10 @@ add_executable(gienek
 	src/keyboard.cc
 	src/player.cc
 	src/actor.cc
+	src/path.cc
+	src/treenode.cc
+	include/treenode.hpp
+	include/path.hpp
 	include/player_states.hpp
 	include/player.hpp
 	include/keyboard.hpp
