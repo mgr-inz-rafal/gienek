@@ -37,6 +37,7 @@ class player {
     std::optional<point<int16_t>> get_target() const;
     const BasePlayerState& get_state() const;
     void go_to(point<int16_t> target);
+    const path& get_path() const;
 };
 
 } // namespace gienek

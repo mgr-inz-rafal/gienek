@@ -35,9 +35,25 @@ void path::calculate(point<int16_t> start, point<int16_t> end) {
 
     visited_subsectors.clear();
     visited_subsectors.insert(static_cast<int16_t>(str.first));
-    treenode root{ nullptr, static_cast<int16_t>(str.first) };
-    treenode* target = nullptr;
+
+    root.parent = nullptr;
+    root.my_index = static_cast<int16_t>(str.first);
+
     generate_children(root, static_cast<int16_t>(etr.first), target);
+    calculated = true;
+}
+
+std::list<int16_t> path::get_route_elements() const {
+    std::list<int16_t> ret;
+    if (!calculated) {
+        return ret;
+    }
+    treenode* tmp = target;
+    while (tmp) {
+        ret.push_front(tmp->my_index);
+        tmp = tmp->parent;
+    }
+    return ret;
 }
 
 } // namespace gienek

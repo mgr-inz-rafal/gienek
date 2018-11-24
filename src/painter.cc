@@ -1,4 +1,7 @@
 #include "painter.hpp"
+#include "doommap.hpp"
+#include "path.hpp"
+#include "player.hpp"
 
 #include <boost/format.hpp>
 #include <boost/math/constants/constants.hpp>
@@ -40,6 +43,7 @@ void painter::operator()(bool& quit, ALLEGRO_EVENT_QUEUE* event_queue) {
             draw_clicked_subsector();
             draw_clicked_triangle();
             draw_clicked_subsector(true);
+            draw_path();
             draw_things();
             draw_mouse_pointer();
             draw_player_target();
@@ -195,6 +199,17 @@ void painter::draw_subsectors() {
         draw_subsector_interior(subsectors[i], al_map_rgb(0, 32, 0));
         draw_subsector_border(subsectors[i]);
     }
+}
+
+void painter::draw_path() {
+    const path& path = _player.get_path();
+    if (!path.calculated) {
+        return;
+    }
+    const auto& route = path.get_route_elements();
+
+    int asd = 0;
+    ++asd;
 }
 
 void painter::draw_mouse_pointer() {

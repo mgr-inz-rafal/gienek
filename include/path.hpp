@@ -2,18 +2,21 @@
 
 #include "path.hpp"
 #include "point.hpp"
+#include "treenode.hpp"
 
 #include <cstdint>
+#include <list>
 #include <set>
 #include <vector>
 
 namespace gienek {
 
 class doommap;
-class treenode;
 
 class path {
     const doommap* _map;
+    treenode* target = nullptr;
+    treenode root;
 
   public:
     // ------------------------------------------
@@ -29,5 +32,6 @@ class path {
     using route_t = std::vector<point<int16_t>>;
     route_t _route;
     void calculate(point<int16_t> start, point<int16_t> end);
+    std::list<int16_t> get_route_elements() const;
 };
 } // namespace gienek

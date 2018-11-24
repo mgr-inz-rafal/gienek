@@ -58,4 +58,8 @@ actor& player::get_actor() {
     return _player;
 }
 
+const path& player::get_path() const {
+    return _path;
+}
+
 } // namespace gienek
