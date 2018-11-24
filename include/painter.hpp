@@ -27,7 +27,7 @@ class painter {
     mouse& _mouse;
     keyboard& _keyboard;
     scaler& _scaler;
-    const player& _player;
+    player& _player;
     const user_interactions& _user_interactions;
     ALLEGRO_FONT* font = NULL;
     point<double> item_tag_offset = { 5, 5 };
@@ -51,7 +51,7 @@ class painter {
     double thing_angle_to_radians(int16_t direction);
 
   public:
-    painter(doommap& map, const player& player, mouse& mouse, keyboard& keyboard, scaler& scaler,
+    painter(doommap& map, player& player, mouse& mouse, keyboard& keyboard, scaler& scaler,
             const user_interactions& user_interactions);
 
     void operator()(bool& quit, ALLEGRO_EVENT_QUEUE* event_queue);

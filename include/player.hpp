@@ -22,8 +22,6 @@ class player {
     player_states _state;
     std::unique_ptr<BasePlayerState> _state_implementation;
 
-    void set_state(player_states state);
-
     // ------------------------------------------
     // TODO: This is to be refactored
     // ------------------------------------------
@@ -32,12 +30,13 @@ class player {
 
   public:
     explicit player(gienek::doommap& map);
+    void set_state(player_states state);
     void operator()();
     actor& get_actor();
     std::optional<point<int16_t>> get_target() const;
     const BasePlayerState& get_state() const;
     void go_to(point<int16_t> target);
-    const path& get_path() const;
+    path& get_path();
 };
 
 } // namespace gienek

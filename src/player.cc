@@ -28,6 +28,7 @@ void player::set_state(player_states state) {
 
 void player::go_to(point<int16_t> target) {
     _target = target;
+    _path.calculated = false;
     set_state(player_states::MOVING_TO);
 }
 
@@ -58,7 +59,7 @@ actor& player::get_actor() {
     return _player;
 }
 
-const path& player::get_path() const {
+path& player::get_path() {
     return _path;
 }
 

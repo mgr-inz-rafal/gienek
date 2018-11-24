@@ -9,7 +9,7 @@
 
 namespace gienek {
 
-painter::painter(doommap& map, const player& player, mouse& mouse, keyboard& keyboard, scaler& scaler,
+painter::painter(doommap& map, player& player, mouse& mouse, keyboard& keyboard, scaler& scaler,
                  const user_interactions& user_interactions)
     : _map(map)
     , _player(player)
@@ -202,7 +202,7 @@ void painter::draw_subsectors() {
 }
 
 void painter::draw_path() {
-    const path& path = _player.get_path();
+    path& path = _player.get_path();
     if (!path.calculated) {
         return;
     }

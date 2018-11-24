@@ -17,6 +17,9 @@
 
 namespace gienek {
 
+decoder::decoder(player& player)
+    : _player(player) {}
+
 std::unique_ptr<handler> decoder::get_handler(unsigned char input) {
     switch (input) {
         case CMD::VERTEX:
@@ -34,7 +37,7 @@ std::unique_ptr<handler> decoder::get_handler(unsigned char input) {
         case CMD::QUIT:
             return std::unique_ptr<handler>(new handler_quit);
         case CMD::CLEAR:
-            return std::unique_ptr<handler>(new handler_clear);
+            return std::unique_ptr<handler>(new handler_clear(this->_player));
         case CMD::MAP_RECEIVED:
             return std::unique_ptr<handler>(new handler_map_received);
         default:

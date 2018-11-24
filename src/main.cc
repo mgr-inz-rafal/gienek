@@ -92,12 +92,12 @@ int main() {
     }
     al_register_event_source(event_queue, al_get_keyboard_event_source());
 
-    gienek::decoder decoder;
     bool exit_application = false;
 
     gienek::keyboard keyboard;
     gienek::mouse mouse;
     gienek::player slayer{ map };
+    gienek::decoder decoder(slayer);
     gienek::painter painter{ map, slayer, mouse, keyboard, scaler, user_interactions };
     std::thread drawer(std::ref(painter), std::ref(exit_application), event_queue);
     std::thread player_ai(std::ref(slayer));
