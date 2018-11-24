@@ -7,6 +7,7 @@
 #include <map>
 #include <memory>
 #include <optional>
+#include <set>
 #include <vector>
 
 namespace gienek {
@@ -21,7 +22,8 @@ class path {
     // ------------------------------------------
     // TODO: This is to be refactored
     // ------------------------------------------
-    void generate_children(treenode& node) const;
+    void generate_children(treenode& node);
+    std::set<int16_t> visited_subsectors;
     // ------------------------------------------
 
   public:
