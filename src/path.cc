@@ -58,25 +58,22 @@ bool path::calculate(point<int16_t> start, point<int16_t> end) {
     return true;
 }
 
-std::list<int16_t> path::get_route_elements() {
+std::list<int16_t> path::get_route_elements() const {
     std::list<int16_t> ret;
     if (!calculated) {
         return ret;
     }
 
-    treenode* tmp = target;
+    const treenode* tmp = target;
     for (;;) {
         ret.push_front(tmp->my_index);
         int16_t parent = tmp->parent_index;
         if (parent == -1) {
             break;
         }
-        for (std::list<treenode>::iterator it = all_nodes.begin(); it != all_nodes.end(); ++it) {
-            if (it->my_index == parent) {
-                tmp = &(*it);
-                break;
-            }
-        }
+
+        tmp = &(*std::find_if(all_nodes.begin(), all_nodes.end(),
+                              [parent](const treenode& node) { return node.my_index == parent; }));
     }
     return ret;
 }

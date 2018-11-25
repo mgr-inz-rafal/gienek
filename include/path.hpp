@@ -30,6 +30,6 @@ class path {
     using route_t = std::vector<point<int16_t>>;
     route_t _route;
     bool calculate(point<int16_t> start, point<int16_t> end);
-    std::list<int16_t> get_route_elements();
+    std::list<int16_t> get_route_elements() const;
 };
 } // namespace gienek
