@@ -5,6 +5,7 @@
 #include <allegro5/allegro_primitives.h>
 
 #include <algorithm>
+#include <chrono>
 #include <thread>
 
 #include "display_config.hpp"
@@ -32,6 +33,10 @@ class painter {
     ALLEGRO_FONT* font = NULL;
     point<double> item_tag_offset = { 5, 5 };
     std::string pressed_keys;
+
+    // Extract to "path_painter" class or smth
+    std::chrono::time_point<std::chrono::system_clock> _last_path_color_switch;
+    double _path_color_offset = 0.0f;
 
     void draw_clicked_subsector(bool no_interior = false);
     void draw_clicked_triangle();

@@ -16,7 +16,8 @@ painter::painter(doommap& map, player& player, mouse& mouse, keyboard& keyboard,
     , _mouse(mouse)
     , _keyboard(keyboard)
     , _scaler(scaler)
-    , _user_interactions(user_interactions) {
+    , _user_interactions(user_interactions)
+    , _last_path_color_switch(std::chrono::system_clock::now()) {
     font = al_load_bitmap_font("d:\\Git\\gienek\\fonts\\a4_font.tga");
 };
 
@@ -202,6 +203,7 @@ void painter::draw_subsectors() {
 }
 
 void painter::draw_path() {
+    using namespace std::chrono_literals;
     path& path = _player.get_path();
     if (!path.calculated) {
         return;
@@ -213,8 +215,20 @@ void painter::draw_path() {
     unsigned char end_color = 255;
     double increment = static_cast<double>(end_color - start_color) / route.size();
 
+    std::chrono::time_point<std::chrono::system_clock> current = std::chrono::system_clock::now();
+    std::chrono::duration<double> diff = current - _last_path_color_switch;
+    if (diff > 20ms) {
+        _last_path_color_switch = current;
+        _path_color_offset += increment;
+    }
+
     for (const auto& element : route) {
-        draw_subsector_interior(subsectors[element], al_map_rgb(0, 0, end_color));
+        double color = end_color + _path_color_offset;
+        if (color > 256) {
+            color = start_color + (color - 256);
+        }
+        color = 256 - color;
+        draw_subsector_interior(subsectors[element], al_map_rgb(0, 0, color));
         draw_subsector_border(subsectors[element]);
         end_color -= increment;
     }
