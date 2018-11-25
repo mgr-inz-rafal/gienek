@@ -46,6 +46,7 @@ bool path::calculate(point<int16_t> start, point<int16_t> end) {
     root.my_depth = 0;
     all_nodes.clear();
     all_nodes.push_back(root);
+    flooded.clear();
     flooded.push_back(root);
 
     while (!flooded.empty()) {
