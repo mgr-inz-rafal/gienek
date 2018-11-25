@@ -19,7 +19,6 @@ class path {
     treenode* target = nullptr;
     std::list<treenode> all_nodes;
     treenode root;
-    treenode* found;
     std::list<treenode> flooded;
 
   public:
