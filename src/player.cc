@@ -48,7 +48,10 @@ void player::operator()() {
             case player_states::MOVING_TO:
                 if (!_path.calculated) {
                     _path._route.clear();
-                    _path.calculate(_player.pos, _target.value());
+                    bool correct = _path.calculate(_player.pos, _target.value());
+                    if (!correct) {
+                        set_state(player_states::IDLE);
+                    }
                 }
                 break;
         }

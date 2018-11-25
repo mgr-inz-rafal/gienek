@@ -33,6 +33,11 @@ std::pair<std::size_t, std::size_t> toolbox::position_to_triangle(point<int16_t>
     return { std::numeric_limits<std::size_t>::max(), std::numeric_limits<std::size_t>::max() };
 }
 
+bool toolbox::is_triangle_ok(const std::pair<std::size_t, std::size_t>& triangle) {
+    return (triangle.first != std::numeric_limits<std::size_t>::max() &&
+            triangle.second != std::numeric_limits<std::size_t>::max());
+}
+
 // TODO: Return std::optional
 std::pair<std::size_t, std::size_t> toolbox::position_to_triangle(mouse& mouse) {
     auto mouse_position = window2map(mouse.mouse_click);

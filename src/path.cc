@@ -29,9 +29,15 @@ bool path::generate_children(treenode& node, int16_t target_ssector, treenode*& 
     return false;
 }
 
-void path::calculate(point<int16_t> start, point<int16_t> end) {
+bool path::calculate(point<int16_t> start, point<int16_t> end) {
     const auto& str = toolbox::position_to_triangle(start);
+    if (!toolbox::is_triangle_ok(str)) {
+        return false;
+    }
     const auto& etr = toolbox::position_to_triangle(end);
+    if (!toolbox::is_triangle_ok(etr)) {
+        return false;
+    }
 
     visited_subsectors.clear();
     visited_subsectors.insert(static_cast<int16_t>(str.first));
@@ -41,6 +47,7 @@ void path::calculate(point<int16_t> start, point<int16_t> end) {
 
     generate_children(root, static_cast<int16_t>(etr.first), target);
     calculated = true;
+    return true;
 }
 
 std::list<int16_t> path::get_route_elements() const {
