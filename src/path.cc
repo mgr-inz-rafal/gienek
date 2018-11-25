@@ -10,28 +10,22 @@ bool path::generate_children(treenode& node, int16_t target_ssector, treenode*& 
     const auto& subsector = ss[node.my_index];
     const auto& children = _map->get_adjacent_subsectors(&subsector);
 
-    if (node.my_index == target_ssector) {
-        candidates.insert({ node.my_depth, &node });
-        visited_subsectors.erase(node.my_index);
-        return false;
-    }
-
-    for (std::size_t i = 0; i < children.size(); ++i) {
-        if (visited_subsectors.end() == visited_subsectors.find(children[i])) {
+    for (int16_t i : children) {
+        if (!is_visited(i)) {
+            visited_subsectors.insert(i);
             treenode new_node;
-            new_node.my_index = static_cast<int16_t>(children[i]);
+            new_node.parent_index = node.my_index;
             new_node.my_depth = node.my_depth + 1;
-            new_node.set_parent(&node);
-
-            visited_subsectors.insert(static_cast<int16_t>(children[i]));
-            auto& emplaced = node.leafs.emplace_back(new_node);
-            if (generate_children(emplaced, target_ssector, target_node)) {
-                return true;
+            new_node.my_index = i;
+            auto& emplaced = flooded.emplace_back(new_node);
+            all_nodes.push_back(emplaced);
+            if (new_node.my_index == target_ssector) {
+                target = &all_nodes.back();
             }
         }
     }
 
-    return false;
+    return true;
 }
 
 bool path::calculate(point<int16_t> start, point<int16_t> end) {
@@ -47,26 +41,42 @@ bool path::calculate(point<int16_t> start, point<int16_t> end) {
     visited_subsectors.clear();
     visited_subsectors.insert(static_cast<int16_t>(str.first));
 
-    root.set_parent(nullptr);
+    root.parent_index = -1;
     root.my_index = static_cast<int16_t>(str.first);
     root.my_depth = 0;
+    all_nodes.clear();
+    all_nodes.push_back(root);
+    flooded.push_back(root);
 
-    candidates.clear();
-    generate_children(root, static_cast<int16_t>(etr.first), target);
-    target = candidates.begin()->second;
+    while (!flooded.empty()) {
+        treenode flood = flooded.front();
+        flooded.pop_front();
+        generate_children(flood, static_cast<int16_t>(etr.first), target);
+    }
+
     calculated = true;
     return true;
 }
 
-std::list<int16_t> path::get_route_elements() const {
+std::list<int16_t> path::get_route_elements() {
     std::list<int16_t> ret;
     if (!calculated) {
         return ret;
     }
+
     treenode* tmp = target;
-    while (tmp) {
+    for (;;) {
         ret.push_front(tmp->my_index);
-        tmp = tmp->get_parent();
+        int16_t parent = tmp->parent_index;
+        if (parent == -1) {
+            break;
+        }
+        for (std::list<treenode>::iterator it = all_nodes.begin(); it != all_nodes.end(); ++it) {
+            if (it->my_index == parent) {
+                tmp = &(*it);
+                break;
+            }
+        }
     }
     return ret;
 }

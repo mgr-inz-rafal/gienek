@@ -17,8 +17,10 @@ class doommap;
 class path {
     const doommap* _map;
     treenode* target = nullptr;
+    std::list<treenode> all_nodes;
     treenode root;
-    std::multimap<int16_t, treenode*> candidates;
+    treenode* found;
+    std::list<treenode> flooded;
 
   public:
     // ------------------------------------------
@@ -26,6 +28,7 @@ class path {
     // ------------------------------------------
     bool generate_children(treenode& node, int16_t target_ssector, treenode*& target_node);
     std::set<int16_t> visited_subsectors;
+    bool is_visited(int16_t index) { return visited_subsectors.end() != visited_subsectors.find(index); };
     // ------------------------------------------
 
   public:
@@ -34,6 +37,6 @@ class path {
     using route_t = std::vector<point<int16_t>>;
     route_t _route;
     bool calculate(point<int16_t> start, point<int16_t> end);
-    std::list<int16_t> get_route_elements() const;
+    std::list<int16_t> get_route_elements();
 };
 } // namespace gienek
