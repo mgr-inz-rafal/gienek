@@ -1,15 +1,19 @@
 #pragma once
 
 #include <cstdint>
-#include <vector>
+#include <list>
 
 namespace gienek {
 
 class treenode {
+    treenode* _parent;
+
   public:
-    treenode* parent;
+    void set_parent(treenode* parent) { _parent = parent; }
+    treenode* get_parent() const { return _parent; };
     int16_t my_index;
-    std::vector<treenode> leafs;
+    int16_t my_depth;
+    std::list<treenode> leafs;
 };
 
 } // namespace gienek

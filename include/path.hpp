@@ -6,6 +6,7 @@
 
 #include <cstdint>
 #include <list>
+#include <map>
 #include <set>
 #include <vector>
 
@@ -17,6 +18,7 @@ class path {
     const doommap* _map;
     treenode* target = nullptr;
     treenode root;
+    std::multimap<int16_t, treenode*> candidates;
 
   public:
     // ------------------------------------------
