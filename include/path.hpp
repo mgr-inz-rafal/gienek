@@ -20,15 +20,9 @@ class path {
     std::list<treenode> all_nodes;
     treenode root;
     std::list<treenode> flooded;
-
-  public:
-    // ------------------------------------------
-    // TODO: This is to be refactored
-    // ------------------------------------------
-    bool generate_children(treenode& node, int16_t target_ssector, treenode*& target_node);
     std::set<int16_t> visited_subsectors;
-    bool is_visited(int16_t index) { return visited_subsectors.end() != visited_subsectors.find(index); };
-    // ------------------------------------------
+    bool is_visited(int16_t index);
+    bool generate_children(treenode& node, int16_t target_ssector, treenode*& target_node);
 
   public:
     void set_map(const doommap& map) { _map = &map; }

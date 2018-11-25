@@ -81,4 +81,8 @@ std::list<int16_t> path::get_route_elements() {
     return ret;
 }
 
+bool path::is_visited(int16_t index) {
+    return visited_subsectors.end() != visited_subsectors.find(index);
+}
+
 } // namespace gienek
