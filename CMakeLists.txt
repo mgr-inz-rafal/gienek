@@ -53,7 +53,6 @@ source_group("Header Files" FILES
 	include/cmd_types.hpp
 	include/handler_result.hpp
 	include/socket_reader.hpp
-	include/doommap.hpp
 	include/painter.hpp
 	include/mouse.hpp
 	include/point.hpp
@@ -71,6 +70,15 @@ source_group("Header Files" FILES
 	include/treenode.hpp
 	)
 	
+source_group("Header Files - Doom Map" FILES 
+	include/vertex.hpp
+	include/subsector.hpp
+	include/seg.hpp
+	include/seg_triangle.hpp
+	include/thing.hpp
+	include/doommap.hpp
+	)
+
 source_group("Header Files - Handlers" FILES 
 	include/handler.hpp
 	include/handler_vertex.hpp
@@ -114,6 +122,16 @@ add_executable(gienek
 	src/actor.cc
 	src/path.cc
 	src/treenode.cc
+	src/subsector.cc
+	src/seg.cc
+	src/seg_triangle.cc
+	src/thing.cc
+	include/thing.hpp
+	include/vertex.hpp
+	include/vertex.hpp
+	include/seg_triangle.hpp
+	include/seg.hpp
+	include/subsector.hpp
 	include/treenode.hpp
 	include/path.hpp
 	include/player_states.hpp

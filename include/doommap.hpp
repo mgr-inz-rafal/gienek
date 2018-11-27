@@ -10,54 +10,12 @@
 #include <boost/format.hpp>
 
 #include "display_config.hpp"
+#include "subsector.hpp"
+#include "thing.hpp"
 #include "user_interactions.hpp"
+#include "vertex.hpp"
 
 namespace gienek {
-
-struct vertex {
-    int16_t x;
-    int16_t y;
-};
-
-struct seg {
-    // Start and end vertex index
-    int16_t sti;
-    int16_t eti;
-
-    bool operator==(const seg& rhs) const {
-        return (sti == rhs.sti && eti == rhs.eti) || (eti == rhs.sti && sti == rhs.eti);
-    }
-};
-
-extern std::map<int16_t, std::string> typename_to_id_map;
-
-struct thing {
-    uint16_t index;
-    int16_t health;
-    int16_t direction;
-    int16_t posx;
-    int16_t posy;
-    int16_t posz;
-    int16_t type;
-
-  public:
-    std::string get_tag() const { return (boost::format("(%1%, %2%)") % index % typename_to_id_map[type]).str(); }
-};
-
-struct seg_triangle;
-
-struct subsector {
-    std::vector<seg> segs;
-
-    // Calculate triangles that each subsector is composed of.
-    // This is used to easily calculate which subsector has been clicked on the map.
-    std::vector<seg_triangle> triangles;
-};
-
-struct seg_triangle {
-    subsector* parent;
-    std::array<vertex, 3> coords;
-};
 
 class doommap {
     display_config& _display_config;
