@@ -19,6 +19,10 @@ const point<int16_t>& subsector::get_barycenter_point_at(int index) const {
     return index == -1 ? barycenter_points[barycenter_points.size() - 1] : barycenter_points[index];
 }
 
+const point<int16_t>& subsector::get_barycenter() const {
+    return _barycenter;
+}
+
 void subsector::calculate_barycenter() {
     barycenter_points.clear();
     for (unsigned short i = 0; i < segs.size(); ++i) {

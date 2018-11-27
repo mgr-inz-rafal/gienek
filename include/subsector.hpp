@@ -27,6 +27,7 @@ class subsector {
 
     // This will calculate the point which can be treated as a "center" of convex polygon
     void calculate_barycenter();
+    const point<int16_t>& get_barycenter() const;
 };
 
 } // namespace gienek

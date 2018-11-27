@@ -160,6 +160,10 @@ void painter::draw_clicked_subsector(bool no_interior) {
         draw_subsector_interior(ssectors[ss], al_map_rgb(64, 0, 0));
         draw_subsector_border(ssectors[ss], 3.5f);
     }
+
+    const auto& barycenter = triangle.parent->get_barycenter();
+    point scaled = _scaler.scale({ static_cast<double>(barycenter.x), static_cast<double>(barycenter.y) });
+    al_draw_filled_rectangle(scaled.x - 3, scaled.y - 3, scaled.x + 3, scaled.y + 3, al_map_rgb(80, 80, 0));
 }
 
 void painter::draw_subsector_interior(const subsector& ss, ALLEGRO_COLOR color) {
