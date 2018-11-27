@@ -26,6 +26,8 @@ handler_result handler_subsector::handle() const {
         ss.segs.push_back({ sti, eti });
     }
 
+    ss.calculate_barycenter();
+
     return handler_result{};
 };
 } // namespace gienek

@@ -28,7 +28,7 @@ void doommap::add_vertex(vertex v) {
 }
 
 subsector& doommap::add_subsector() {
-    ssectors.push_back({});
+    ssectors.push_back({ verts });
     return ssectors.back();
 }
 
