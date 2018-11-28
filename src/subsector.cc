@@ -23,7 +23,11 @@ std::size_t hash_value(point<int16_t> const& b) {
 }
 
 void subsector::calculate_barycenter() {
-    std::unordered_set<point<int16_t>, boost::hash<point<int16_t>>> points;
+    static auto point_hasher = [](point<int16_t> const& b) {
+        boost::hash<std::pair<int16_t, int16_t>> hasher;
+        return hasher({ b.x, b.y });
+    };
+    std::unordered_set<point<int16_t>, decltype(point_hasher)> points(0, point_hasher);
 
     for (unsigned short i = 0; i < segs.size(); ++i) {
         auto start_vertex = _verts[segs[i].sti];
