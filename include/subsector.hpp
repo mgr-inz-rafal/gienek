@@ -10,10 +10,6 @@ namespace gienek {
 
 class subsector {
     const std::vector<vertex>& _verts;
-    std::vector<point<int16_t>> barycenter_points;
-    void insert_point_if_not_existing(const point<int16_t>& pt);
-    const point<int16_t>& get_barycenter_point_at(int index) const;
-
     point<int16_t> _barycenter;
 
   public:
