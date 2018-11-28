@@ -6,6 +6,8 @@
 #include <unordered_set>
 #include <vector>
 
+#include <boost/container_hash/hash.hpp>
+
 namespace gienek {
 
 subsector::subsector(const std::vector<vertex>& verts)
@@ -15,9 +17,13 @@ const point<int16_t>& subsector::get_barycenter() const {
     return _barycenter;
 }
 
+std::size_t hash_value(point<int16_t> const& b) {
+    boost::hash<std::pair<int16_t, int16_t>> hasher;
+    return hasher({ b.x, b.y });
+}
+
 void subsector::calculate_barycenter() {
-    static auto hasher = [](point<int16_t> const& xxx) { return xxx.x * std::numeric_limits<int16_t>::max() + xxx.y; };
-    std::unordered_set<point<int16_t>, decltype(hasher)> points(0, hasher);
+    std::unordered_set<point<int16_t>, boost::hash<point<int16_t>>> points;
 
     for (unsigned short i = 0; i < segs.size(); ++i) {
         auto start_vertex = _verts[segs[i].sti];
