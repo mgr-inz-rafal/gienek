@@ -17,11 +17,6 @@ const point<int16_t>& subsector::get_barycenter() const {
     return _barycenter;
 }
 
-std::size_t hash_value(point<int16_t> const& b) {
-    boost::hash<std::pair<int16_t, int16_t>> hasher;
-    return hasher({ b.x, b.y });
-}
-
 void subsector::calculate_barycenter() {
     static auto point_hasher = [](point<int16_t> const& b) {
         boost::hash<std::pair<int16_t, int16_t>> hasher;
