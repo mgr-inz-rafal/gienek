@@ -16,7 +16,7 @@ const point<int16_t>& subsector::get_barycenter() const {
 }
 
 void subsector::calculate_barycenter() {
-    auto hasher = [](point<int16_t> const& xxx) { return xxx.x * std::numeric_limits<int16_t>::max() + xxx.y; };
+    static auto hasher = [](point<int16_t> const& xxx) { return xxx.x * std::numeric_limits<int16_t>::max() + xxx.y; };
     std::unordered_set<point<int16_t>, decltype(hasher)> points(0, hasher);
 
     for (unsigned short i = 0; i < segs.size(); ++i) {
