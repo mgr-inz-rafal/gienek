@@ -35,7 +35,7 @@ void subsector::calculate_barycenter() {
     }
 
     double SX = 0, SY = 0, SL = 0;
-    std::unordered_set<point<int16_t>, haszer>::const_iterator it = points.begin();
+    auto& it = points.cbegin();
     bool done = false;
     while (!done) {
         const auto& p1 = *it;
