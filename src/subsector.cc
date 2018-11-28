@@ -15,13 +15,9 @@ const point<int16_t>& subsector::get_barycenter() const {
     return _barycenter;
 }
 
-struct haszer {
-  public:
-    size_t operator()(const point<int16_t>& xxx) const { return xxx.x * std::numeric_limits<int16_t>::max() + xxx.y; }
-};
-
 void subsector::calculate_barycenter() {
-    std::unordered_set<point<int16_t>, haszer> points;
+    auto hasher = [](point<int16_t> const& xxx) { return xxx.x * std::numeric_limits<int16_t>::max() + xxx.y; };
+    std::unordered_set<point<int16_t>, decltype(hasher)> points(0, hasher);
 
     for (unsigned short i = 0; i < segs.size(); ++i) {
         auto start_vertex = _verts[segs[i].sti];
