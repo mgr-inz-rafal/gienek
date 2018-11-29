@@ -36,7 +36,7 @@ void subsector::calculate_barycenter() {
     }
 
     double SX = 0, SY = 0, SL = 0;
-    auto& it = points.cbegin();
+    auto it = points.cbegin();
     bool done = false;
     while (!done) {
         const auto& p1 = *it;
