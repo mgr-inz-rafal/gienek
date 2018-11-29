@@ -3,3 +3,4 @@ build
 *.dbs
 *.backup?
 *.bak
+settings.json
