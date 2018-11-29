@@ -4,6 +4,7 @@
 #include <cstdint>
 #include <map>
 #include <mutex>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -50,6 +51,8 @@ class doommap {
     void remove_thing(uint16_t index);
     const std::map<uint16_t, thing>& get_things() const;
     void update_player_angle(int16_t angle);
+    std::optional<std::reference_wrapper<const seg>> get_seg_between_subsectors(int16_t first, int16_t second) const;
+    point<double> get_middle_point_of_seg(const seg& s) const;
 };
 
 } // namespace gienek

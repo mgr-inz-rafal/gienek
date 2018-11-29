@@ -118,4 +118,27 @@ void doommap::update_player_angle(int16_t angle) {
     things[player_thing_key].direction = angle;
 }
 
+std::optional<std::reference_wrapper<const seg>> doommap::get_seg_between_subsectors(int16_t first,
+                                                                                     int16_t second) const {
+    const auto& ss1 = ssectors[first];
+    const auto& ss2 = ssectors[second];
+
+    for (const auto& s1 : ss1.segs) {
+        for (const auto& s2 : ss2.segs) {
+            if (s1 == s2) {
+                return s1;
+            }
+        }
+    }
+
+    return std::nullopt;
+}
+
+point<double> doommap::get_middle_point_of_seg(const seg& s) const {
+    const auto& v1 = verts[s.sti];
+    const auto& v2 = verts[s.eti];
+
+    return { (v1.x + v2.x) / 2.0f, (v1.y + v2.y) / 2.0f };
+}
+
 } // namespace gienek

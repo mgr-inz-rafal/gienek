@@ -59,8 +59,9 @@ bool path::calculate(point<int16_t> start, point<int16_t> end) {
     return true;
 }
 
-std::list<int16_t> path::get_route_elements() const {
+std::list<int16_t> path::get_route_subsectors() const {
     std::list<int16_t> ret;
+
     if (!calculated) {
         return ret;
     }
@@ -76,6 +77,41 @@ std::list<int16_t> path::get_route_elements() const {
         tmp = &(*std::find_if(all_nodes.begin(), all_nodes.end(),
                               [parent](const treenode& node) { return node.my_index == parent; }));
     }
+    return ret;
+}
+
+std::vector<point<double>> path::get_route_points() const {
+    std::vector<point<double>> ret;
+    if (!calculated) {
+        return ret;
+    }
+
+    auto subsectors = _map->get_ssectors();
+    auto ssectors = get_route_subsectors();
+    auto ss = ssectors.cbegin();
+    for (;;) {
+        auto first = *ss;
+        ++ss;
+        if (ssectors.cend() == ss) {
+            break;
+        }
+        auto second = *ss;
+
+        auto pt1 = subsectors[first].get_barycenter();
+        auto pt2 = subsectors[second].get_barycenter();
+
+        auto seg = _map->get_seg_between_subsectors(first, second);
+        if (seg) {
+            point<double> pt1d = { static_cast<double>(pt1.x), static_cast<double>(pt1.y) };
+            point<double> pt_mid = _map->get_middle_point_of_seg(*seg);
+            point<double> pt2d = { static_cast<double>(pt2.x), static_cast<double>(pt2.y) };
+
+            ret.emplace_back(pt1d);
+            ret.emplace_back(pt_mid);
+            ret.emplace_back(pt2d);
+        }
+    }
+
     return ret;
 }
 

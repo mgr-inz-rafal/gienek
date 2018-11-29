@@ -213,7 +213,7 @@ void painter::draw_path() {
         return;
     }
     const auto& subsectors = _map.get_ssectors();
-    const auto& route = path.get_route_elements();
+    const auto& route = path.get_route_subsectors();
 
     unsigned char start_color = 128;
     unsigned char end_color = 255;
@@ -239,22 +239,19 @@ void painter::draw_path() {
     }
 
     // Draw barycenter line on top
-    auto element = route.cbegin();
+    auto route_points = path.get_route_points();
+    auto pt = route_points.cbegin();
     for (;;) {
-        auto first = *element;
-        ++element;
-        if (route.cend() == element) {
+        auto first = *pt;
+        ++pt;
+        if (route_points.cend() == pt) {
             break;
         }
-        auto second = *element;
+        auto second = *pt;
 
-        auto pt1 = subsectors[first].get_barycenter();
-        auto pt2 = subsectors[second].get_barycenter();
-
-        point<double> pt1d = _scaler.scale({ static_cast<double>(pt1.x), static_cast<double>(pt1.y) });
-        point<double> pt2d = _scaler.scale({ static_cast<double>(pt2.x), static_cast<double>(pt2.y) });
-
-        al_draw_line(pt1d.x, pt1d.y, pt2d.x, pt2d.y, al_map_rgb(255, 255, 255), 1.0f);
+        point<double> pt1 = _scaler.scale(first);
+        point<double> pt2 = _scaler.scale(second);
+        al_draw_line(pt1.x, pt1.y, pt2.x, pt2.y, al_map_rgb(255, 255, 255), 1.0f);
     }
 }
 

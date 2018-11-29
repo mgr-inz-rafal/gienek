@@ -7,6 +7,7 @@
 
 #include <map>
 #include <memory>
+#include <mutex>
 #include <optional>
 #include <set>
 #include <vector>
@@ -26,6 +27,7 @@ class player {
     // TODO: This is to be refactored
     // ------------------------------------------
     path _path;
+    mutable std::mutex path_access_mutex;
     // ------------------------------------------
 
   public:
