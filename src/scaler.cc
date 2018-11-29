@@ -5,9 +5,9 @@ namespace gienek {
 scaler::scaler(display_config& display_config)
     : _display_config(display_config) {}
 
-point<double> scaler::scale(const point<double>& point) const {
-    return { point.x * _display_config.SCALE + _display_config.OFFSET_X,
-             _display_config.HEIGHT - (point.y * _display_config.SCALE + _display_config.OFFSET_Y) };
+point<double> scaler::scale(const point<double>& pt) const {
+    return { pt.x * _display_config.SCALE + _display_config.OFFSET_X,
+             _display_config.HEIGHT - (pt.y * _display_config.SCALE + _display_config.OFFSET_Y) };
 }
 
 const display_config& scaler::get_display_config() const {

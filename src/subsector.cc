@@ -41,8 +41,8 @@ void subsector::calculate_barycenter() {
     while (!done) {
         const auto& p1 = *it;
         ++it;
-        if (it == points.end()) {
-            it = points.begin();
+        if (it == points.cend()) {
+            it = points.cbegin();
             done = true;
         }
         const auto& p2 = *it;

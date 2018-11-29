@@ -226,6 +226,7 @@ void painter::draw_path() {
         _path_color_offset += increment;
     }
 
+    // Draw flashy subsectors
     for (const auto& element : route) {
         double color = end_color + _path_color_offset;
         if (color > 256) {
@@ -235,6 +236,25 @@ void painter::draw_path() {
         draw_subsector_interior(subsectors[element], al_map_rgb(0, 0, color));
         draw_subsector_border(subsectors[element]);
         end_color -= increment;
+    }
+
+    // Draw barycenter line on top
+    auto element = route.cbegin();
+    for (;;) {
+        auto first = *element;
+        ++element;
+        if (route.cend() == element) {
+            break;
+        }
+        auto second = *element;
+
+        auto pt1 = subsectors[first].get_barycenter();
+        auto pt2 = subsectors[second].get_barycenter();
+
+        point<double> pt1d = _scaler.scale({ static_cast<double>(pt1.x), static_cast<double>(pt1.y) });
+        point<double> pt2d = _scaler.scale({ static_cast<double>(pt2.x), static_cast<double>(pt2.y) });
+
+        al_draw_line(pt1d.x, pt1d.y, pt2d.x, pt2d.y, al_map_rgb(255, 255, 255), 1.0f);
     }
 }
 
