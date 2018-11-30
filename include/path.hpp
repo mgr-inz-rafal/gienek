@@ -25,15 +25,18 @@ class path {
     bool generate_children(treenode& node, int16_t target_ssector, treenode*& target_node);
     std::vector<point<double>> points;
     std::list<int16_t> route_subsectors;
+    std::vector<point<double>> route_points;
     void calculate_route_subsectors();
+    void calculate_route_points();
 
   public:
+    path();
     void set_map(const doommap& map) { _map = &map; }
     bool calculated{ false };
     using route_t = std::vector<point<int16_t>>;
     route_t _route;
     bool calculate(point<int16_t> start, point<int16_t> end);
     const std::list<int16_t>& get_route_subsectors() const; // TODO: Keep precalculated
-    std::vector<point<double>> get_route_points() const;
+    const std::vector<point<double>>& get_route_points() const;
 };
 } // namespace gienek

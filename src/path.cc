@@ -5,6 +5,10 @@
 
 namespace gienek {
 
+path::path() {
+    route_points.reserve(4096);
+}
+
 bool path::generate_children(treenode& node, int16_t target_ssector, treenode*& target_node) {
     const auto& ss = _map->get_ssectors();
     const auto& subsector = ss[node.my_index];
@@ -62,6 +66,7 @@ bool path::calculate(point<int16_t> start, point<int16_t> end) {
 
     calculated = true;
     calculate_route_subsectors();
+    calculate_route_points();
     return true;
 }
 
@@ -87,12 +92,11 @@ const std::list<int16_t>& path::get_route_subsectors() const {
     return route_subsectors;
 }
 
-std::vector<point<double>> path::get_route_points() const {
-    std::vector<point<double>> ret;
+void path::calculate_route_points() {
     if (!calculated) {
-        return ret;
+        return;
     }
-
+    route_points.clear();
     auto subsectors = _map->get_ssectors();
     auto ssectors = get_route_subsectors();
     auto ss = ssectors.cbegin();
@@ -113,13 +117,15 @@ std::vector<point<double>> path::get_route_points() const {
             point<double> pt_mid = _map->get_middle_point_of_seg(*seg);
             point<double> pt2d = { static_cast<double>(pt2.x), static_cast<double>(pt2.y) };
 
-            ret.emplace_back(pt1d);
-            ret.emplace_back(pt_mid);
-            ret.emplace_back(pt2d);
+            route_points.emplace_back(pt1d);
+            route_points.emplace_back(pt_mid);
+            route_points.emplace_back(pt2d);
         }
     }
+}
 
-    return ret;
+const std::vector<point<double>>& path::get_route_points() const {
+    return route_points;
 }
 
 bool path::is_visited(int16_t index) {
