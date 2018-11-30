@@ -34,6 +34,7 @@ bool path::generate_children(treenode& node, int16_t target_ssector, treenode*& 
 
 bool path::calculate(point<int16_t> start, point<int16_t> end) {
     std::lock_guard lock(path_calculation_in_progress);
+    target = nullptr;
     const auto& str = toolbox::position_to_triangle(start);
     if (!toolbox::is_triangle_ok(str)) {
         return false;
@@ -65,6 +66,10 @@ bool path::calculate(point<int16_t> start, point<int16_t> end) {
         generate_children(flood, static_cast<int16_t>(etr.first), target);
     }
 
+    if (!target) {
+        // No route to destination possible
+        return false;
+    }
     calculated = true;
     calculate_route_subsectors();
     calculate_route_points();
