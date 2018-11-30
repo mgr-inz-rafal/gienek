@@ -3,6 +3,8 @@
 #include "player_states.hpp"
 #include "toolbox.hpp"
 
+#include <chrono>
+
 namespace gienek {
 
 player::player(gienek::doommap& map)
@@ -41,6 +43,7 @@ const BasePlayerState& player::get_state() const {
 }
 
 void player::operator()() {
+    using namespace std::chrono_literals;
     for (;;) {
         switch (_state) {
             case player_states::IDLE:
@@ -56,6 +59,7 @@ void player::operator()() {
                 }
                 break;
         }
+        std::this_thread::sleep_for(4ms);
     }
 }
 

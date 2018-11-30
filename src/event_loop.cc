@@ -1,5 +1,7 @@
 #include <boost/asio.hpp>
 
+#include <chrono>
+
 #include "event_loop.hpp"
 #include "keyboard.hpp"
 #include "mouse.hpp"
@@ -23,6 +25,7 @@ event_loop::event_loop(gienek::player& player, gienek::mouse& mouse, gienek::key
     , _scaler(scaler){};
 
 void event_loop::operator()(boost::asio::io_context& context, bool& quit) {
+    using namespace std::chrono_literals;
     for (;;) {
         if (!al_event_queue_is_empty(_event_queue)) {
             al_get_next_event(_event_queue, &_event);
@@ -46,6 +49,7 @@ void event_loop::operator()(boost::asio::io_context& context, bool& quit) {
                 _keyboard.keystate[_event.keyboard.keycode] = false;
             }
         }
+        std::this_thread::sleep_for(4ms);
     }
 }
 } // namespace gienek
