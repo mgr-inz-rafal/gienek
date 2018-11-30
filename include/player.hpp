@@ -27,7 +27,6 @@ class player {
     // TODO: This is to be refactored
     // ------------------------------------------
     path _path;
-    mutable std::mutex path_access_mutex;
     // ------------------------------------------
 
   public:

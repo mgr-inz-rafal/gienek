@@ -49,7 +49,6 @@ void player::operator()() {
             case player_states::IDLE:
                 break;
             case player_states::MOVING_TO:
-                std::lock_guard guard(path_access_mutex);
                 if (!_path.calculated) {
                     _path._route.clear();
                     bool correct = _path.calculate(_player.pos, _target.value());

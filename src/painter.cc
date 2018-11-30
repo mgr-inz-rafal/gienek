@@ -208,12 +208,20 @@ void painter::draw_subsectors() {
 
 void painter::draw_path() {
     using namespace std::chrono_literals;
+
     path& path = _player.get_path();
+    std::lock_guard lock(path.get_path_calculation_mutex());
     if (!path.calculated) {
         return;
     }
     const auto& subsectors = _map.get_ssectors();
+    if (subsectors.empty()) {
+        return;
+    }
     const auto& route = path.get_route_subsectors();
+    if (route.empty()) {
+        return;
+    }
 
     unsigned char start_color = 128;
     unsigned char end_color = 255;
@@ -240,6 +248,9 @@ void painter::draw_path() {
 
     // Draw barycenter line on top
     auto route_points = path.get_route_points();
+    if (route_points.empty()) {
+        return;
+    }
     auto pt = route_points.cbegin();
     for (;;) {
         auto first = *pt;

@@ -7,6 +7,7 @@
 #include <cstdint>
 #include <list>
 #include <map>
+#include <mutex>
 #include <set>
 #include <vector>
 
@@ -28,6 +29,7 @@ class path {
     std::vector<point<double>> route_points;
     void calculate_route_subsectors();
     void calculate_route_points();
+    std::mutex path_calculation_in_progress;
 
   public:
     path();
@@ -38,5 +40,6 @@ class path {
     bool calculate(point<int16_t> start, point<int16_t> end);
     const std::list<int16_t>& get_route_subsectors() const; // TODO: Keep precalculated
     const std::vector<point<double>>& get_route_points() const;
+    std::mutex& get_path_calculation_mutex();
 };
 } // namespace gienek

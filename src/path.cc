@@ -33,6 +33,7 @@ bool path::generate_children(treenode& node, int16_t target_ssector, treenode*& 
 }
 
 bool path::calculate(point<int16_t> start, point<int16_t> end) {
+    std::lock_guard lock(path_calculation_in_progress);
     const auto& str = toolbox::position_to_triangle(start);
     if (!toolbox::is_triangle_ok(str)) {
         return false;
@@ -130,6 +131,10 @@ const std::vector<point<double>>& path::get_route_points() const {
 
 bool path::is_visited(int16_t index) {
     return visited_subsectors.end() != visited_subsectors.find(index);
+}
+
+std::mutex& path::get_path_calculation_mutex() {
+    return path_calculation_in_progress;
 }
 
 } // namespace gienek
