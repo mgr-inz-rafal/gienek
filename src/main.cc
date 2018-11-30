@@ -128,6 +128,10 @@ int main() {
                             std::cout << "Closing connection on request by client" << std::endl;
                             break;
                         }
+                    } else {
+                        // TODO: This sleep must be removed and async_read()
+                        // must be used in socket_reader().
+                        std::this_thread::sleep_for(4ms);
                     }
                 }
             }
