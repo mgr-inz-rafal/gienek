@@ -61,19 +61,18 @@ bool path::calculate(point<int16_t> start, point<int16_t> end) {
     }
 
     calculated = true;
+    calculate_route_subsectors();
     return true;
 }
 
-std::list<int16_t> path::get_route_subsectors() const {
-    std::list<int16_t> ret;
-
+void path::calculate_route_subsectors() {
     if (!calculated) {
-        return ret;
+        return;
     }
-
+    route_subsectors.clear();
     const treenode* tmp = target;
     for (;;) {
-        ret.push_front(tmp->my_index);
+        route_subsectors.push_front(tmp->my_index);
         int16_t parent = tmp->parent_index;
         if (parent == -1) {
             break;
@@ -82,7 +81,10 @@ std::list<int16_t> path::get_route_subsectors() const {
         tmp = &(*std::find_if(all_nodes.begin(), all_nodes.end(),
                               [parent](const treenode& node) { return node.my_index == parent; }));
     }
-    return ret;
+}
+
+const std::list<int16_t>& path::get_route_subsectors() const {
+    return route_subsectors;
 }
 
 std::vector<point<double>> path::get_route_points() const {
