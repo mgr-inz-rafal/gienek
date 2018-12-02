@@ -10,9 +10,6 @@ void doom_controller::operator()(bool& quit) {
     while (!quit) {
         std::this_thread::sleep_for(4ms);
     }
-
-    int asd = 0;
-    ++asd;
 }
 
 } // namespace gienek
