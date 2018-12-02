@@ -1,10 +1,3 @@
-// Commands:
-// 'a' - vertex
-// 'b' - subsector
-// 'x' - clear map data
-// 'f' - entire map sent
-// 'q' - quit
-
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_font.h>
 #include <allegro5/allegro_image.h>
@@ -22,6 +15,7 @@
 
 #include "decoder.hpp"
 #include "display_config.hpp"
+#include "doom_controller.hpp"
 #include "event_loop.hpp"
 #include "handler.hpp"
 #include "keyboard.hpp"
@@ -94,6 +88,7 @@ int main() {
 
     bool exit_application = false;
 
+    gienek::doom_controller doom;
     gienek::keyboard keyboard;
     gienek::mouse mouse;
     gienek::player slayer{ map };
@@ -101,6 +96,7 @@ int main() {
     gienek::painter painter{ map, slayer, mouse, keyboard, scaler, user_interactions };
     std::thread drawer(std::ref(painter), std::ref(exit_application), event_queue);
     std::thread player_ai(std::ref(slayer));
+    std::thread doom_controller(std::ref(doom), std::ref(exit_application));
 
     try {
         boost::asio::io_context context;
@@ -140,6 +136,7 @@ int main() {
         drawer.join();
         mainloop.join();
         player_ai.join();
+        doom_controller.join();
     } catch (const std::exception& e) {
         std::cerr << "Exception: " << e.what() << std::endl;
     }
