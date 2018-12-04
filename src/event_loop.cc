@@ -39,6 +39,9 @@ void event_loop::operator()(boost::asio::io_context& context, bool& quit) {
                     _player.go_to(toolbox::window2map(_mouse.mouse_click));
                 }
 
+                if (_keyboard.keystate[ALLEGRO_KEY_L]) {
+                }
+
             } else if (ALLEGRO_EVENT_DISPLAY_CLOSE == _event.type) {
                 context.stop();
                 quit = true;

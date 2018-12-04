@@ -88,7 +88,7 @@ int main() {
 
     bool exit_application = false;
 
-    gienek::doom_controller doom;
+    gienek::doom_controller doom("localhost:14");
     gienek::keyboard keyboard;
     gienek::mouse mouse;
     gienek::player slayer{ map };
