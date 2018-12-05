@@ -1,4 +1,5 @@
 #include "doom_controller.hpp"
+#include "keyboard.hpp"
 
 #include <boost/algorithm/string.hpp>
 #include <boost/asio.hpp>
@@ -12,8 +13,10 @@ using boost::asio::ip::tcp;
 
 namespace gienek {
 
-doom_controller::doom_controller(const std::string& address)
-    : _address(address) {}
+doom_controller::doom_controller(const std::string& address, keyboard& keyboard, queue_t& queue)
+    : _address(address)
+    , _keyboard(keyboard)
+    , _queue(queue) {}
 
 void doom_controller::operator()(bool& quit) {
     using namespace std::chrono_literals;
@@ -25,14 +28,14 @@ void doom_controller::operator()(bool& quit) {
     }
 
     boost::asio::io_context context;
-    boost::asio::ip::tcp::socket gienek_reporting_socket{ context };
+    boost::asio::ip::tcp::socket doom_control_socket{ context };
     tcp::resolver resolver(context);
     tcp::resolver::results_type endpoints = resolver.resolve(parts.front(), parts.back());
     bool connected = false;
     while (!connected) {
         std::cout << "Attempting to connect to Doom at " << _address << std::endl;
         try {
-            boost::asio::connect(gienek_reporting_socket, endpoints);
+            boost::asio::connect(doom_control_socket, endpoints);
         } catch (const std::exception& e) {
             std::cerr << "Not connected: " << e.what() << std::endl;
             std::this_thread::sleep_for(1s);
@@ -43,6 +46,28 @@ void doom_controller::operator()(bool& quit) {
     };
 
     while (!quit) {
+        // "_queue" is used only here, making it superabundant. But I expect
+        // that soon more threads will likely be controlling Doom, so let's keep it and see.
+        if (_keyboard.keystate[ALLEGRO_KEY_L]) {
+            _queue.enq('L');
+        }
+        if (_keyboard.keystate[ALLEGRO_KEY_R]) {
+            _queue.enq('R');
+        }
+        if (_keyboard.keystate[ALLEGRO_KEY_F]) {
+            _queue.enq('F');
+        }
+        if (_keyboard.keystate[ALLEGRO_KEY_B]) {
+            _queue.enq('B');
+        }
+
+        auto cmd = _queue.deq();
+        if (cmd) {
+            char c = *cmd;
+            boost::system::error_code ignored_error;
+            boost::asio::write(doom_control_socket, boost::asio::buffer(&c, 1), ignored_error);
+        }
+
         std::this_thread::sleep_for(4ms);
     }
 }

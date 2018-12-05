@@ -12,9 +12,8 @@
 
 namespace gienek {
 
-event_loop::event_loop(gienek::player& player, gienek::mouse& mouse, gienek::keyboard& keyboard,
-                       gienek::painter& painter, gienek::doommap& map, gienek::user_interactions& user_interactions,
-                       ALLEGRO_EVENT_QUEUE* event_queue, const gienek::scaler& scaler)
+event_loop::event_loop(player& player, mouse& mouse, keyboard& keyboard, painter& painter, doommap& map,
+                       user_interactions& user_interactions, ALLEGRO_EVENT_QUEUE* event_queue, const scaler& scaler)
     : _player(player)
     , _mouse(mouse)
     , _keyboard(keyboard)
@@ -38,10 +37,6 @@ void event_loop::operator()(boost::asio::io_context& context, bool& quit) {
                 if (_keyboard.keystate[ALLEGRO_KEY_G]) {
                     _player.go_to(toolbox::window2map(_mouse.mouse_click));
                 }
-
-                if (_keyboard.keystate[ALLEGRO_KEY_L]) {
-                }
-
             } else if (ALLEGRO_EVENT_DISPLAY_CLOSE == _event.type) {
                 context.stop();
                 quit = true;

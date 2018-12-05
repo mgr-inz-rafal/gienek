@@ -69,6 +69,8 @@ source_group("Header Files" FILES
 	include/path.hpp
 	include/treenode.hpp
 	include/doom_controller.hpp
+	include/command_queue.hpp
+	include/types.hpp
 	)
 	
 source_group("Header Files - Doom Map" FILES 
@@ -128,6 +130,9 @@ add_executable(gienek
 	src/seg_triangle.cc
 	src/thing.cc
 	src/doom_controller.cc
+	src/command_queue.cc
+	include/types.hpp
+	include/command_queue.hpp
 	include/doom_controller.hpp
 	include/thing.hpp
 	include/vertex.hpp

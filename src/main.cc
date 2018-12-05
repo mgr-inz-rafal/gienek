@@ -26,6 +26,7 @@
 #include "scaler.hpp"
 #include "socket_reader.hpp"
 #include "toolbox.hpp"
+#include "types.hpp"
 #include "user_interactions.hpp"
 
 using boost::asio::ip::tcp;
@@ -88,8 +89,9 @@ int main() {
 
     bool exit_application = false;
 
-    gienek::doom_controller doom("localhost:14");
     gienek::keyboard keyboard;
+    gienek::queue_t cmdq;
+    gienek::doom_controller doom("localhost:14", keyboard, cmdq);
     gienek::mouse mouse;
     gienek::player slayer{ map };
     gienek::decoder decoder(slayer);
