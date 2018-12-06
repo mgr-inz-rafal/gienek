@@ -27,7 +27,7 @@ class event_loop {
     gienek::user_interactions& _user_interactions;
 
   public:
-    event_loop::event_loop(player& player, mouse& mouse, keyboard& keyboard, painter& painter, doommap& map,
+    event_loop(player& player, mouse& mouse, keyboard& keyboard, painter& painter, doommap& map,
                            user_interactions& user_interactions, ALLEGRO_EVENT_QUEUE* event_queue,
                            const scaler& scaler);
     void operator()(boost::asio::io_context& context, bool& quit);
