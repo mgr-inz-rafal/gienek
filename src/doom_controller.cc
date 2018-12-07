@@ -48,17 +48,41 @@ void doom_controller::operator()(bool& quit) {
     while (!quit) {
         // "_queue" is used only here, making it superabundant. But I expect
         // that soon more threads will likely be controlling Doom, so let's keep it and see.
+
         if (_keyboard.keystate[ALLEGRO_KEY_L]) {
-            _queue.enq('L');
+            if (_keyboard.keystate[ALLEGRO_KEY_LSHIFT] || _keyboard.keystate[ALLEGRO_KEY_RSHIFT]) {
+                _queue.enq('l');
+            } else {
+                _queue.enq('L');
+            }
         }
         if (_keyboard.keystate[ALLEGRO_KEY_R]) {
-            _queue.enq('R');
+            if (_keyboard.keystate[ALLEGRO_KEY_LSHIFT] || _keyboard.keystate[ALLEGRO_KEY_RSHIFT]) {
+                _queue.enq('r');
+            } else {
+                _queue.enq('R');
+            }
         }
         if (_keyboard.keystate[ALLEGRO_KEY_F]) {
-            _queue.enq('F');
+            if (_keyboard.keystate[ALLEGRO_KEY_LSHIFT] || _keyboard.keystate[ALLEGRO_KEY_RSHIFT]) {
+                _queue.enq('f');
+            } else {
+                _queue.enq('F');
+            }
         }
         if (_keyboard.keystate[ALLEGRO_KEY_B]) {
-            _queue.enq('B');
+            if (_keyboard.keystate[ALLEGRO_KEY_LSHIFT] || _keyboard.keystate[ALLEGRO_KEY_RSHIFT]) {
+                _queue.enq('b');
+            } else {
+                _queue.enq('B');
+            }
+        }
+        if (_keyboard.keystate[ALLEGRO_KEY_A]) {
+            if (_keyboard.keystate[ALLEGRO_KEY_LSHIFT] || _keyboard.keystate[ALLEGRO_KEY_RSHIFT]) {
+                _queue.enq('a');
+            } else {
+                _queue.enq('A');
+            }
         }
 
         auto cmd = _queue.deq();
