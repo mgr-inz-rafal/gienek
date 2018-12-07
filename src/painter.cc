@@ -18,7 +18,7 @@ painter::painter(doommap& map, player& player, mouse& mouse, keyboard& keyboard,
     , _scaler(scaler)
     , _user_interactions(user_interactions)
     , _last_path_color_switch(std::chrono::system_clock::now()) {
-    font = al_load_bitmap_font("d:\\Git\\gienek\\fonts\\a4_font.tga");
+    font = al_load_bitmap_font("a4_font.tga");
 };
 
 void painter::operator()(bool& quit, ALLEGRO_EVENT_QUEUE* event_queue) {
