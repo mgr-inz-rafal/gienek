@@ -58,33 +58,42 @@ int main(int argc, char** argv) {
     gienek::toolbox::_map = &map;
     gienek::toolbox::_scaler = &scaler;
 
+    std::cout << "al_init()..." << std::endl;
     if (!al_init()) {
         std::cout << "al_init() failed" << std::endl;
         return -1;
     }
+    std::cout << "al_init_primitives_addon()..." << std::endl;
     if (!al_init_primitives_addon()) {
         std::cout << "al_init_primitives_addon() failed" << std::endl;
         return -1;
     }
+    std::cout << "al_install_mouse()..." << std::endl;
     if (!al_install_mouse()) {
         throw std::runtime_error("al_install_mouse() failed");
     }
+    std::cout << "al_init_font_addon()..." << std::endl;
     if (!al_init_font_addon()) {
         throw std::runtime_error("al_init_font_addon() failed");
     }
+    std::cout << "al_init_image_addon()..." << std::endl;
     if (!al_init_image_addon()) {
         throw std::runtime_error("al_init_image_addon() failed");
     }
 
+    std::cout << "al_create_event_queue()..." << std::endl;
     event_queue = al_create_event_queue();
     if (!event_queue) {
         throw std::runtime_error("al_create_event_queue() failed");
     }
+    std::cout << "al_register_event_source()..." << std::endl;
     al_register_event_source(event_queue, al_get_mouse_event_source());
 
+    std::cout << "al_install_keyboard()..." << std::endl;
     if (false == al_install_keyboard()) {
         throw std::runtime_error("al_install_keyboard() failed");
     }
+    std::cout << "al_register_event_source()..." << std::endl;
     al_register_event_source(event_queue, al_get_keyboard_event_source());
 
     bool exit_application = false;
@@ -96,8 +105,11 @@ int main(int argc, char** argv) {
     gienek::player slayer{ map };
     gienek::decoder decoder(slayer);
     gienek::painter painter{ map, slayer, mouse, keyboard, scaler, user_interactions };
+    std::cout << "Starting drawer..." << std::endl;
     std::thread drawer(std::ref(painter), std::ref(exit_application), event_queue);
+    std::cout << "Starting player_ai..." << std::endl;
     std::thread player_ai(std::ref(slayer));
+    std::cout << "Starting doom_controller..." << std::endl;
     std::thread doom_controller(std::ref(doom), std::ref(exit_application));
 
     try {
