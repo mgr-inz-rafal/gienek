@@ -46,7 +46,7 @@ unsigned char get_command(gienek::socket_reader& sr) {
     return buffer[0];
 }
 
-int main() {
+int main(int argc, char** argv) {
     using namespace std::chrono_literals;
     const unsigned int WINDOW_WIDTH = 1024;
     const unsigned int WINDOW_HEIGHT = 768;
@@ -91,7 +91,7 @@ int main() {
 
     gienek::keyboard keyboard;
     gienek::queue_t cmdq;
-    gienek::doom_controller doom("localhost:14", keyboard, cmdq);
+    gienek::doom_controller doom(argv[1], keyboard, cmdq);
     gienek::mouse mouse;
     gienek::player slayer{ map };
     gienek::decoder decoder(slayer);
