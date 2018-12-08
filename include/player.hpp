@@ -23,7 +23,6 @@ class player {
     std::vector<point<double>>::const_iterator _next_target_point;
     player_states _state;
     std::unique_ptr<BasePlayerState> _state_implementation;
-    double _angle_to_next_target_point{ 0.0f };
 
     // ------------------------------------------
     // TODO: This is to be refactored

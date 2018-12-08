@@ -6,6 +6,8 @@
 #include <chrono>
 #include <thread>
 
+#include <boost/math/constants/constants.hpp>
+
 namespace gienek {
 
 player::player(gienek::doommap& map)
@@ -81,7 +83,14 @@ path& player::get_path() {
 }
 
 double player::get_angle_to_next_target_point() const {
-    return _angle_to_next_target_point;
+    if (!_path.calculated) {
+        return 0.0f;
+    }
+    const auto& current = _player.pos;
+    const auto& destination = *_next_target_point;
+
+    return (180.0f * std::atan2(destination.y - current.y, destination.x - current.x)) /
+           boost::math::constants::pi<double>();
 }
 
 } // namespace gienek
