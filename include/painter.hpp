@@ -33,6 +33,8 @@ class painter {
     ALLEGRO_FONT* font = NULL;
     point<double> item_tag_offset = { 5, 5 };
     std::string pressed_keys;
+    void draw_point(const std::optional<point<int16_t>>& pt, ALLEGRO_COLOR color);
+    std::string point_to_string(const std::optional<point<int16_t>>& pt) const;
 
     // Extract to "path_painter" class or smth
     std::chrono::time_point<std::chrono::system_clock> _last_path_color_switch;

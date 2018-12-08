@@ -278,27 +278,31 @@ double painter::thing_angle_to_radians(int16_t direction) {
     return (static_cast<double>(-direction) * boost::math::constants::pi<double>()) / 180;
 }
 
-void painter::draw_player_target() {
-    auto player_target = _player.get_target();
-    if (player_target.has_value()) {
-        auto target = player_target.value();
-
-        auto pt = _scaler.scale({ static_cast<double>(target.x), static_cast<double>(target.y) });
-        al_draw_filled_circle(pt.x, pt.y, 3.0f, al_map_rgb(255, 0, 0));
+void painter::draw_point(const std::optional<point<int16_t>>& pt, ALLEGRO_COLOR color) {
+    if (pt.has_value()) {
+        auto point = _scaler.scale({ static_cast<double>(pt->x), static_cast<double>(pt->y) });
+        al_draw_filled_circle(point.x, point.y, 3.0f, color);
     }
 }
 
-void painter::draw_player_status_text() const {
-    auto player_target = _player.get_target();
-    std::string target_string;
-    if (player_target.has_value()) {
-        target_string = (boost::format("(%1%,%2%)") % player_target.value().x % player_target.value().y).str();
-    } else {
-        target_string = "unspecified";
-    }
+void painter::draw_player_target() {
+    draw_point(_player.get_target(), al_map_rgb(255, 0, 0));
+    draw_point(_player.get_next_route_point(), al_map_rgb(196, 0, 0));
+}
 
-    std::string status =
-        (boost::format("State: %1%, Target=%2%") % _player.get_state().to_string() % target_string).str();
+std::string painter::point_to_string(const std::optional<point<int16_t>>& pt) const {
+    if (pt.has_value()) {
+        return (boost::format("(%1%,%2%)") % pt.value().x % pt.value().y).str();
+    }
+    return "unspecified";
+}
+
+void painter::draw_player_status_text() const {
+    std::string target_string = point_to_string(_player.get_target());
+    std::string next_point_string = point_to_string(_player.get_next_route_point());
+    std::string status = (boost::format("State: %1%, Target=%2%, Next=%3%") % _player.get_state().to_string() %
+                          target_string % next_point_string)
+                             .str();
 
     al_draw_text(font, al_map_rgb(255, 255, 255), 0, 32, 0, status.c_str());
 }

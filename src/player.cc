@@ -39,6 +39,14 @@ std::optional<point<int16_t>> player::get_target() const {
     return _target;
 }
 
+std::optional<point<int16_t>> player::get_next_route_point() const {
+    if (_path.calculated) {
+        point<int16_t> pt{ static_cast<int16_t>(_next_target_point->x), static_cast<int16_t>(_next_target_point->y) };
+        return pt;
+    }
+    return std::nullopt;
+}
+
 const BasePlayerState& player::get_state() const {
     return *_state_implementation;
 }
@@ -56,6 +64,7 @@ void player::operator()() {
                     if (!correct) {
                         set_state(player_states::IDLE);
                     }
+                    _next_target_point = ++_path.get_route_points().begin();
                 }
                 break;
         }

@@ -20,6 +20,7 @@ class player {
     actor _player;
     const doommap& _map;
     std::optional<point<int16_t>> _target;
+    std::vector<point<double>>::const_iterator _next_target_point;
     player_states _state;
     std::unique_ptr<BasePlayerState> _state_implementation;
 
@@ -35,6 +36,7 @@ class player {
     void operator()();
     actor& get_actor();
     std::optional<point<int16_t>> get_target() const;
+    std::optional<point<int16_t>> get_next_route_point() const;
     const BasePlayerState& get_state() const;
     void go_to(point<int16_t> target);
     path& get_path();
