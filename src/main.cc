@@ -102,7 +102,7 @@ int main(int argc, char** argv) {
     gienek::queue_t cmdq;
     gienek::doom_controller doom(argv[1], keyboard, cmdq);
     gienek::mouse mouse;
-    gienek::player slayer{ map };
+    gienek::player slayer{ map, doom };
     gienek::decoder decoder(slayer);
     gienek::painter painter{ map, slayer, mouse, keyboard, scaler, user_interactions };
     std::cout << "Starting drawer..." << std::endl;

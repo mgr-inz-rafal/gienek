@@ -15,9 +15,11 @@
 namespace gienek {
 
 class doommap;
+class doom_controller;
 
 class player {
     actor _player;
+    doom_controller& _doom_controller;
     const doommap& _map;
     std::optional<point<int16_t>> _target;
     std::vector<point<double>>::const_iterator _next_target_point;
@@ -31,7 +33,7 @@ class player {
     // ------------------------------------------
 
   public:
-    explicit player(gienek::doommap& map);
+    explicit player(gienek::doommap& map, gienek::doom_controller& doom_controller);
     void set_state(player_states state);
     void operator()();
     actor& get_actor();

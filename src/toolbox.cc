@@ -50,4 +50,8 @@ point<int16_t> toolbox::window2map(point<int16_t> pt) {
              static_cast<int16_t>(((cfg.HEIGHT - pt.y) - cfg.OFFSET_Y) / cfg.SCALE) };
 }
 
+bool toolbox::are_doubles_equal(double first, double second) {
+    return std::abs(first - second) < angle_comparison_threshold;
+}
+
 } // namespace gienek

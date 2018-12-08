@@ -1,4 +1,5 @@
 #include "player.hpp"
+#include "doom_controller.hpp"
 #include "doommap.hpp"
 #include "player_states.hpp"
 #include "toolbox.hpp"
@@ -10,8 +11,9 @@
 
 namespace gienek {
 
-player::player(gienek::doommap& map)
+player::player(gienek::doommap& map, gienek::doom_controller& doom_controller)
     : _map(map)
+    , _doom_controller(doom_controller)
     , _state(player_states::IDLE)
     , _state_implementation(new IdlePlayerState) {
     _path.set_map(_map);
@@ -67,6 +69,13 @@ void player::operator()() {
                         set_state(player_states::IDLE);
                     }
                     _next_target_point = ++_path.get_route_points().begin();
+                } else {
+                    if (!toolbox::are_doubles_equal(_player.angle, get_angle_to_next_target_point())) {
+                        _doom_controller.turn_right(true);
+                    } else {
+                        _doom_controller.turn_right(false);
+                        std::this_thread::sleep_for(1ms);
+                    }
                 }
                 break;
         }

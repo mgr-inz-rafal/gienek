@@ -96,4 +96,12 @@ void doom_controller::operator()(bool& quit) {
     }
 }
 
+void doom_controller::turn_right(bool start) {
+    if (start) {
+        _queue.enq('R');
+    } else {
+        _queue.enq('r');
+    }
+}
+
 } // namespace gienek

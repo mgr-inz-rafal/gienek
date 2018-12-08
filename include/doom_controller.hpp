@@ -16,6 +16,7 @@ class doom_controller {
   public:
     doom_controller(const std::string& address, keyboard& keyboard, queue_t& queue);
     void operator()(bool& quit);
+    void turn_right(bool start);
 };
 
 } // namespace gienek
