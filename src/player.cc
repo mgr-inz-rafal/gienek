@@ -89,8 +89,12 @@ double player::get_angle_to_next_target_point() const {
     const auto& current = _player.pos;
     const auto& destination = *_next_target_point;
 
-    return (180.0f * std::atan2(destination.y - current.y, destination.x - current.x)) /
-           boost::math::constants::pi<double>();
+    auto angle = (180.0f * std::atan2(destination.y - current.y, destination.x - current.x)) /
+                 boost::math::constants::pi<double>();
+    while (angle < 0) {
+        angle += 360.0f;
+    }
+    return std::fmod(angle, 360.0f);
 }
 
 } // namespace gienek
