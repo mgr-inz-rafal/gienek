@@ -300,9 +300,10 @@ std::string painter::point_to_string(const std::optional<point<int16_t>>& pt) co
 void painter::draw_player_status_text() const {
     std::string target_string = point_to_string(_player.get_target());
     std::string next_point_string = point_to_string(_player.get_next_route_point());
-    std::string status = (boost::format("State: %1%, Target=%2%, Next=%3%") % _player.get_state().to_string() %
-                          target_string % next_point_string)
-                             .str();
+    std::string status =
+        (boost::format("State: %1%, Target=%2%, Next=%3%, Angle=%4%/%5%") % _player.get_state().to_string() %
+         target_string % next_point_string % _player.get_actor().angle % _player.get_angle_to_next_target_point())
+            .str();
 
     al_draw_text(font, al_map_rgb(255, 255, 255), 0, 32, 0, status.c_str());
 }

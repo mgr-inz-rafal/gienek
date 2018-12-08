@@ -23,6 +23,7 @@ class player {
     std::vector<point<double>>::const_iterator _next_target_point;
     player_states _state;
     std::unique_ptr<BasePlayerState> _state_implementation;
+    double _angle_to_next_target_point{ 0.0f };
 
     // ------------------------------------------
     // TODO: This is to be refactored
@@ -40,6 +41,7 @@ class player {
     const BasePlayerState& get_state() const;
     void go_to(point<int16_t> target);
     path& get_path();
+    double get_angle_to_next_target_point() const;
 };
 
 } // namespace gienek

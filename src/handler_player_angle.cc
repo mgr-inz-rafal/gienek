@@ -14,6 +14,7 @@ handler_result handler_player_angle::handle() const {
     {
         std::lock_guard guard(_map->get_map_access_mutex());
         _map->update_player_angle(angle);
+        _player->get_actor().angle = angle;
     }
 
     return handler_result{};

@@ -22,6 +22,7 @@ handler_result handler_thing::handle() const {
         std::lock_guard guard(_map->get_map_access_mutex());
         if (29999 == t.type) {
             _player->get_actor().pos = { t.posx, t.posy };
+            _player->get_actor().angle = t.direction;
         }
         _map->add_thing(std::move(t));
     }

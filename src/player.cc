@@ -80,4 +80,8 @@ path& player::get_path() {
     return _path;
 }
 
+double player::get_angle_to_next_target_point() const {
+    return _angle_to_next_target_point;
+}
+
 } // namespace gienek
