@@ -64,4 +64,11 @@ double toolbox::get_angle_between_points(const point<double>& first, const point
     return std::fmod(angle, 360.0f);
 }
 
+player_turning_direction toolbox::get_player_turning_direction(double angle_player, double angle_target) {
+    double distance_clockwise =
+        (angle_player > angle_target) ? angle_player - angle_target : angle_player + 360.0f - angle_target;
+
+    return (distance_clockwise < 180) ? player_turning_direction::RIGHT : player_turning_direction::LEFT;
+}
+
 } // namespace gienek

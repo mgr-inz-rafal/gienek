@@ -73,8 +73,16 @@ void player::operator()() {
                 auto angle_target = get_angle_to_rotation_point();
                 auto angle_player = _player.angle;
                 if (!toolbox::are_doubles_equal(angle_player, angle_target)) {
-                    _doom_controller.stop_turning_right();
-                    _doom_controller.start_turning_left();
+                    switch (toolbox::get_player_turning_direction(angle_player, angle_target)) {
+                        case player_turning_direction::LEFT:
+                            _doom_controller.stop_turning_right();
+                            _doom_controller.start_turning_left();
+                            break;
+                        case player_turning_direction::RIGHT:
+                            _doom_controller.stop_turning_left();
+                            _doom_controller.start_turning_right();
+                            break;
+                    }
                 } else {
                     _doom_controller.stop_turning();
                     set_state(player_states::IDLE);

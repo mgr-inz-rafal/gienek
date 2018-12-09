@@ -13,6 +13,8 @@ class scaler;
 class doommap;
 class scaler;
 
+enum class player_turning_direction { LEFT, RIGHT };
+
 struct toolbox {
     // This must be fairly large to compensate the rotation that
     // player will be able to do before receiving the stop signal.
@@ -32,6 +34,7 @@ struct toolbox {
     static point<int16_t> window2map(point<int16_t> pt);
     static bool are_doubles_equal(double first, double second);
     static double get_angle_between_points(const point<double>& first, const point<double>& second);
+    static player_turning_direction get_player_turning_direction(double angle_player, double angle_target);
 };
 
 } // namespace gienek
