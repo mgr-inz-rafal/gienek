@@ -5,6 +5,7 @@
 #include "toolbox.hpp"
 
 #include <chrono>
+#include <fstream>
 #include <thread>
 
 #include <boost/math/constants/constants.hpp>
@@ -70,18 +71,20 @@ void player::operator()() {
                     }
                     _next_target_point = ++_path.get_route_points().begin();
                 } else {
-                    if (!toolbox::are_doubles_equal(_player.angle, get_angle_to_next_target_point())) {
-                        _doom_controller.turn_right(true);
+                    auto angle_target = get_angle_to_next_target_point();
+                    auto angle_player = _player.angle;
+                    if (!toolbox::are_doubles_equal(angle_player, angle_target)) {
+                        _doom_controller.stop_turning_right();
+                        _doom_controller.start_turning_left();
                     } else {
-                        _doom_controller.turn_right(false);
-                        std::this_thread::sleep_for(1ms);
+                        _doom_controller.stop_turning();
                     }
                 }
                 break;
         }
         std::this_thread::sleep_for(4ms);
     }
-}
+} // namespace gienek
 
 actor& player::get_actor() {
     return _player;

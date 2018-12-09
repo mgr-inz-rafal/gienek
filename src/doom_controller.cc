@@ -92,16 +92,40 @@ void doom_controller::operator()(bool& quit) {
             boost::asio::write(doom_control_socket, boost::asio::buffer(&c, 1), ignored_error);
         }
 
-        std::this_thread::sleep_for(4ms);
+        std::this_thread::sleep_for(1ms);
     }
 }
 
-void doom_controller::turn_right(bool start) {
-    if (start) {
+void doom_controller::start_turning_right() {
+    if (!is_turning_right) {
+        is_turning_right = true;
         _queue.enq('R');
-    } else {
+    }
+}
+
+void doom_controller::start_turning_left() {
+    if (!is_turning_left) {
+        is_turning_left = true;
+        _queue.enq('L');
+    }
+}
+
+void doom_controller::stop_turning_right() {
+    if (is_turning_right) {
+        is_turning_right = false;
         _queue.enq('r');
     }
+}
+void doom_controller::stop_turning_left() {
+    if (is_turning_left) {
+        is_turning_left = false;
+        _queue.enq('l');
+    }
+}
+
+void doom_controller::stop_turning() {
+    stop_turning_left();
+    stop_turning_right();
 }
 
 } // namespace gienek

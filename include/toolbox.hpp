@@ -16,7 +16,7 @@ class scaler;
 struct toolbox {
     // This must be fairly large to compensate the rotation that
     // player will be able to do before receiving the stop signal.
-    const inline static double angle_comparison_threshold{ 19.f };
+    const inline static double angle_comparison_threshold{ 7.3f };
 
     inline static std::map<int16_t, std::string> typename_to_id_map = {
         { 29999, "DoomPlayer" }, { 142, "CellPack" },  { 75, "Cell" },     { 134, "Berserk" },    { 28, "Chaingun" },
