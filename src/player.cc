@@ -31,6 +31,9 @@ void player::set_state(player_states state) {
         case player_states::MOVING_TO:
             _state_implementation = std::unique_ptr<BasePlayerState>(new MovingToPlayerState);
             break;
+        case player_states::ROTATING_TO:
+            _state_implementation = std::unique_ptr<BasePlayerState>(new RotatingToPlayerState);
+            break;
     }
 };
 
@@ -38,6 +41,12 @@ void player::go_to(point<int16_t> target) {
     _target = target;
     _path.calculated = false;
     set_state(player_states::MOVING_TO);
+}
+
+void player::rotate_to(point<int16_t> target) {
+    _target = target;
+    _path.calculated = false;
+    set_state(player_states::ROTATING_TO);
 }
 
 std::optional<point<int16_t>> player::get_target() const {

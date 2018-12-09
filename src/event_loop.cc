@@ -37,6 +37,11 @@ void event_loop::operator()(boost::asio::io_context& context, bool& quit) {
                 if (_keyboard.keystate[ALLEGRO_KEY_G]) {
                     _player.go_to(toolbox::window2map(_mouse.mouse_click));
                 }
+
+                // Rotate to
+                if (_keyboard.keystate[ALLEGRO_KEY_P]) {
+                    _player.rotate_to(toolbox::window2map(_mouse.mouse_click));
+                }
             } else if (ALLEGRO_EVENT_DISPLAY_CLOSE == _event.type) {
                 context.stop();
                 quit = true;

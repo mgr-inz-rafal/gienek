@@ -41,6 +41,7 @@ class player {
     std::optional<point<int16_t>> get_next_route_point() const;
     const BasePlayerState& get_state() const;
     void go_to(point<int16_t> target);
+    void rotate_to(point<int16_t> target);
     path& get_path();
     double get_angle_to_next_target_point() const;
 };

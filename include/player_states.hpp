@@ -18,4 +18,9 @@ class MovingToPlayerState : public BasePlayerState {
     virtual std::string to_string() const override { return "Moving to "; }
 };
 
-enum class player_states { IDLE, MOVING_TO };
+class RotatingToPlayerState : public BasePlayerState {
+  public:
+    virtual std::string to_string() const override { return "Rotating to "; }
+};
+
+enum class player_states { IDLE, MOVING_TO, ROTATING_TO };
