@@ -31,6 +31,7 @@ struct toolbox {
     static bool is_triangle_ok(const std::pair<std::size_t, std::size_t>& triangle);
     static point<int16_t> window2map(point<int16_t> pt);
     static bool are_doubles_equal(double first, double second);
+    static double get_angle_between_points(const point<double>& first, const point<double>& second);
 };
 
 } // namespace gienek

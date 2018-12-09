@@ -44,6 +44,7 @@ class player {
     void rotate_to(point<int16_t> target);
     path& get_path();
     double get_angle_to_next_target_point() const;
+    double get_angle_to_rotation_point() const;
 };
 
 } // namespace gienek

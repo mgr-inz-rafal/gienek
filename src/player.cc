@@ -8,8 +8,6 @@
 #include <fstream>
 #include <thread>
 
-#include <boost/math/constants/constants.hpp>
-
 namespace gienek {
 
 player::player(gienek::doommap& map, gienek::doom_controller& doom_controller)
@@ -71,6 +69,17 @@ void player::operator()() {
         switch (_state) {
             case player_states::IDLE:
                 break;
+            case player_states::ROTATING_TO: {
+                auto angle_target = get_angle_to_rotation_point();
+                auto angle_player = _player.angle;
+                if (!toolbox::are_doubles_equal(angle_player, angle_target)) {
+                    _doom_controller.stop_turning_right();
+                    _doom_controller.start_turning_left();
+                } else {
+                    _doom_controller.stop_turning();
+                    set_state(player_states::IDLE);
+                }
+            } break;
             case player_states::MOVING_TO:
                 if (!_path.calculated) {
                     _path._route.clear();
@@ -81,13 +90,7 @@ void player::operator()() {
                     _next_target_point = ++_path.get_route_points().begin();
                 } else {
                     auto angle_target = get_angle_to_next_target_point();
-                    auto angle_player = _player.angle;
-                    if (!toolbox::are_doubles_equal(angle_player, angle_target)) {
-                        _doom_controller.stop_turning_right();
-                        _doom_controller.start_turning_left();
-                    } else {
-                        _doom_controller.stop_turning();
-                    }
+                    // Rotate to...
                 }
                 break;
         }
@@ -107,15 +110,17 @@ double player::get_angle_to_next_target_point() const {
     if (!_path.calculated) {
         return 0.0f;
     }
-    const auto& current = _player.pos;
+    const point<double> current = { static_cast<double>(_player.pos.x), static_cast<double>(_player.pos.y) };
     const auto& destination = *_next_target_point;
 
-    auto angle = (180.0f * std::atan2(destination.y - current.y, destination.x - current.x)) /
-                 boost::math::constants::pi<double>();
-    while (angle < 0) {
-        angle += 360.0f;
-    }
-    return std::fmod(angle, 360.0f);
+    return toolbox::get_angle_between_points(current, destination);
+}
+
+double player::get_angle_to_rotation_point() const {
+    const point<double> current = { static_cast<double>(_player.pos.x), static_cast<double>(_player.pos.y) };
+    const point<double> destination = { static_cast<double>(_target->x), static_cast<double>(_target->y) };
+
+    return toolbox::get_angle_between_points(current, destination);
 }
 
 } // namespace gienek

@@ -3,6 +3,8 @@
 #include "mouse.hpp"
 #include "scaler.hpp"
 
+#include <boost/math/constants/constants.hpp>
+
 namespace gienek {
 
 doommap* toolbox::_map = nullptr;
@@ -52,6 +54,14 @@ point<int16_t> toolbox::window2map(point<int16_t> pt) {
 
 bool toolbox::are_doubles_equal(double first, double second) {
     return std::abs(first - second) < angle_comparison_threshold;
+}
+
+double toolbox::get_angle_between_points(const point<double>& first, const point<double>& second) {
+    auto angle = (180.0f * std::atan2(second.y - first.y, second.x - first.x)) / boost::math::constants::pi<double>();
+    while (angle < 0) {
+        angle += 360.0f;
+    }
+    return std::fmod(angle, 360.0f);
 }
 
 } // namespace gienek
