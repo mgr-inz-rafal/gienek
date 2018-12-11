@@ -27,6 +27,8 @@ class player {
     player_states _state;
     player_task _task;
     std::unique_ptr<BasePlayerState> _state_implementation;
+    void adjust_angle();
+    bool calculate_path();
 
     // ------------------------------------------
     // TODO: This is to be refactored

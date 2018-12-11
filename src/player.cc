@@ -63,48 +63,60 @@ const BasePlayerState& player::get_state() const {
     return *_state_implementation;
 }
 
+void player::adjust_angle() {
+    auto angle_target = get_angle_to_rotation_point();
+    auto angle_player = _player.angle;
+    if (!toolbox::are_doubles_equal(angle_player, angle_target)) {
+        switch (toolbox::get_player_turning_direction(angle_player, angle_target)) {
+            case player_turning_direction::LEFT:
+                _doom_controller.stop_turning_right();
+                _doom_controller.start_turning_left();
+                break;
+            case player_turning_direction::RIGHT:
+                _doom_controller.stop_turning_left();
+                _doom_controller.start_turning_right();
+                break;
+        }
+    } else {
+        _doom_controller.stop_turning();
+        set_state(player_states::IDLE);
+    }
+}
+
+bool player::calculate_path() {
+    if (!_path.calculated) {
+        _path._route.clear();
+        bool correct = _path.calculate(_player.pos, _target.value());
+        if (!correct) {
+            set_state(player_states::IDLE);
+            return false;
+        }
+    }
+    return true;
+}
+
 void player::operator()() {
     using namespace std::chrono_literals;
     for (;;) {
         switch (_state) {
             case player_states::IDLE:
                 break;
-            case player_states::ROTATING_TO: {
-                auto angle_target = get_angle_to_rotation_point();
-                auto angle_player = _player.angle;
-                if (!toolbox::are_doubles_equal(angle_player, angle_target)) {
-                    switch (toolbox::get_player_turning_direction(angle_player, angle_target)) {
-                        case player_turning_direction::LEFT:
-                            _doom_controller.stop_turning_right();
-                            _doom_controller.start_turning_left();
-                            break;
-                        case player_turning_direction::RIGHT:
-                            _doom_controller.stop_turning_left();
-                            _doom_controller.start_turning_right();
-                            break;
-                    }
-                } else {
-                    _doom_controller.stop_turning();
-                    set_state(player_states::IDLE);
-                }
-            } break;
+            case player_states::ROTATING_TO:
+                adjust_angle();
+                break;
             case player_states::MOVING_TO:
-                if (!_path.calculated) {
-                    _path._route.clear();
-                    bool correct = _path.calculate(_player.pos, _target.value());
-                    if (!correct) {
-                        set_state(player_states::IDLE);
-                    }
+                if (calculate_path()) {
                     _next_target_point = ++_path.get_route_points().begin();
-                } else {
-                    auto angle_target = get_angle_to_next_target_point();
-                    // Rotate to...
+                    _target = { static_cast<int16_t>(_next_target_point->x),
+                                static_cast<int16_t>(_next_target_point->y) };
+                    set_state(player_states::ROTATING_TO);
                 }
                 break;
         }
-        std::this_thread::sleep_for(4ms);
     }
-} // namespace gienek
+
+    std::this_thread::sleep_for(4ms);
+}
 
 actor& player::get_actor() {
     return _player;
