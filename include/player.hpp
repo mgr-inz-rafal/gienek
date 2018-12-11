@@ -30,6 +30,7 @@ class player {
     bool adjust_angle();
     void calculate_path();
     bool set_next_target_point();
+    bool is_player_at_final_destination() const;
 
     // ------------------------------------------
     // TODO: This is to be refactored

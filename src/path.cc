@@ -142,4 +142,8 @@ std::mutex& path::get_path_calculation_mutex() {
     return path_calculation_in_progress;
 }
 
+void path::reset() {
+    calculated = false;
+}
+
 } // namespace gienek

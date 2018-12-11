@@ -52,12 +52,13 @@ std::optional<point<int16_t>> player::get_target() const {
 }
 
 std::optional<point<int16_t>> player::get_next_route_point() const {
-    if (_path.calculated) {
-        point<int16_t> pt{ static_cast<int16_t>(_next_target_point.value()->x),
-                           static_cast<int16_t>(_next_target_point.value()->y) };
-        return pt;
+    if ((!_path.calculated) || (is_player_at_final_destination())) {
+        return std::nullopt;
     }
-    return std::nullopt;
+
+    point<int16_t> pt{ static_cast<int16_t>(_next_target_point.value()->x),
+                       static_cast<int16_t>(_next_target_point.value()->y) };
+    return pt;
 }
 
 const BasePlayerState& player::get_state() const {
@@ -98,18 +99,21 @@ void player::calculate_path() {
     }
 }
 
+bool player::is_player_at_final_destination() const {
+    if (!_path.calculated) {
+        return true;
+    }
+    return _path.get_route_points().end() == _next_target_point.value();
+}
+
 bool player::set_next_target_point() {
     _next_target_point.value()++;
-    return _path.get_route_points().end() == _next_target_point.value();
+    return is_player_at_final_destination();
 }
 
 void player::operator()() {
     using namespace std::chrono_literals;
     for (;;) {
-        if (!_path.calculated) {
-            calculate_path();
-        }
-
         switch (_state) {
             case player_states::IDLE:
                 break;
@@ -119,6 +123,10 @@ void player::operator()() {
                 }
                 break;
             case player_states::MOVING_TO:
+                if (!_path.calculated) {
+                    calculate_path();
+                    _next_target_point = ++_path.get_route_points().begin();
+                }
                 bool at_final_destination{ false };
                 if (!_next_target_point.has_value()) {
                     _next_target_point = ++_path.get_route_points().begin();
@@ -127,6 +135,7 @@ void player::operator()() {
                 }
                 if (at_final_destination) {
                     set_state(player_states::IDLE);
+                    _path.reset();
                 } else {
                     _target = { static_cast<int16_t>(_next_target_point.value()->x),
                                 static_cast<int16_t>(_next_target_point.value()->y) };

@@ -33,6 +33,7 @@ class path {
 
   public:
     path();
+    void reset();
     void set_map(const doommap& map) { _map = &map; }
     bool calculated{ false };
     using route_t = std::vector<point<int16_t>>;
