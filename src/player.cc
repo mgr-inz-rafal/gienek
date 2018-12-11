@@ -53,7 +53,8 @@ std::optional<point<int16_t>> player::get_target() const {
 
 std::optional<point<int16_t>> player::get_next_route_point() const {
     if (_path.calculated) {
-        point<int16_t> pt{ static_cast<int16_t>(_next_target_point->x), static_cast<int16_t>(_next_target_point->y) };
+        point<int16_t> pt{ static_cast<int16_t>(_next_target_point.value()->x),
+                           static_cast<int16_t>(_next_target_point.value()->y) };
         return pt;
     }
     return std::nullopt;
@@ -63,7 +64,7 @@ const BasePlayerState& player::get_state() const {
     return *_state_implementation;
 }
 
-void player::adjust_angle() {
+bool player::adjust_angle() {
     auto angle_target = get_angle_to_rotation_point();
     auto angle_player = _player.angle;
     if (!toolbox::are_doubles_equal(angle_player, angle_target)) {
@@ -79,36 +80,56 @@ void player::adjust_angle() {
         }
     } else {
         _doom_controller.stop_turning();
-        set_state(player_states::IDLE);
+        return true;
     }
+    return false;
 }
 
-bool player::calculate_path() {
+void player::calculate_path() {
+    if (!_target.has_value()) {
+        return;
+    }
     if (!_path.calculated) {
         _path._route.clear();
         bool correct = _path.calculate(_player.pos, _target.value());
         if (!correct) {
             set_state(player_states::IDLE);
-            return false;
         }
     }
-    return true;
+}
+
+bool player::set_next_target_point() {
+    _next_target_point.value()++;
+    return _path.get_route_points().end() == _next_target_point.value();
 }
 
 void player::operator()() {
     using namespace std::chrono_literals;
     for (;;) {
+        if (!_path.calculated) {
+            calculate_path();
+        }
+
         switch (_state) {
             case player_states::IDLE:
                 break;
             case player_states::ROTATING_TO:
-                adjust_angle();
+                if (adjust_angle()) {
+                    set_state(player_states::MOVING_TO);
+                }
                 break;
             case player_states::MOVING_TO:
-                if (calculate_path()) {
+                bool at_final_destination{ false };
+                if (!_next_target_point.has_value()) {
                     _next_target_point = ++_path.get_route_points().begin();
-                    _target = { static_cast<int16_t>(_next_target_point->x),
-                                static_cast<int16_t>(_next_target_point->y) };
+                } else {
+                    at_final_destination = set_next_target_point();
+                }
+                if (at_final_destination) {
+                    set_state(player_states::IDLE);
+                } else {
+                    _target = { static_cast<int16_t>(_next_target_point.value()->x),
+                                static_cast<int16_t>(_next_target_point.value()->y) };
                     set_state(player_states::ROTATING_TO);
                 }
                 break;
@@ -133,7 +154,7 @@ double player::get_angle_to_next_target_point() const {
     const point<double> current = { static_cast<double>(_player.pos.x), static_cast<double>(_player.pos.y) };
     const auto& destination = *_next_target_point;
 
-    return toolbox::get_angle_between_points(current, destination);
+    return toolbox::get_angle_between_points(current, *destination);
 }
 
 double player::get_angle_to_rotation_point() const {

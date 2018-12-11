@@ -23,12 +23,13 @@ class player {
     doom_controller& _doom_controller;
     const doommap& _map;
     std::optional<point<int16_t>> _target;
-    std::vector<point<double>>::const_iterator _next_target_point;
+    std::optional<std::vector<point<double>>::const_iterator> _next_target_point;
     player_states _state;
     player_task _task;
     std::unique_ptr<BasePlayerState> _state_implementation;
-    void adjust_angle();
-    bool calculate_path();
+    bool adjust_angle();
+    void calculate_path();
+    bool set_next_target_point();
 
     // ------------------------------------------
     // TODO: This is to be refactored
