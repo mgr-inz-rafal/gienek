@@ -3,6 +3,7 @@
 #include "actor.hpp"
 #include "path.hpp"
 #include "player_states.hpp"
+#include "player_task.hpp"
 #include "point.hpp"
 
 #include <map>
@@ -24,6 +25,7 @@ class player {
     std::optional<point<int16_t>> _target;
     std::vector<point<double>>::const_iterator _next_target_point;
     player_states _state;
+    player_task _task;
     std::unique_ptr<BasePlayerState> _state_implementation;
 
     // ------------------------------------------

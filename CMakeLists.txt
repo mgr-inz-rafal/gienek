@@ -131,6 +131,8 @@ add_executable(gienek
 	src/thing.cc
 	src/doom_controller.cc
 	src/command_queue.cc
+	src/player_task.cc
+	include/player_task.hpp
 	include/types.hpp
 	include/command_queue.hpp
 	include/doom_controller.hpp
