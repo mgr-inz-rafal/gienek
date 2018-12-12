@@ -91,7 +91,6 @@ void player::calculate_path() {
         return;
     }
     if (!_path.calculated) {
-        _path._route.clear();
         bool correct = _path.calculate(_player.pos, _target.value());
         if (!correct) {
             set_state(player_states::IDLE);
