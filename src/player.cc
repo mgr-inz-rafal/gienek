@@ -115,12 +115,19 @@ bool player::is_player_at_final_destination() const {
     if (!_path.calculated) {
         return true;
     }
-    return _path.get_route_points().end() == _next_target_point.value();
+    if (_next_target_point.has_value()) {
+        return _path.get_route_points().end() == _next_target_point.value();
+    }
+    return true;
 }
 
 bool player::set_next_target_point() {
     _next_target_point.value()++;
-    return is_player_at_final_destination();
+    bool at_destination = is_player_at_final_destination();
+    if (at_destination) {
+        _next_target_point = std::nullopt;
+    }
+    return at_destination;
 }
 
 void player::operator()() {
@@ -140,11 +147,16 @@ void player::operator()() {
                     _next_target_point = ++_path.get_route_points().begin();
                     set_state(player_states::ROTATING_TO);
                 } else {
-                    if (adjust_position()) {
-                        (*_next_target_point)++;
-                        set_state(player_states::ROTATING_TO);
-                    }
                     adjust_angle();
+                    if (adjust_position()) {
+                        bool at_destination = set_next_target_point();
+                        if (at_destination) {
+                            set_state(player_states::IDLE);
+                            _path.reset();
+                        } else {
+                            set_state(player_states::ROTATING_TO);
+                        }
+                    }
                 }
                 /*
 bool at_final_destination{ false };
@@ -182,9 +194,11 @@ double player::get_angle_to_next_target_point() const {
         return 0.0f;
     }
     const point<double> current = { static_cast<double>(_player.pos.x), static_cast<double>(_player.pos.y) };
-    const auto& destination = *_next_target_point;
-
-    return toolbox::get_angle_between_points(current, *destination);
+    const auto& destination = _next_target_point;
+    if (destination.has_value()) {
+        return toolbox::get_angle_between_points(current, *destination.value());
+    }
+    return 0.0f;
 }
 
 double player::get_angle_to_rotation_point() const {
