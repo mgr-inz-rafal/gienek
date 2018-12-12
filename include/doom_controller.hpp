@@ -17,6 +17,7 @@ class doom_controller {
     // too much copy&paste.
     bool is_turning_right{ false };
     bool is_turning_left{ false };
+    bool is_going_forward{ false };
 
   public:
     doom_controller(const std::string& address, keyboard& keyboard, queue_t& queue);
@@ -26,6 +27,8 @@ class doom_controller {
     void stop_turning_right();
     void stop_turning_left();
     void stop_turning();
+    void start_going_forward();
+    void stop_going_forward();
 };
 
 } // namespace gienek

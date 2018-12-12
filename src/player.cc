@@ -65,10 +65,23 @@ const BasePlayerState& player::get_state() const {
     return *_state_implementation;
 }
 
+bool player::adjust_position() {
+    auto pos_target = **_next_target_point;
+    point<double> pos_player = { static_cast<double>(_player.pos.x), static_cast<double>(_player.pos.y) };
+    if (!toolbox::are_positions_equal(pos_target, pos_player)) {
+        _doom_controller.start_going_forward();
+    } else {
+        _doom_controller.stop_going_forward();
+        return true;
+    }
+    return false;
+}
+
 bool player::adjust_angle() {
-    auto angle_target = get_angle_to_rotation_point();
+    //    auto angle_target = get_angle_to_rotation_point();
+    auto angle_target = get_angle_to_next_target_point();
     auto angle_player = _player.angle;
-    if (!toolbox::are_doubles_equal(angle_player, angle_target)) {
+    if (!toolbox::are_angles_equal(angle_player, angle_target)) {
         switch (toolbox::get_player_turning_direction(angle_player, angle_target)) {
             case player_turning_direction::LEFT:
                 _doom_controller.stop_turning_right();
@@ -125,21 +138,30 @@ void player::operator()() {
                 if (!_path.calculated) {
                     calculate_path();
                     _next_target_point = ++_path.get_route_points().begin();
-                }
-                bool at_final_destination{ false };
-                if (!_next_target_point.has_value()) {
-                    _next_target_point = ++_path.get_route_points().begin();
-                } else {
-                    at_final_destination = set_next_target_point();
-                }
-                if (at_final_destination) {
-                    set_state(player_states::IDLE);
-                    _path.reset();
-                } else {
-                    _target = { static_cast<int16_t>(_next_target_point.value()->x),
-                                static_cast<int16_t>(_next_target_point.value()->y) };
                     set_state(player_states::ROTATING_TO);
+                } else {
+                    if (adjust_position()) {
+                        (*_next_target_point)++;
+                        set_state(player_states::ROTATING_TO);
+                    }
+                    adjust_angle();
                 }
+                /*
+bool at_final_destination{ false };
+if (!_next_target_point.has_value()) {
+    _next_target_point = ++_path.get_route_points().begin();
+} else {
+    at_final_destination = set_next_target_point();
+}
+if (at_final_destination) {
+    set_state(player_states::IDLE);
+    _path.reset();
+} else {
+    _target = { static_cast<int16_t>(_next_target_point.value()->x),
+                static_cast<int16_t>(_next_target_point.value()->y) };
+    set_state(player_states::ROTATING_TO);
+}
+                */
                 break;
         }
     }

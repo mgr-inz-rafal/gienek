@@ -28,6 +28,7 @@ class player {
     player_task _task;
     std::unique_ptr<BasePlayerState> _state_implementation;
     bool adjust_angle();
+    bool adjust_position();
     void calculate_path();
     bool set_next_target_point();
     bool is_player_at_final_destination() const;

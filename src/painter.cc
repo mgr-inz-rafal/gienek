@@ -2,6 +2,7 @@
 #include "doommap.hpp"
 #include "path.hpp"
 #include "player.hpp"
+#include "toolbox.hpp"
 
 #include <boost/format.hpp>
 #include <boost/math/constants/constants.hpp>
@@ -268,6 +269,9 @@ void painter::draw_path() {
 
 void painter::draw_mouse_pointer() {
     al_draw_filled_circle(_mouse.mouse_click.x, _mouse.mouse_click.y, 3.0f, al_map_rgb(255, 255, 255));
+    point<int16_t> scaled = toolbox::window2map({ _mouse.mouse_click.x, _mouse.mouse_click.y });
+    al_draw_text(font, al_map_rgb(255, 255, 255), _mouse.mouse_click.x + 5, _mouse.mouse_click.y + 5, 0,
+                 (boost::format("(%1%,%2%)") % scaled.x % scaled.y).str().c_str());
 }
 
 scaler& painter::get_scaler() {
@@ -287,7 +291,12 @@ void painter::draw_point(const std::optional<point<int16_t>>& pt, ALLEGRO_COLOR 
 
 void painter::draw_player_target() {
     draw_point(_player.get_target(), al_map_rgb(255, 0, 0));
-    draw_point(_player.get_next_route_point(), al_map_rgb(196, 0, 0));
+
+    auto next_step = _player.get_next_route_point();
+    if (next_step.has_value()) {
+        auto next_step_scaled = _scaler.scale({ static_cast<double>(next_step->x), static_cast<double>(next_step->y) });
+        al_draw_filled_circle(next_step_scaled.x, next_step_scaled.y, 10.0f, al_map_rgb(255, 255, 255));
+    }
 }
 
 std::string painter::point_to_string(const std::optional<point<int16_t>>& pt) const {

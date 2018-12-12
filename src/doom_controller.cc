@@ -128,4 +128,17 @@ void doom_controller::stop_turning() {
     stop_turning_right();
 }
 
+void doom_controller::start_going_forward() {
+    if (!is_going_forward) {
+        is_going_forward = true;
+        _queue.enq('F');
+    }
+}
+void doom_controller::stop_going_forward() {
+    if (is_going_forward) {
+        is_going_forward = false;
+        _queue.enq('f');
+    }
+}
+
 } // namespace gienek

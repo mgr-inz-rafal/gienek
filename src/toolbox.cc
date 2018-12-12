@@ -52,8 +52,13 @@ point<int16_t> toolbox::window2map(point<int16_t> pt) {
              static_cast<int16_t>(((cfg.HEIGHT - pt.y) - cfg.OFFSET_Y) / cfg.SCALE) };
 }
 
-bool toolbox::are_doubles_equal(double first, double second) {
+bool toolbox::are_angles_equal(double first, double second) {
     return std::abs(first - second) < angle_comparison_threshold;
+}
+
+bool toolbox::are_positions_equal(const point<double>& first, const point<double>& second) {
+    return std::sqrt(((first.x - second.x) * (first.x - second.x)) + ((first.y - second.y) * (first.y - second.y))) <
+           distance_comparison_threshold;
 }
 
 double toolbox::get_angle_between_points(const point<double>& first, const point<double>& second) {

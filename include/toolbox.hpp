@@ -18,7 +18,8 @@ enum class player_turning_direction { LEFT, RIGHT };
 struct toolbox {
     // This must be fairly large to compensate the rotation that
     // player will be able to do before receiving the stop signal.
-    const inline static double angle_comparison_threshold{ 7.3f };
+    const inline static double angle_comparison_threshold{ 3.3f };
+    const inline static double distance_comparison_threshold{ 50.0f };
 
     inline static std::map<int16_t, std::string> typename_to_id_map = {
         { 29999, "DoomPlayer" }, { 142, "CellPack" },  { 75, "Cell" },     { 134, "Berserk" },    { 28, "Chaingun" },
@@ -32,7 +33,8 @@ struct toolbox {
     static std::pair<std::size_t, std::size_t> position_to_triangle(point<int16_t> pos);
     static bool is_triangle_ok(const std::pair<std::size_t, std::size_t>& triangle);
     static point<int16_t> window2map(point<int16_t> pt);
-    static bool are_doubles_equal(double first, double second);
+    static bool are_angles_equal(double first, double second);
+    static bool are_positions_equal(const point<double>& first, const point<double>& second);
     static double get_angle_between_points(const point<double>& first, const point<double>& second);
     static player_turning_direction get_player_turning_direction(double angle_player, double angle_target);
 };
