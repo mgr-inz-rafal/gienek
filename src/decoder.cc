@@ -11,6 +11,7 @@
 #include "handler_thing_update.hpp"
 #include "handler_unknown.hpp"
 #include "handler_vertex.hpp"
+#include "handler_sector.hpp"
 
 #include <memory>
 #include <string>
@@ -40,6 +41,8 @@ std::unique_ptr<handler> decoder::get_handler(unsigned char input) {
             return std::unique_ptr<handler>(new handler_clear(this->_player));
         case CMD::MAP_RECEIVED:
             return std::unique_ptr<handler>(new handler_map_received);
+		case CMD::SECTOR:
+            return std::unique_ptr<handler>(new handler_sector);
         default:
             return std::unique_ptr<handler>(new handler_unknown);
     }

@@ -88,6 +88,7 @@ source_group("Header Files - Handlers" FILES
 	include/handler_unknown.hpp
 	include/handler_quit.hpp
 	include/handler_subsector.hpp
+	include/handler_sector.hpp
 	include/handler_clear.hpp
 	include/handler_map_received.hpp
 	include/handler_thing.hpp 
@@ -104,6 +105,7 @@ add_executable(gienek
 	src/handler_unknown.cc
 	src/handler_quit.cc
 	src/handler_subsector.cc
+	src/handler_sector.cc
 	src/socket_reader.cc
 	src/doommap.cc
 	src/handler_clear.cc
@@ -151,6 +153,7 @@ add_executable(gienek
 	include/handler.hpp
 	include/handler_vertex.hpp
 	include/handler_subsector.hpp
+	include/handler_sector.hpp
 	include/cmd_types.hpp
 	include/handler_unknown.hpp
 	include/handler_quit.hpp
