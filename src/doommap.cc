@@ -32,6 +32,11 @@ subsector& doommap::add_subsector() {
     return ssectors.back();
 }
 
+sector& doommap::add_sector(const sector& _sector) {
+    sectors.push_back(_sector);
+    return sectors.back();
+}
+
 void doommap::clear() {
     std::lock_guard guard(map_access_mutex);
     _user_interactions.reset();

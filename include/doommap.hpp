@@ -11,6 +11,7 @@
 #include <boost/format.hpp>
 
 #include "display_config.hpp"
+#include "sector.hpp"
 #include "subsector.hpp"
 #include "thing.hpp"
 #include "user_interactions.hpp"
@@ -23,6 +24,7 @@ class doommap {
     bool fully_loaded = false;
     std::vector<vertex> verts;
     std::vector<subsector> ssectors;
+    std::vector<sector> sectors;
     std::map<uint16_t, thing> things; // TODO: Should be map to allow trivial udpate_thing()
     user_interactions& _user_interactions;
     uint16_t player_thing_key{ 0 };
@@ -44,6 +46,7 @@ class doommap {
     void add_vertex(vertex v);
     const std::vector<vertex>& get_verts() const;
     subsector& add_subsector();
+    sector& add_sector(const sector& _sector);
     const std::vector<subsector>& get_ssectors() const;
     const std::vector<std::int16_t> get_adjacent_subsectors(const subsector* ss) const;
     void add_thing(thing t);

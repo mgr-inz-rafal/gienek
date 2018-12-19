@@ -76,6 +76,7 @@ source_group("Header Files" FILES
 source_group("Header Files - Doom Map" FILES 
 	include/vertex.hpp
 	include/subsector.hpp
+	include/sector.hpp
 	include/seg.hpp
 	include/seg_triangle.hpp
 	include/thing.hpp
@@ -128,6 +129,7 @@ add_executable(gienek
 	src/path.cc
 	src/treenode.cc
 	src/subsector.cc
+	src/sector.cc
 	src/seg.cc
 	src/seg_triangle.cc
 	src/thing.cc
@@ -144,6 +146,7 @@ add_executable(gienek
 	include/seg_triangle.hpp
 	include/seg.hpp
 	include/subsector.hpp
+	include/sector.hpp 
 	include/treenode.hpp
 	include/path.hpp
 	include/player_states.hpp
