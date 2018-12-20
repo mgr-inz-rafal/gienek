@@ -7,6 +7,7 @@
 #include <boost/format.hpp>
 #include <boost/math/constants/constants.hpp>
 #include <chrono>
+#include <optional>
 
 namespace gienek {
 
@@ -52,6 +53,7 @@ void painter::operator()(bool& quit, ALLEGRO_EVENT_QUEUE* event_queue) {
 
             // Console info
             draw_clicked_subsector_info();
+            draw_clicked_sector_info();
             draw_player_status_text();
             draw_pressed_keys();
 
@@ -179,19 +181,35 @@ void painter::draw_subsector_interior(const subsector& ss, ALLEGRO_COLOR color) 
     }
 }
 
-void painter::draw_clicked_subsector_info() {
+click_info_t painter::get_clicked_sector_subsector_indices() const {
     if (!_user_interactions.is_triangle_clicked()) {
-        return;
+        return std::nullopt;
     }
-    const clicked_triangle_t& clicked_triangle = _user_interactions.get_clicked_triangle();
-
     const auto& ssectors = _map.get_ssectors();
-
+    const clicked_triangle_t& clicked_triangle = _user_interactions.get_clicked_triangle();
     int16_t ssector = static_cast<int16_t>(clicked_triangle.first);
     int16_t sector = ssectors[ssector].get_parent_sector();
+    return { std::pair{ ssector, sector } };
+}
 
-    al_draw_text(font, al_map_rgb(255, 255, 255), 0, 16, 0,
-                 (boost::format("Sector/Subs.: %1%/%2%") % sector % ssector).str().c_str());
+void painter::draw_clicked_sector_info() {
+    const auto secinfo = get_clicked_sector_subsector_indices();
+    if (secinfo.has_value()) {
+        const auto& sectors = _map.get_sectors();
+        const auto& sector = sectors[secinfo->second];
+        al_draw_text(font, al_map_rgb(255, 255, 255), 0, 48, 0,
+                     (boost::format("  Ceiling: %1%") % sector.get_ceiling_height()).str().c_str());
+        al_draw_text(font, al_map_rgb(255, 255, 255), 0, 48 + 16, 0,
+                     (boost::format("    Floor: %1%") % sector.get_floor_height()).str().c_str());
+    }
+}
+
+void painter::draw_clicked_subsector_info() {
+    const auto secinfo = get_clicked_sector_subsector_indices();
+    if (secinfo.has_value()) {
+        al_draw_text(font, al_map_rgb(255, 255, 255), 0, 16, 0,
+                     (boost::format("Sector/Subs.: %1%/%2%") % secinfo->first % secinfo->second).str().c_str());
+    }
 }
 
 void painter::draw_subsector_border(const subsector& ss, float width) {

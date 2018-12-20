@@ -41,6 +41,7 @@ void doommap::clear() {
     std::lock_guard guard(map_access_mutex);
     _user_interactions.reset();
     ssectors.clear();
+    sectors.clear();
     verts.clear();
     things.clear();
     fully_loaded = false;

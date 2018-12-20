@@ -6,6 +6,7 @@
 
 #include <algorithm>
 #include <chrono>
+#include <optional>
 #include <thread>
 
 #include "display_config.hpp"
@@ -19,6 +20,8 @@
 #include "user_interactions.hpp"
 
 namespace gienek {
+
+using click_info_t = std::optional<std::pair<int16_t, int16_t>>;
 
 class painter {
   private:
@@ -35,6 +38,7 @@ class painter {
     std::string pressed_keys;
     void draw_point(const std::optional<point<int16_t>>& pt, ALLEGRO_COLOR color);
     std::string point_to_string(const std::optional<point<int16_t>>& pt) const;
+    click_info_t get_clicked_sector_subsector_indices() const;
 
     // Extract to "path_painter" class or smth
     std::chrono::time_point<std::chrono::system_clock> _last_path_color_switch;
@@ -51,6 +55,7 @@ class painter {
     void draw_mouse_pointer();
     void draw_pressed_keys();
     void draw_clicked_subsector_info();
+    void draw_clicked_sector_info();
     void draw_player_target();
     void draw_path();
     void draw_player_status_text() const;
