@@ -4,6 +4,7 @@
 #include "seg.hpp"
 #include "seg_triangle.hpp"
 
+#include <cstdint>
 #include <vector>
 
 namespace gienek {
@@ -11,9 +12,10 @@ namespace gienek {
 class subsector {
     const std::vector<vertex>& _verts;
     point<int16_t> _barycenter;
+    int16_t _sector;
 
   public:
-    subsector(const std::vector<vertex>& verts);
+    subsector(const std::vector<vertex>& verts, int16_t sector);
 
     std::vector<seg> segs;
 

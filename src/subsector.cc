@@ -10,8 +10,9 @@
 
 namespace gienek {
 
-subsector::subsector(const std::vector<vertex>& verts)
-    : _verts(verts) {}
+subsector::subsector(const std::vector<vertex>& verts, int16_t sector)
+    : _verts(verts)
+    , _sector(sector) {}
 
 const point<int16_t>& subsector::get_barycenter() const {
     return _barycenter;
