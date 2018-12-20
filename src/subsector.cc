@@ -18,6 +18,10 @@ const point<int16_t>& subsector::get_barycenter() const {
     return _barycenter;
 }
 
+int16_t subsector::get_parent_sector() const {
+    return _sector;
+}
+
 void subsector::calculate_barycenter() {
     static auto point_hasher = [](point<int16_t> const& b) {
         boost::hash<std::pair<int16_t, int16_t>> hasher;

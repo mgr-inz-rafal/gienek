@@ -184,8 +184,14 @@ void painter::draw_clicked_subsector_info() {
         return;
     }
     const clicked_triangle_t& clicked_triangle = _user_interactions.get_clicked_triangle();
+
+    const auto& ssectors = _map.get_ssectors();
+
+    int16_t ssector = static_cast<int16_t>(clicked_triangle.first);
+    int16_t sector = ssectors[ssector].get_parent_sector();
+
     al_draw_text(font, al_map_rgb(255, 255, 255), 0, 16, 0,
-                 ("Selected subsector: " + std::to_string(clicked_triangle.first)).c_str());
+                 (boost::format("Sector/Subs.: %1%/%2%") % sector % ssector).str().c_str());
 }
 
 void painter::draw_subsector_border(const subsector& ss, float width) {

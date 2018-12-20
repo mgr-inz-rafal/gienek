@@ -78,6 +78,10 @@ const std::vector<subsector>& doommap::get_ssectors() const {
     return ssectors;
 }
 
+const std::vector<sector>& doommap::get_sectors() const {
+    return sectors;
+}
+
 std::mutex& doommap::get_map_access_mutex() const {
     return map_access_mutex;
 }
