@@ -106,6 +106,18 @@ const std::map<uint16_t, thing>& doommap::get_things() const {
     return things;
 }
 
+bool doommap::can_step_into_subsector(const subsector* src, const subsector* dst) const {
+    // Check floor heights
+    auto src_floor = sectors[src->get_parent_sector()].get_floor_height();
+    auto dst_floor = sectors[dst->get_parent_sector()].get_floor_height();
+    if (dst_floor - src_floor > 24) {
+        // Step too high
+        return false;
+    }
+
+    return true;
+}
+
 const std::vector<std::int16_t> doommap::get_adjacent_subsectors(const subsector* ss) const {
     std::vector<std::int16_t> result;
     std::size_t index = 0;
@@ -116,7 +128,9 @@ const std::vector<std::int16_t> doommap::get_adjacent_subsectors(const subsector
         for (const auto& seg1 : ssectors[index].segs) {
             for (const auto& seg2 : ss->segs) {
                 if (seg1 == seg2) {
-                    result.push_back(static_cast<int16_t>(index));
+                    if (can_step_into_subsector(ss, &ssectors[index])) {
+                        result.push_back(static_cast<int16_t>(index));
+                    }
                 }
             }
         }
