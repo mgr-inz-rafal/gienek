@@ -158,22 +158,6 @@ void player::operator()() {
                         }
                     }
                 }
-                /*
-bool at_final_destination{ false };
-if (!_next_target_point.has_value()) {
-    _next_target_point = ++_path.get_route_points().begin();
-} else {
-    at_final_destination = set_next_target_point();
-}
-if (at_final_destination) {
-    set_state(player_states::IDLE);
-    _path.reset();
-} else {
-    _target = { static_cast<int16_t>(_next_target_point.value()->x),
-                static_cast<int16_t>(_next_target_point.value()->y) };
-    set_state(player_states::ROTATING_TO);
-}
-                */
                 break;
         }
     }
