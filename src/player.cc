@@ -152,6 +152,7 @@ void player::operator()() {
                         bool at_destination = set_next_target_point();
                         if (at_destination) {
                             set_state(player_states::IDLE);
+                            _doom_controller.stop_turning();
                             _path.reset();
                         } else {
                             set_state(player_states::ROTATING_TO);
