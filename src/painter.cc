@@ -201,6 +201,8 @@ void painter::draw_clicked_sector_info() {
                      (boost::format("  Ceiling: %1%") % sector.get_ceiling_height()).str().c_str());
         al_draw_text(font, al_map_rgb(255, 255, 255), 0, 48 + 16, 0,
                      (boost::format("    Floor: %1%") % sector.get_floor_height()).str().c_str());
+        al_draw_text(font, al_map_rgb(255, 255, 255), 0, 48 + 32, 0,
+                     (boost::format("      Tag: %1%") % sector.get_tag()).str().c_str());
     }
 }
 

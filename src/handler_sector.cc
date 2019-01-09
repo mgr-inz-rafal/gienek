@@ -5,14 +5,16 @@ namespace gienek {
 
 handler_result handler_sector::handle() const {
     std::string buffer;
-    _reader->read(buffer, 4);
+    _reader->read(buffer, 6);
 
     int16_t floor;
     int16_t ceiling;
+    int16_t tag;
     memcpy(&floor, &buffer[0], 2);
     memcpy(&ceiling, &buffer[2], 2);
+    memcpy(&tag, &buffer[4], 2);
 
-    _map->add_sector({ floor, ceiling });
+    _map->add_sector({ floor, ceiling, tag });
 
     return handler_result{};
 };
