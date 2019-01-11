@@ -4,3 +4,4 @@ build
 *.backup?
 *.bak
 settings.json
+tasks.json
