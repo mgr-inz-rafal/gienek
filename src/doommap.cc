@@ -115,6 +115,13 @@ bool doommap::can_step_into_subsector(const subsector* src, const subsector* dst
         return false;
     }
 
+    // Check minimum height of the sector
+    auto dst_ceiling = sectors[dst->get_parent_sector()].get_ceiling_height();
+    if (dst_ceiling - dst_floor < 56) {
+        // Ceiling too low
+        return false;
+    }
+
     return true;
 }
 
