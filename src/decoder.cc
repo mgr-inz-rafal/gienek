@@ -2,16 +2,17 @@
 #include "cmd_types.hpp"
 #include "handler.hpp"
 #include "handler_clear.hpp"
+#include "handler_line.hpp"
 #include "handler_map_received.hpp"
 #include "handler_player_angle.hpp"
 #include "handler_quit.hpp"
+#include "handler_sector.hpp"
 #include "handler_subsector.hpp"
 #include "handler_thing.hpp"
 #include "handler_thing_remove.hpp"
 #include "handler_thing_update.hpp"
 #include "handler_unknown.hpp"
 #include "handler_vertex.hpp"
-#include "handler_sector.hpp"
 
 #include <memory>
 #include <string>
@@ -41,8 +42,10 @@ std::unique_ptr<handler> decoder::get_handler(unsigned char input) {
             return std::unique_ptr<handler>(new handler_clear(this->_player));
         case CMD::MAP_RECEIVED:
             return std::unique_ptr<handler>(new handler_map_received);
-		case CMD::SECTOR:
+        case CMD::SECTOR:
             return std::unique_ptr<handler>(new handler_sector);
+        case CMD::LINE:
+            return std::unique_ptr<handler>(new handler_line);
         default:
             return std::unique_ptr<handler>(new handler_unknown);
     }

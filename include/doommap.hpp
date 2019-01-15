@@ -11,6 +11,7 @@
 #include <boost/format.hpp>
 
 #include "display_config.hpp"
+#include "line.hpp"
 #include "sector.hpp"
 #include "subsector.hpp"
 #include "thing.hpp"
@@ -23,6 +24,7 @@ class doommap {
     display_config& _display_config;
     bool fully_loaded = false;
     std::vector<vertex> verts;
+    std::vector<line> lines;
     std::vector<subsector> ssectors;
     std::vector<sector> sectors;
     std::map<uint16_t, thing> things; // TODO: Should be map to allow trivial udpate_thing()
@@ -45,6 +47,7 @@ class doommap {
     std::mutex& get_map_access_mutex() const;
 
     void add_vertex(vertex v);
+    void add_line(line l);
     const std::vector<vertex>& get_verts() const;
     subsector& add_subsector(int16_t sector);
     sector& add_sector(const sector& _sector);

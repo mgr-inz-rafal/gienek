@@ -74,6 +74,7 @@ source_group("Header Files" FILES
 	)
 	
 source_group("Header Files - Doom Map" FILES 
+	include/line.hpp
 	include/vertex.hpp
 	include/subsector.hpp
 	include/sector.hpp
@@ -96,6 +97,7 @@ source_group("Header Files - Handlers" FILES
 	include/handler_thing_update.hpp
 	include/handler_thing_remove.hpp
 	include/handler_player_angle.hpp
+	include/handler_line.hpp
 	)
 	
 add_executable(gienek
@@ -119,6 +121,7 @@ add_executable(gienek
 	src/toolbox.cc
 	src/user_interactions.cc
 	src/handler_thing.cc
+	src/handler_line.cc
 	src/handler_thing_update.cc
 	src/handler_thing_remove.cc 
 	src/handler_player_angle.cc
@@ -136,13 +139,14 @@ add_executable(gienek
 	src/doom_controller.cc
 	src/command_queue.cc
 	src/player_task.cc
+	include/handler_line.hpp
 	include/player_task.hpp
 	include/types.hpp
 	include/command_queue.hpp
 	include/doom_controller.hpp
 	include/thing.hpp
 	include/vertex.hpp
-	include/vertex.hpp
+	include/line.hpp
 	include/seg_triangle.hpp
 	include/seg.hpp
 	include/subsector.hpp

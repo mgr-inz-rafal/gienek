@@ -11,7 +11,8 @@ enum CMD {
     THING_REMOVE = 'e',
     MAP_RECEIVED = 'f',
     PLAYER_ANGLE = 'g',
-	SECTOR = 'h',
+    SECTOR = 'h',
+    LINE = 'i',
 
     QUIT = 'q',
     CLEAR = 'x',

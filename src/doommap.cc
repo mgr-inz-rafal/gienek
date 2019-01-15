@@ -7,6 +7,10 @@ doommap::doommap(display_config& display_config, user_interactions& user_interac
     , _user_interactions(user_interactions)
     , fully_loaded(false){};
 
+void doommap::add_line(line l) {
+    lines.emplace_back(l);
+}
+
 void doommap::add_vertex(vertex v) {
     verts.push_back(v);
     if (v.x < min_vertex_coords.first) {
@@ -44,6 +48,7 @@ void doommap::clear() {
     sectors.clear();
     verts.clear();
     things.clear();
+    lines.clear();
     fully_loaded = false;
     _display_config.SCALE = -1.0f; // Force scale recalculation
     min_vertex_coords = { INT16_MAX, INT16_MAX };

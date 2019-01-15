@@ -4,8 +4,9 @@
 
 namespace gienek {
 
-class handler_vertex : public handler {
+class handler_line : public handler {
   protected:
+    std::size_t BUFFER_SIZE = 14;
     virtual handler_result handle() const override;
 };
 
