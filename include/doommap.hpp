@@ -49,6 +49,7 @@ class doommap {
     void add_vertex(vertex v);
     void add_line(line l);
     const std::vector<vertex>& get_verts() const;
+    const std::vector<line>& get_lines() const;
     subsector& add_subsector(int16_t sector);
     sector& add_sector(const sector& _sector);
     const std::vector<subsector>& get_ssectors() const;

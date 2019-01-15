@@ -80,6 +80,10 @@ const std::vector<vertex>& doommap::get_verts() const {
     return verts;
 }
 
+const std::vector<line>& doommap::get_lines() const {
+    return lines;
+}
+
 const std::vector<subsector>& doommap::get_ssectors() const {
     return ssectors;
 }

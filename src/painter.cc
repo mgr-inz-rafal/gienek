@@ -46,6 +46,7 @@ void painter::operator()(bool& quit, ALLEGRO_EVENT_QUEUE* event_queue) {
             draw_clicked_subsector();
             draw_clicked_triangle();
             draw_clicked_subsector(true);
+            draw_special_lines();
             draw_path();
             draw_things();
             draw_mouse_pointer();
@@ -144,6 +145,19 @@ void painter::draw_clicked_triangle() {
     point pt3 = _scaler.scale({ static_cast<double>(coord3.x), static_cast<double>(coord3.y) });
 
     al_draw_filled_triangle(pt1.x, pt1.y, pt2.x, pt2.y, pt3.x, pt3.y, al_map_rgb(96, 0, 0));
+}
+
+void painter::draw_special_lines() {
+    const auto& lines = _map.get_lines();
+    for (const auto& l : lines) {
+        if (l.type == 0) {
+            continue;
+        }
+
+        point pt1 = _scaler.scale({ static_cast<double>(l.x1), static_cast<double>(l.y1) });
+        point pt2 = _scaler.scale({ static_cast<double>(l.x2), static_cast<double>(l.y2) });
+        al_draw_line(pt1.x, pt1.y, pt2.x, pt2.y, al_map_rgb(0, 255, 255), 7.0f);
+    }
 }
 
 void painter::draw_clicked_subsector(bool no_interior) {
