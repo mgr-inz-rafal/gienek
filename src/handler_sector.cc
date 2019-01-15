@@ -5,7 +5,7 @@ namespace gienek {
 
 handler_result handler_sector::handle() const {
     std::string buffer;
-    _reader->read(buffer, 6);
+    _reader->read(buffer, get_buffer_size());
 
     int16_t floor;
     int16_t ceiling;
@@ -18,4 +18,9 @@ handler_result handler_sector::handle() const {
 
     return handler_result{};
 };
+
+size_t handler_sector::get_buffer_size() const {
+    return 6;
+}
+
 } // namespace gienek

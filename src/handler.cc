@@ -2,6 +2,10 @@
 
 namespace gienek {
 
+size_t handler::get_buffer_size() const {
+    return 0;
+}
+
 void handler::set_socket_reader(socket_reader& reader) {
     _reader = &reader;
 }

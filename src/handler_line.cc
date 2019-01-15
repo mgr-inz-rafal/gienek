@@ -6,7 +6,7 @@
 namespace gienek {
 handler_result handler_line::handle() const {
     std::string buffer;
-    _reader->read(buffer, BUFFER_SIZE);
+    _reader->read(buffer, get_buffer_size());
 
     int16_t x1, y1, x2, y2, tag, type, activation;
     memcpy(&x1, &buffer[0], 2);
@@ -21,4 +21,9 @@ handler_result handler_line::handle() const {
 
     return handler_result{};
 };
+
+size_t handler_line::get_buffer_size() const {
+    return 14;
+}
+
 } // namespace gienek

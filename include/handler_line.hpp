@@ -6,8 +6,8 @@ namespace gienek {
 
 class handler_line : public handler {
   protected:
-    std::size_t BUFFER_SIZE = 14;
     virtual handler_result handle() const override;
+    virtual size_t get_buffer_size() const override;
 };
 
 } // namespace gienek

@@ -7,11 +7,11 @@ namespace gienek {
 handler_result handler_subsector::handle() const {
     std::string buffer;
 
-    _reader->read(buffer, 2);
+    _reader->read(buffer, get_buffer_size());
     int16_t count;
     memcpy(&count, &buffer[0], 2);
 
-    _reader->read(buffer, 2);
+    _reader->read(buffer, get_buffer_size());
     int16_t sector;
     memcpy(&sector, &buffer[0], 2);
 
@@ -29,4 +29,9 @@ handler_result handler_subsector::handle() const {
 
     return handler_result{};
 };
+
+size_t handler_subsector::get_buffer_size() const {
+    return 2;
+}
+
 } // namespace gienek

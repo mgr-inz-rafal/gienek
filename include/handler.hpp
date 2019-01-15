@@ -19,6 +19,7 @@ class handler {
 
   public:
     virtual handler_result handle() const = 0;
+    virtual size_t get_buffer_size() const;
     virtual void set_socket_reader(socket_reader& reader);
     virtual void set_doommap(doommap& doommap);
     virtual void set_player(player& player);

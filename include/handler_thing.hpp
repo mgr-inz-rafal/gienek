@@ -7,6 +7,7 @@ namespace gienek {
 class handler_thing : public handler {
   protected:
     virtual handler_result handle() const override;
+    virtual size_t get_buffer_size() const override;
 };
 
 } // namespace gienek

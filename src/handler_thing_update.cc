@@ -6,7 +6,7 @@ namespace gienek {
 
 handler_result handler_thing_update::handle() const {
     std::string buffer;
-    _reader->read(buffer, 14);
+    _reader->read(buffer, get_buffer_size());
 
     thing t;
 
@@ -29,5 +29,9 @@ handler_result handler_thing_update::handle() const {
 
     return handler_result{};
 };
+
+size_t handler_thing_update::get_buffer_size() const {
+    return 14;
+}
 
 } // namespace gienek
