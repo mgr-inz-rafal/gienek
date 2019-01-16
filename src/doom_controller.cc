@@ -6,12 +6,18 @@
 
 #include <chrono>
 #include <iostream>
+#include <map>
 #include <string>
 #include <thread>
 
 using boost::asio::ip::tcp;
 
 namespace gienek {
+
+std::map<int, std::pair<char, char>> keyboard_reactions = {
+    { ALLEGRO_KEY_L, { 'l', 'L' } }, { ALLEGRO_KEY_R, { 'r', 'R' } }, { ALLEGRO_KEY_F, { 'f', 'F' } },
+    { ALLEGRO_KEY_B, { 'b', 'B' } }, { ALLEGRO_KEY_A, { 'a', 'A' } },
+};
 
 doom_controller::doom_controller(const std::string& address, keyboard& keyboard, queue_t& queue)
     : _address(address)
@@ -48,40 +54,13 @@ void doom_controller::operator()(bool& quit) {
     while (!quit) {
         // "_queue" is used only here, making it superabundant. But I expect
         // that soon more threads will likely be controlling Doom, so let's keep it and see.
-
-        if (_keyboard.keystate[ALLEGRO_KEY_L]) {
-            if (_keyboard.keystate[ALLEGRO_KEY_LSHIFT] || _keyboard.keystate[ALLEGRO_KEY_RSHIFT]) {
-                _queue.enq('l');
-            } else {
-                _queue.enq('L');
-            }
-        }
-        if (_keyboard.keystate[ALLEGRO_KEY_R]) {
-            if (_keyboard.keystate[ALLEGRO_KEY_LSHIFT] || _keyboard.keystate[ALLEGRO_KEY_RSHIFT]) {
-                _queue.enq('r');
-            } else {
-                _queue.enq('R');
-            }
-        }
-        if (_keyboard.keystate[ALLEGRO_KEY_F]) {
-            if (_keyboard.keystate[ALLEGRO_KEY_LSHIFT] || _keyboard.keystate[ALLEGRO_KEY_RSHIFT]) {
-                _queue.enq('f');
-            } else {
-                _queue.enq('F');
-            }
-        }
-        if (_keyboard.keystate[ALLEGRO_KEY_B]) {
-            if (_keyboard.keystate[ALLEGRO_KEY_LSHIFT] || _keyboard.keystate[ALLEGRO_KEY_RSHIFT]) {
-                _queue.enq('b');
-            } else {
-                _queue.enq('B');
-            }
-        }
-        if (_keyboard.keystate[ALLEGRO_KEY_A]) {
-            if (_keyboard.keystate[ALLEGRO_KEY_LSHIFT] || _keyboard.keystate[ALLEGRO_KEY_RSHIFT]) {
-                _queue.enq('a');
-            } else {
-                _queue.enq('A');
+        for (const auto& reaction : keyboard_reactions) {
+            if (_keyboard.keystate[reaction.first]) {
+                if (_keyboard.keystate[ALLEGRO_KEY_LSHIFT] || _keyboard.keystate[ALLEGRO_KEY_RSHIFT]) {
+                    _queue.enq(reaction.second.first);
+                } else {
+                    _queue.enq(reaction.second.second);
+                }
             }
         }
 
