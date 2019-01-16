@@ -16,7 +16,7 @@ namespace gienek {
 
 std::map<int, std::pair<char, char>> keyboard_reactions = {
     { ALLEGRO_KEY_L, { 'l', 'L' } }, { ALLEGRO_KEY_R, { 'r', 'R' } }, { ALLEGRO_KEY_F, { 'f', 'F' } },
-    { ALLEGRO_KEY_B, { 'b', 'B' } }, { ALLEGRO_KEY_A, { 'a', 'A' } },
+    { ALLEGRO_KEY_B, { 'b', 'B' } }, { ALLEGRO_KEY_A, { 'a', 'A' } }, { ALLEGRO_KEY_U, { 'u', 'U' } }
 };
 
 doom_controller::doom_controller(const std::string& address, keyboard& keyboard, queue_t& queue)
