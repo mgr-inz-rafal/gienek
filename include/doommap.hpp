@@ -30,7 +30,8 @@ class doommap {
     std::map<uint16_t, thing> things; // TODO: Should be map to allow trivial udpate_thing()
     user_interactions& _user_interactions;
     uint16_t player_thing_key{ 0 };
-    bool can_step_into_subsector(const subsector* src, const subsector* dst) const;
+    bool can_step_into_subsector(const subsector* src, const subsector* dst, const line* l) const;
+    const line* get_line_from_seg(const seg& s) const;
 
     mutable std::mutex map_access_mutex;
 

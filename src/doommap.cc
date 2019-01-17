@@ -115,7 +115,7 @@ const std::map<uint16_t, thing>& doommap::get_things() const {
     return things;
 }
 
-bool doommap::can_step_into_subsector(const subsector* src, const subsector* dst) const {
+bool doommap::can_step_into_subsector(const subsector* src, const subsector* dst, const line* l) const {
     // Check floor heights
     auto src_floor = sectors[src->get_parent_sector()].get_floor_height();
     auto dst_floor = sectors[dst->get_parent_sector()].get_floor_height();
@@ -127,11 +127,28 @@ bool doommap::can_step_into_subsector(const subsector* src, const subsector* dst
     // Check minimum height of the sector
     auto dst_ceiling = sectors[dst->get_parent_sector()].get_ceiling_height();
     if (dst_ceiling - dst_floor < 56) {
-        // Ceiling too low
+        // Ceiling too low, check if this is a door
+        if (l && l->type == 12) {
+            return true;
+        }
         return false;
     }
 
     return true;
+}
+
+const line* doommap::get_line_from_seg(const seg& s) const {
+    for (const auto& l : lines) {
+        vertex vs = verts[s.sti];
+        vertex ve = verts[s.eti];
+
+        if (((vs.x == l.x1) && (vs.y == l.y1) && (ve.x == l.x2) && (ve.y == l.y2)) ||
+            ((ve.x == l.x1) && (ve.y == l.y1) && (vs.x == l.x2) && (vs.y == l.y2))) {
+            return &l;
+        }
+    }
+
+    return nullptr;
 }
 
 const std::vector<std::int16_t> doommap::get_adjacent_subsectors(const subsector* ss) const {
@@ -144,7 +161,8 @@ const std::vector<std::int16_t> doommap::get_adjacent_subsectors(const subsector
         for (const auto& seg1 : ssectors[index].segs) {
             for (const auto& seg2 : ss->segs) {
                 if (seg1 == seg2) {
-                    if (can_step_into_subsector(ss, &ssectors[index])) {
+                    auto line = get_line_from_seg(seg1);
+                    if (can_step_into_subsector(ss, &ssectors[index], line)) {
                         result.push_back(static_cast<int16_t>(index));
                     }
                 }
