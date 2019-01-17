@@ -301,8 +301,8 @@ void painter::draw_path() {
         }
         auto second = *pt;
 
-        point<double> pt1 = _scaler.scale(first);
-        point<double> pt2 = _scaler.scale(second);
+        point<double> pt1 = _scaler.scale(first._pt);
+        point<double> pt2 = _scaler.scale(second._pt);
         al_draw_line(pt1.x, pt1.y, pt2.x, pt2.y, al_map_rgb(255, 255, 255), 1.0f);
     }
 }

@@ -126,14 +126,14 @@ void path::calculate_route_points() {
             point<double> pt_mid = _map->get_middle_point_of_seg(*seg);
             point<double> pt2d = { static_cast<double>(pt2.x), static_cast<double>(pt2.y) };
 
-            route_points.emplace_back(pt1d);
-            route_points.emplace_back(pt_mid);
-            route_points.emplace_back(pt2d);
+            route_points.push_back({ 0, pt1d });
+            route_points.push_back({ 0, pt_mid });
+            route_points.push_back({ 0, pt2d });
         }
     }
 }
 
-const std::vector<point<double>>& path::get_route_points() const {
+const std::vector<route_component>& path::get_route_points() const {
     return route_points;
 }
 

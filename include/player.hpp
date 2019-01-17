@@ -23,7 +23,7 @@ class player {
     doom_controller& _doom_controller;
     const doommap& _map;
     std::optional<point<int16_t>> _target;
-    std::optional<std::vector<point<double>>::const_iterator> _next_target_point;
+    std::optional<std::vector<route_component>::const_iterator> _next_target_point;
     player_states _state;
     player_task _task;
     std::unique_ptr<BasePlayerState> _state_implementation;

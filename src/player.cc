@@ -56,8 +56,8 @@ std::optional<point<int16_t>> player::get_next_route_point() const {
         return std::nullopt;
     }
 
-    point<int16_t> pt{ static_cast<int16_t>(_next_target_point.value()->x),
-                       static_cast<int16_t>(_next_target_point.value()->y) };
+    point<int16_t> pt{ static_cast<int16_t>(_next_target_point.value()->_pt.x),
+                       static_cast<int16_t>(_next_target_point.value()->_pt.y) };
     return pt;
 }
 
@@ -68,7 +68,7 @@ const BasePlayerState& player::get_state() const {
 bool player::adjust_position() {
     auto pos_target = **_next_target_point;
     point<double> pos_player = { static_cast<double>(_player.pos.x), static_cast<double>(_player.pos.y) };
-    if (!toolbox::are_positions_equal(pos_target, pos_player)) {
+    if (!toolbox::are_positions_equal(pos_target._pt, pos_player)) {
         _doom_controller.start_going_forward();
     } else {
         _doom_controller.stop_going_forward();
@@ -181,7 +181,7 @@ double player::get_angle_to_next_target_point() const {
     const point<double> current = { static_cast<double>(_player.pos.x), static_cast<double>(_player.pos.y) };
     const auto& destination = _next_target_point;
     if (destination.has_value()) {
-        return toolbox::get_angle_between_points(current, *destination.value());
+        return toolbox::get_angle_between_points(current, destination.value()->_pt);
     }
     return 0.0f;
 }

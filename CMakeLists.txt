@@ -71,6 +71,7 @@ source_group("Header Files" FILES
 	include/doom_controller.hpp
 	include/command_queue.hpp
 	include/types.hpp
+	include/route_component.hpp 
 	)
 	
 source_group("Header Files - Doom Map" FILES 
@@ -157,6 +158,7 @@ add_executable(gienek
 	include/player.hpp
 	include/keyboard.hpp
 	include/decoder.hpp
+	include/route_component.hpp 
 	include/handler.hpp
 	include/handler_vertex.hpp
 	include/handler_subsector.hpp

@@ -2,6 +2,7 @@
 
 #include "path.hpp"
 #include "point.hpp"
+#include "route_component.hpp"
 #include "treenode.hpp"
 
 #include <cstdint>
@@ -26,7 +27,7 @@ class path {
     bool generate_children(treenode& node, int16_t target_ssector, treenode*& target_node);
     std::vector<point<double>> points;
     std::list<int16_t> route_subsectors;
-    std::vector<point<double>> route_points;
+    std::vector<route_component> route_points;
     void calculate_route_subsectors();
     void calculate_route_points();
     std::mutex path_calculation_in_progress;
@@ -40,7 +41,7 @@ class path {
     route_t _route;
     bool calculate(point<int16_t> start, point<int16_t> end);
     const std::list<int16_t>& get_route_subsectors() const; // TODO: Keep precalculated
-    const std::vector<point<double>>& get_route_points() const;
+    const std::vector<route_component>& get_route_points() const;
     std::mutex& get_path_calculation_mutex();
 };
 } // namespace gienek
