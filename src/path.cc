@@ -45,7 +45,7 @@ bool path::calculate(point<int16_t> start, point<int16_t> end) {
         return false;
     }
 
-    // Don't search for path withing one subsector
+    // Don't search for path within one subsector
     if (str.first == etr.first) {
         return false;
     }
