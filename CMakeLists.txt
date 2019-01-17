@@ -140,6 +140,7 @@ add_executable(gienek
 	src/doom_controller.cc
 	src/command_queue.cc
 	src/player_task.cc
+	src/route_component.cc 
 	include/handler_line.hpp
 	include/player_task.hpp
 	include/types.hpp
