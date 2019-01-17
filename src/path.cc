@@ -128,6 +128,9 @@ void path::calculate_route_points() {
 
             route_points.push_back({ 0, pt1d });
             route_points.push_back({ 0, pt_mid });
+            if (line && line->type == 12) { // Door
+                route_points.push_back({ 1 });
+            }
             route_points.push_back({ 0, pt2d });
         }
     }

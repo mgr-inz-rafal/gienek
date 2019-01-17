@@ -120,4 +120,12 @@ void doom_controller::stop_going_forward() {
     }
 }
 
+void doom_controller::start_use() {
+    _queue.enq('U');
+}
+
+void doom_controller::stop_use() {
+    _queue.enq('u');
+}
+
 } // namespace gienek

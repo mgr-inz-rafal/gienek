@@ -29,6 +29,8 @@ class doom_controller {
     void stop_turning();
     void start_going_forward();
     void stop_going_forward();
+    void start_use();
+    void stop_use();
 };
 
 } // namespace gienek

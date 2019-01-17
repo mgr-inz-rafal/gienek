@@ -30,7 +30,7 @@ class player {
     bool adjust_angle();
     bool adjust_position();
     void calculate_path();
-    bool set_next_target_point();
+    bool set_next_target_point(bool& perform_use);
     bool is_player_at_final_destination() const;
 
     // ------------------------------------------

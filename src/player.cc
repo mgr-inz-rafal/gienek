@@ -121,8 +121,17 @@ bool player::is_player_at_final_destination() const {
     return true;
 }
 
-bool player::set_next_target_point() {
-    _next_target_point.value()++;
+bool player::set_next_target_point(bool& perform_use) {
+    perform_use = 0;
+    do {
+        _next_target_point.value()++;
+        if (_path.get_route_points().end() == _next_target_point.value()) {
+            break;
+        }
+        if (_next_target_point.value()->_type == 1) {
+            perform_use = true;
+        }
+    } while (_next_target_point.value()->_type != 0);
     bool at_destination = is_player_at_final_destination();
     if (at_destination) {
         _next_target_point = std::nullopt;
@@ -149,7 +158,14 @@ void player::operator()() {
                 } else {
                     adjust_angle();
                     if (adjust_position()) {
-                        bool at_destination = set_next_target_point();
+                        bool perform_use;
+                        bool at_destination = set_next_target_point(perform_use);
+                        if (perform_use) {
+                            std::this_thread::sleep_for(50ms);
+                            _doom_controller.start_use();
+                            std::this_thread::sleep_for(20ms);
+                            _doom_controller.stop_use();
+                        }
                         if (at_destination) {
                             set_state(player_states::IDLE);
                             _doom_controller.stop_turning();
