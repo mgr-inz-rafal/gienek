@@ -120,6 +120,8 @@ void path::calculate_route_points() {
 
         auto seg = _map->get_seg_between_subsectors(first, second);
         if (seg) {
+            const auto line = _map->get_line_from_seg(*seg);
+
             point<double> pt1d = { static_cast<double>(pt1.x), static_cast<double>(pt1.y) };
             point<double> pt_mid = _map->get_middle_point_of_seg(*seg);
             point<double> pt2d = { static_cast<double>(pt2.x), static_cast<double>(pt2.y) };

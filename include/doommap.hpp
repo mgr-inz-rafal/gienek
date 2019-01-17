@@ -31,7 +31,6 @@ class doommap {
     user_interactions& _user_interactions;
     uint16_t player_thing_key{ 0 };
     bool can_step_into_subsector(const subsector* src, const subsector* dst, const line* l) const;
-    const line* get_line_from_seg(const seg& s) const;
 
     mutable std::mutex map_access_mutex;
 
@@ -41,6 +40,7 @@ class doommap {
 
   public:
     doommap(display_config& display_config, user_interactions& user_interactions);
+    const line* get_line_from_seg(const seg& s) const;
     void clear();
     bool is_fully_loaded() const;
     void set_fully_loaded();
