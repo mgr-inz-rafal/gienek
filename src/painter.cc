@@ -157,6 +157,9 @@ void painter::draw_special_lines() {
         point pt1 = _scaler.scale({ static_cast<double>(l.x1), static_cast<double>(l.y1) });
         point pt2 = _scaler.scale({ static_cast<double>(l.x2), static_cast<double>(l.y2) });
         al_draw_line(pt1.x, pt1.y, pt2.x, pt2.y, al_map_rgb(0, 255, 255), 7.0f);
+
+        point<double> mid{ (pt1.x + pt2.x) / 2.0f, (pt1.y + pt2.y) / 2.0f };
+        al_draw_text(font, al_map_rgb(255, 0, 0), mid.x, mid.y, 0, std::to_string(l.type).c_str());
     }
 }
 
