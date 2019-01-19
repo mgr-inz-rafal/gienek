@@ -2,6 +2,7 @@
 
 #include "point.hpp"
 
+#include <array>
 #include <cstdint>
 #include <map>
 #include <utility>
@@ -12,10 +13,13 @@ class mouse;
 class scaler;
 class doommap;
 class scaler;
+class line;
 
 enum class player_turning_direction { LEFT, RIGHT };
 
 struct toolbox {
+    static std::array<int, 7> doom_door_types;
+
     // This must be fairly large to compensate the rotation that
     // player will be able to do before receiving the stop signal.
     const inline static double angle_comparison_threshold{ 2.0f };
@@ -37,6 +41,7 @@ struct toolbox {
     static bool are_positions_equal(const point<double>& first, const point<double>& second);
     static double get_angle_between_points(const point<double>& first, const point<double>& second);
     static player_turning_direction get_player_turning_direction(double angle_player, double angle_target);
+    static bool is_doom_door(const line* l);
 };
 
 } // namespace gienek

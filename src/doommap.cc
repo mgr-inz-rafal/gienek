@@ -1,4 +1,5 @@
 #include "doommap.hpp"
+#include "toolbox.hpp"
 
 namespace gienek {
 
@@ -128,10 +129,7 @@ bool doommap::can_step_into_subsector(const subsector* src, const subsector* dst
     auto dst_ceiling = sectors[dst->get_parent_sector()].get_ceiling_height();
     if (dst_ceiling - dst_floor < 56) {
         // Ceiling too low, check if this is a door
-        if (l && l->type == 12) {
-            return true;
-        }
-        return false;
+        return toolbox::is_doom_door(l);
     }
 
     return true;

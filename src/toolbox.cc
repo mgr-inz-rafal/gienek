@@ -1,5 +1,6 @@
 #include "toolbox.hpp"
 #include "doommap.hpp"
+#include "line.hpp"
 #include "mouse.hpp"
 #include "scaler.hpp"
 
@@ -9,6 +10,7 @@ namespace gienek {
 
 doommap* toolbox::_map = nullptr;
 scaler* toolbox::_scaler = nullptr;
+std::array<int, 7> toolbox::doom_door_types = { 10, 11, 12, 13, 14, 202, 249 };
 
 bool toolbox::point_in_triangle(double x1, double y1, double x2, double y2, double x3, double y3, double x, double y) {
     double denominator = (x1 * (y2 - y3) + y1 * (x3 - x2) + x2 * y3 - y2 * x3);
@@ -74,6 +76,14 @@ player_turning_direction toolbox::get_player_turning_direction(double angle_play
         (angle_player > angle_target) ? angle_player - angle_target : angle_player + 360.0f - angle_target;
 
     return (distance_clockwise < 180) ? player_turning_direction::RIGHT : player_turning_direction::LEFT;
+}
+
+bool toolbox::is_doom_door(const line* l) {
+    if (nullptr == l) {
+        return false;
+    }
+
+    return std::find(doom_door_types.begin(), doom_door_types.end(), l->type) != doom_door_types.end();
 }
 
 } // namespace gienek

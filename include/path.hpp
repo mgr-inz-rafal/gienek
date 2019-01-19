@@ -5,6 +5,7 @@
 #include "route_component.hpp"
 #include "treenode.hpp"
 
+#include <array>
 #include <cstdint>
 #include <list>
 #include <map>
@@ -15,6 +16,7 @@
 namespace gienek {
 
 class doommap;
+class line;
 
 class path {
     const doommap* _map;
