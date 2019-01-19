@@ -161,10 +161,8 @@ void player::operator()() {
                         bool perform_use;
                         bool at_destination = set_next_target_point(perform_use);
                         if (perform_use) {
-                            std::this_thread::sleep_for(50ms);
-                            _doom_controller.start_use();
-                            std::this_thread::sleep_for(20ms);
-                            _doom_controller.stop_use();
+                            std::this_thread::sleep_for(100ms);
+                            _doom_controller.perform_use_with_cooldown();
                         }
                         if (at_destination) {
                             set_state(player_states::IDLE);

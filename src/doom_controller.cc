@@ -24,9 +24,24 @@ doom_controller::doom_controller(const std::string& address, keyboard& keyboard,
     , _keyboard(keyboard)
     , _queue(queue) {}
 
+bool doom_controller::can_perform_use() const {
+    using namespace std::chrono_literals;
+    auto current_time = std::chrono::system_clock::now();
+    return (current_time - last_use > 2s);
+}
+
+void doom_controller::perform_use_with_cooldown() {
+    using namespace std::chrono_literals;
+    if (can_perform_use()) {
+        last_use = std::chrono::system_clock::now();
+        start_use();
+        std::this_thread::sleep_for(100ms);
+        stop_use();
+    }
+}
+
 void doom_controller::operator()(bool& quit) {
     using namespace std::chrono_literals;
-
     std::vector<std::string> parts;
     boost::split(parts, _address, [](char c) { return c == ':'; });
     if (2 != parts.size()) {
