@@ -302,10 +302,18 @@ void painter::draw_path() {
         if (route_points.cend() == pt) {
             break;
         }
-        auto second = *pt;
+        decltype(first)* second;
+        for (;;) {
+            auto second_candidate = *pt;
+            if (second_candidate._type == 0) {
+                second = &second_candidate;
+                break;
+            }
+            ++pt;
+        }
 
         point<double> pt1 = _scaler.scale(first._pt);
-        point<double> pt2 = _scaler.scale(second._pt);
+        point<double> pt2 = _scaler.scale(second->_pt);
         al_draw_line(pt1.x, pt1.y, pt2.x, pt2.y, al_map_rgb(255, 255, 255), 1.0f);
     }
 }
