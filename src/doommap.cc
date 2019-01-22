@@ -136,17 +136,7 @@ bool doommap::can_step_into_subsector(const subsector* src, const subsector* dst
 }
 
 const line* doommap::get_line_from_seg(const seg& s) const {
-    for (const auto& l : lines) {
-        vertex vs = verts[s.sti];
-        vertex ve = verts[s.eti];
-
-        if (((vs.x == l.x1) && (vs.y == l.y1) && (ve.x == l.x2) && (ve.y == l.y2)) ||
-            ((ve.x == l.x1) && (ve.y == l.y1) && (vs.x == l.x2) && (vs.y == l.y2))) {
-            return &l;
-        }
-    }
-
-    return nullptr;
+    return (-1 == s.linei) ? nullptr : &lines[s.linei];
 }
 
 const std::vector<std::int16_t> doommap::get_adjacent_subsectors(const subsector* ss) const {

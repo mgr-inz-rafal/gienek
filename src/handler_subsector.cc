@@ -18,11 +18,12 @@ handler_result handler_subsector::handle() const {
     gienek::subsector& ss = _map->add_subsector(sector);
 
     for (int16_t i = 0; i < count; ++i) {
-        _reader->read(buffer, 4);
-        int16_t sti, eti;
+        _reader->read(buffer, 6);
+        int16_t sti, eti, linei;
         memcpy(&sti, &buffer[0], 2);
         memcpy(&eti, &buffer[2], 2);
-        ss.segs.push_back({ sti, eti });
+        memcpy(&linei, &buffer[4], 2);
+        ss.segs.push_back({ sti, eti, linei });
     }
 
     ss.calculate_barycenter();
