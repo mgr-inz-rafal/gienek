@@ -13,6 +13,7 @@ enum CMD {
     PLAYER_ANGLE = 'g',
     SECTOR = 'h',
     LINE = 'i',
+    SECTOR_CEILING_CHANGE = 'j',
 
     QUIT = 'q',
     CLEAR = 'x',

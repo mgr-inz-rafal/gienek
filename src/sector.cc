@@ -19,4 +19,8 @@ int16_t sector::get_tag() const {
     return _tag;
 }
 
+void sector::set_ceiling_height(int16_t new_height) {
+    _ceiling_height = new_height;
+}
+
 } // namespace gienek

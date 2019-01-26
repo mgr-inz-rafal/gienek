@@ -187,4 +187,8 @@ point<double> doommap::get_middle_point_of_seg(const seg& s) const {
     return { (v1.x + v2.x) / 2.0f, (v1.y + v2.y) / 2.0f };
 }
 
+void doommap::update_sector_ceiling_height(int16_t sector_index, int16_t new_height) {
+    sectors[sector_index].set_ceiling_height(new_height);
+}
+
 } // namespace gienek
