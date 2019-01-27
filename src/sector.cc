@@ -23,4 +23,8 @@ void sector::set_ceiling_height(int16_t new_height) {
     _ceiling_height = new_height;
 }
 
+void sector::set_floor_height(int16_t new_height) {
+    _floor_height = new_height;
+}
+
 } // namespace gienek

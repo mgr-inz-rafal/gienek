@@ -14,6 +14,7 @@ enum CMD {
     SECTOR = 'h',
     LINE = 'i',
     SECTOR_CEILING_CHANGE = 'j',
+    SECTOR_FLOOR_CHANGE = 'k',
 
     QUIT = 'q',
     CLEAR = 'x',

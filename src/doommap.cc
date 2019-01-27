@@ -191,4 +191,8 @@ void doommap::update_sector_ceiling_height(int16_t sector_index, int16_t new_hei
     sectors[sector_index].set_ceiling_height(new_height);
 }
 
+void doommap::update_sector_floor_height(int16_t sector_index, int16_t new_height) {
+    sectors[sector_index].set_floor_height(new_height);
+}
+
 } // namespace gienek

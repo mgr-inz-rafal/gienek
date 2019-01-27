@@ -14,6 +14,7 @@ class sector {
     int16_t get_floor_height() const;
     int16_t get_ceiling_height() const;
     void set_ceiling_height(int16_t new_height);
+    void set_floor_height(int16_t new_height);
     int16_t get_tag() const;
 };
 

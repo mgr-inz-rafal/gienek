@@ -100,6 +100,7 @@ source_group("Header Files - Handlers" FILES
 	include/handler_player_angle.hpp
 	include/handler_line.hpp
 	include/handler_sector_ceiling_height_change.hpp
+	include/handler_sector_floor_height_change.hpp
 	)
 	
 add_executable(gienek
@@ -143,6 +144,8 @@ add_executable(gienek
 	src/player_task.cc
 	src/route_component.cc 
 	src/handler_sector_ceiling_height_change.cc
+	src/handler_sector_floor_height_change.cc
+	include/handler_sector_floor_height_change.hpp
 	include/handler_sector_ceiling_height_change.hpp
 	include/handler_line.hpp
 	include/player_task.hpp

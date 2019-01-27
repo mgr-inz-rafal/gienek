@@ -64,6 +64,7 @@ class doommap {
     std::optional<std::reference_wrapper<const seg>> get_seg_between_subsectors(int16_t first, int16_t second) const;
     point<double> get_middle_point_of_seg(const seg& s) const;
     void update_sector_ceiling_height(int16_t sector_index, int16_t new_height);
+    void update_sector_floor_height(int16_t sector_index, int16_t new_height);
 };
 
 } // namespace gienek

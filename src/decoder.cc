@@ -8,6 +8,7 @@
 #include "handler_quit.hpp"
 #include "handler_sector.hpp"
 #include "handler_sector_ceiling_height_change.hpp"
+#include "handler_sector_floor_height_change.hpp"
 #include "handler_subsector.hpp"
 #include "handler_thing.hpp"
 #include "handler_thing_remove.hpp"
@@ -49,6 +50,8 @@ std::unique_ptr<handler> decoder::get_handler(unsigned char input) {
             return std::unique_ptr<handler>(new handler_line);
         case CMD::SECTOR_CEILING_CHANGE:
             return std::unique_ptr<handler>(new handler_sector_ceiling_height_change);
+        case CMD::SECTOR_FLOOR_CHANGE:
+            return std::unique_ptr<handler>(new handler_sector_floor_height_change);
         default:
             return std::unique_ptr<handler>(new handler_unknown);
     }
