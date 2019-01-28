@@ -121,8 +121,8 @@ bool doommap::can_step_into_subsector(const subsector* src, const subsector* dst
     auto src_floor = sectors[src->get_parent_sector()].get_floor_height();
     auto dst_floor = sectors[dst->get_parent_sector()].get_floor_height();
     if (dst_floor - src_floor > 24) {
-        // Step too high
-        return false;
+        // Step too high, maybe it's a lift?
+        return toolbox::is_doom_platform(l);
     }
 
     // Check minimum height of the sector

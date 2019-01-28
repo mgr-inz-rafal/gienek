@@ -128,7 +128,7 @@ void path::calculate_route_points() {
 
             route_points.push_back({ 0, pt1d });
             route_points.push_back({ 0, pt_mid });
-            if (toolbox::is_doom_door(line)) {
+            if (toolbox::is_doom_door(line) || toolbox::is_doom_platform(line)) {
                 route_points.push_back({ 1 });
             }
             route_points.push_back({ 0, pt2d });

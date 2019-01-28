@@ -19,6 +19,7 @@ enum class player_turning_direction { LEFT, RIGHT };
 
 struct toolbox {
     static std::array<int, 7> doom_door_types;
+    static std::array<int, 13> doom_platform_types;
 
     // This must be fairly large to compensate the rotation that
     // player will be able to do before receiving the stop signal.
@@ -42,6 +43,7 @@ struct toolbox {
     static double get_angle_between_points(const point<double>& first, const point<double>& second);
     static player_turning_direction get_player_turning_direction(double angle_player, double angle_target);
     static bool is_doom_door(const line* l);
+    static bool is_doom_platform(const line* l);
 };
 
 } // namespace gienek
