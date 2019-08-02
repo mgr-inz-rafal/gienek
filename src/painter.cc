@@ -227,7 +227,7 @@ void painter::draw_clicked_subsector_info() {
     const auto secinfo = get_clicked_sector_subsector_indices();
     if (secinfo.has_value()) {
         al_draw_text(font, al_map_rgb(255, 255, 255), 0, 16, 0,
-                     (boost::format("Sector/Subs.: %1%/%2%") % secinfo->first % secinfo->second).str().c_str());
+                     (boost::format("Sector/Subs.: %2%/%1%") % secinfo->first % secinfo->second).str().c_str());
     }
 }
 
