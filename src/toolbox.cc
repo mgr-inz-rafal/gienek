@@ -12,6 +12,7 @@ doommap* toolbox::_map = nullptr;
 scaler* toolbox::_scaler = nullptr;
 std::array<int, 7> toolbox::doom_door_types = { 10, 11, 12, 13, 14, 202, 249 };
 std::array<int, 13> toolbox::doom_platform_types = { 60, 61, 62, 63, 64, 65, 172, 203, 206, 207, 228, 230, 231 };
+std::array<int, 1> toolbox::doom_teleport_types = { 70 };
 
 bool toolbox::point_in_triangle(double x1, double y1, double x2, double y2, double x3, double y3, double x, double y) {
     double denominator = (x1 * (y2 - y3) + y1 * (x3 - x2) + x2 * y3 - y2 * x3);
@@ -85,6 +86,14 @@ bool toolbox::is_doom_door(const line* l) {
     }
 
     return std::find(doom_door_types.begin(), doom_door_types.end(), l->type) != doom_door_types.end();
+}
+
+bool toolbox::is_doom_teleport(const line* l) {
+    if (nullptr == l) {
+        return false;
+    }
+
+    return std::find(doom_teleport_types.begin(), doom_teleport_types.end(), l->type) != doom_teleport_types.end();
 }
 
 bool toolbox::is_doom_platform(const line* l) {

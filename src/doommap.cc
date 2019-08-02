@@ -1,6 +1,8 @@
 #include "doommap.hpp"
 #include "toolbox.hpp"
 
+#include <iostream>
+
 namespace gienek {
 
 doommap::doommap(display_config& display_config, user_interactions& user_interactions)
@@ -116,7 +118,8 @@ const std::map<uint16_t, thing>& doommap::get_things() const {
     return things;
 }
 
-bool doommap::can_step_into_subsector(const subsector* src, const subsector* dst, const line* l) const {
+bool doommap::can_step_into_subsector(const subsector* src, const subsector* dst, const line* l,
+                                      std::optional<int16_t>& teleport_target_sector_tag) const {
     // Check floor heights
     auto src_floor = sectors[src->get_parent_sector()].get_floor_height();
     auto dst_floor = sectors[dst->get_parent_sector()].get_floor_height();
@@ -132,11 +135,25 @@ bool doommap::can_step_into_subsector(const subsector* src, const subsector* dst
         return toolbox::is_doom_door(l);
     }
 
+    // Check if we try to step through teleport
+    if (toolbox::is_doom_teleport(l)) {
+        teleport_target_sector_tag = l->tag;
+    }
+
     return true;
 }
 
 const line* doommap::get_line_from_seg(const seg& s) const {
     return (-1 == s.linei) ? nullptr : &lines[s.linei];
+}
+
+int16_t doommap::find_sector_by_tag(int16_t tag) const {
+    for (int16_t i = 0; i < static_cast<int16_t>(sectors.size()); ++i) {
+        if (sectors[i].get_tag() == tag) {
+            return i;
+        }
+    }
+    throw std::runtime_error((boost::format("Stumbled upon teleport to non - existing sector tag(%1%)") % tag).str());
 }
 
 const std::vector<std::int16_t> doommap::get_adjacent_subsectors(const subsector* ss) const {
@@ -150,8 +167,13 @@ const std::vector<std::int16_t> doommap::get_adjacent_subsectors(const subsector
             for (const auto& seg2 : ss->segs) {
                 if (seg1 == seg2) {
                     auto line = get_line_from_seg(seg1);
-                    if (can_step_into_subsector(ss, &ssectors[index], line)) {
+                    std::optional<int16_t> target_teleport_tag;
+                    if (can_step_into_subsector(ss, &ssectors[index], line, target_teleport_tag)) {
                         result.push_back(static_cast<int16_t>(index));
+                        if (target_teleport_tag) {
+                            std::cout << *target_teleport_tag << " - " << find_sector_by_tag(*target_teleport_tag)
+                                      << std::endl;
+                        }
                     }
                 }
             }
