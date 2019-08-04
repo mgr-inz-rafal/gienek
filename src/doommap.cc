@@ -156,6 +156,10 @@ int16_t doommap::find_sector_by_tag(int16_t tag) const {
     throw std::runtime_error((boost::format("Stumbled upon teleport to non - existing sector tag(%1%)") % tag).str());
 }
 
+int16_t doommap::find_subsector_with_item(int16_t sector_tag) const {
+    return 7;
+}
+
 const std::vector<std::int16_t> doommap::get_adjacent_subsectors(const subsector* ss) const {
     std::vector<std::int16_t> result;
     std::size_t index = 0;
@@ -171,8 +175,10 @@ const std::vector<std::int16_t> doommap::get_adjacent_subsectors(const subsector
                     if (can_step_into_subsector(ss, &ssectors[index], line, target_teleport_tag)) {
                         result.push_back(static_cast<int16_t>(index));
                         if (target_teleport_tag) {
-                            std::cout << *target_teleport_tag << " - " << find_sector_by_tag(*target_teleport_tag)
-                                      << std::endl;
+                            const auto teleport_destination_sector = find_sector_by_tag(*target_teleport_tag);
+                            const auto subsector_with_teleport_destination =
+                                find_subsector_with_item(teleport_destination_sector);
+                            result.push_back(subsector_with_teleport_destination);
                         }
                     }
                 }

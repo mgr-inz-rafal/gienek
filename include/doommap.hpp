@@ -33,6 +33,7 @@ class doommap {
     bool can_step_into_subsector(const subsector* src, const subsector* dst, const line* l,
                                  std::optional<int16_t>& teleport_target_sector_tag) const;
     int16_t find_sector_by_tag(int16_t tag) const;
+    int16_t find_subsector_with_item(int16_t sector_tag) const;
 
     mutable std::mutex map_access_mutex;
 
