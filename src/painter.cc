@@ -178,8 +178,8 @@ void painter::draw_clicked_subsector(bool no_interior) {
     seg dupa;
     const auto& adjacent = _map.get_adjacent_subsectors(triangle.parent, &dupa);
     for (const auto& ss : adjacent) {
-        draw_subsector_interior(ssectors[ss.first], al_map_rgb(64, 0, 0));
-        draw_subsector_border(ssectors[ss.first], 3.5f);
+        draw_subsector_interior(ssectors[ss.index], al_map_rgb(64, 0, 0));
+        draw_subsector_border(ssectors[ss.index], 3.5f);
     }
 
     const auto& barycenter = triangle.parent->get_barycenter();

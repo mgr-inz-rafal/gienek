@@ -10,11 +10,13 @@
 
 #include <boost/format.hpp>
 
+#include "adjacent_sector.hpp"
 #include "display_config.hpp"
 #include "line.hpp"
 #include "sector.hpp"
 #include "subsector.hpp"
 #include "thing.hpp"
+#include "types.hpp"
 #include "user_interactions.hpp"
 #include "vertex.hpp"
 
@@ -58,7 +60,7 @@ class doommap {
     sector& add_sector(const sector& _sector);
     const std::vector<subsector>& get_ssectors() const;
     const std::vector<sector>& get_sectors() const;
-    const std::vector<std::pair<std::int16_t, bool>> get_adjacent_subsectors(const subsector* ss, seg* dupa);
+    const std::vector<adjacent_sector> get_adjacent_subsectors(const subsector* ss, seg* dupa);
     void add_thing(thing t);
     void update_thing(thing t);
     void remove_thing(uint16_t index);

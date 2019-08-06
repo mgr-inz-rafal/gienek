@@ -17,15 +17,15 @@ bool path::generate_children(treenode& node, int16_t target_ssector, treenode*& 
     seg dupa;
     const auto& children = _map->get_adjacent_subsectors(&subsector, &dupa);
 
-    for (const auto& i : children) {
-        if (!is_visited(i.first)) {
-            visited_subsectors.insert(i.first);
+    for (const auto& adjacent_subsector : children) {
+        if (!is_visited(adjacent_subsector.index)) {
+            visited_subsectors.insert(adjacent_subsector.index);
             treenode new_node;
             new_node.parent_index = node.my_index;
             new_node.my_depth = node.my_depth + 1;
-            new_node.my_index = i.first;
-            new_node.through_teleport = i.second;
-            if (i.second) {
+            new_node.my_index = adjacent_subsector.index;
+            new_node.through_teleport = adjacent_subsector.through_teleport;
+            if (adjacent_subsector.index) {
                 new_node.teleport_seg = dupa;
             }
             auto& emplaced = flooded.emplace_back(new_node);
@@ -122,8 +122,6 @@ void path::calculate_route_points() {
             break;
         }
         auto second = *ss;
-        std::cout << "\t" << second << std::endl;
-
         std::optional<point<double>> teleport_line_center;
         int idupa = -1;
         for (const auto& xdupa : all_nodes) {

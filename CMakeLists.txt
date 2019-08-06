@@ -72,6 +72,7 @@ source_group("Header Files" FILES
 	include/command_queue.hpp
 	include/types.hpp
 	include/route_component.hpp 
+	include/adjacent_sector.hpp
 	)
 	
 source_group("Header Files - Doom Map" FILES 
@@ -192,6 +193,7 @@ add_executable(gienek
 	include/event_loop.hpp
 	include/actor_actions.hpp
 	include/actor.hpp
+	include/adjacent_sector.hpp
 	)
 
 target_link_libraries(gienek ${CMAKE_THREAD_LIBS_INIT})
