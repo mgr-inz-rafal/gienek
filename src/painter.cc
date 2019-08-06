@@ -175,8 +175,7 @@ void painter::draw_clicked_subsector(bool no_interior) {
     }
     draw_subsector_border(*triangle.parent, 3.5f);
 
-    seg dupa;
-    const auto& adjacent = _map.get_adjacent_subsectors(triangle.parent, &dupa);
+    const auto& adjacent = _map.get_adjacent_subsectors(triangle.parent);
     for (const auto& ss : adjacent) {
         draw_subsector_interior(ssectors[ss.index], al_map_rgb(64, 0, 0));
         draw_subsector_border(ssectors[ss.index], 3.5f);

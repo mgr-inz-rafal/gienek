@@ -60,7 +60,7 @@ class doommap {
     sector& add_sector(const sector& _sector);
     const std::vector<subsector>& get_ssectors() const;
     const std::vector<sector>& get_sectors() const;
-    const std::vector<adjacent_sector> get_adjacent_subsectors(const subsector* ss, seg* dupa);
+    const std::vector<adjacent_sector> get_adjacent_subsectors(const subsector* ss) const;
     void add_thing(thing t);
     void update_thing(thing t);
     void remove_thing(uint16_t index);

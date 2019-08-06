@@ -27,7 +27,7 @@ class painter {
   private:
     // TODO: Make consts
     ALLEGRO_DISPLAY* display = NULL;
-    doommap& _map; // TODO: bring back const (dupa)
+    const doommap& _map;
     mouse& _mouse;
     keyboard& _keyboard;
     scaler& _scaler;

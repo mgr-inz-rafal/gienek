@@ -160,9 +160,7 @@ int16_t doommap::find_subsector_with_item(int16_t sector_tag) const {
     return 7;
 }
 
-const std::vector<adjacent_sector> doommap::get_adjacent_subsectors(
-    const subsector* ss,
-    seg* dupa) { // TODO: Bring back "const" after dupa is returned via return value
+const std::vector<adjacent_sector> doommap::get_adjacent_subsectors(const subsector* ss) const {
     std::vector<adjacent_sector> result;
     std::size_t index = 0;
     for (std::size_t index = 0; index < ssectors.size(); ++index) {
@@ -182,9 +180,7 @@ const std::vector<adjacent_sector> doommap::get_adjacent_subsectors(
                             const auto teleport_destination_sector = find_sector_by_tag(*target_teleport_tag);
                             const auto subsector_with_teleport_destination =
                                 find_subsector_with_item(teleport_destination_sector);
-                            result.push_back({ subsector_with_teleport_destination,
-                                               true }); // TODO: Needed, as we are now passing dupa?
-                            *dupa = seg1;
+                            result.push_back({ subsector_with_teleport_destination, true, seg1 });
                         }
                     }
                 }

@@ -14,8 +14,7 @@ path::path() {
 bool path::generate_children(treenode& node, int16_t target_ssector, treenode*& target_node) {
     const auto& ss = _map->get_ssectors();
     const auto& subsector = ss[node.my_index];
-    seg dupa;
-    const auto& children = _map->get_adjacent_subsectors(&subsector, &dupa);
+    const auto& children = _map->get_adjacent_subsectors(&subsector);
 
     for (const auto& adjacent_subsector : children) {
         if (!is_visited(adjacent_subsector.index)) {
@@ -26,7 +25,7 @@ bool path::generate_children(treenode& node, int16_t target_ssector, treenode*& 
             new_node.my_index = adjacent_subsector.index;
             new_node.through_teleport = adjacent_subsector.through_teleport;
             if (adjacent_subsector.index) {
-                new_node.teleport_seg = dupa;
+                new_node.teleport_seg = adjacent_subsector.teleport_seg;
             }
             auto& emplaced = flooded.emplace_back(new_node);
             all_nodes.push_back(emplaced);
@@ -106,6 +105,15 @@ const std::list<int16_t>& path::get_route_subsectors() const {
     return route_subsectors;
 }
 
+const treenode& path::find_node_by_index(int16_t index) const {
+    for (const auto& node : all_nodes) {
+        if (node.my_index == index) {
+            return node;
+        }
+    }
+    throw std::runtime_error("Unable to find node with the index specified");
+}
+
 void path::calculate_route_points() {
     if (!calculated) {
         return;
@@ -123,16 +131,8 @@ void path::calculate_route_points() {
         }
         auto second = *ss;
         std::optional<point<double>> teleport_line_center;
-        int idupa = -1;
-        for (const auto& xdupa : all_nodes) {
-            ++idupa;
-            if (xdupa.my_index == second) {
-                if (xdupa.through_teleport) {
-                    teleport_line_center = _map->get_middle_point_of_seg(xdupa.teleport_seg);
-                }
-                break;
-            }
-        }
+        const auto node = find_node_by_index(second);
+        teleport_line_center = _map->get_middle_point_of_seg(node.teleport_seg);
 
         auto pt1 = subsectors[first].get_barycenter();
         auto pt2 = subsectors[second].get_barycenter();

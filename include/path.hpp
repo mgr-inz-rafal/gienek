@@ -19,7 +19,7 @@ class doommap;
 class line;
 
 class path {
-    doommap* _map; // TODO: Bring back const (dupa)
+    const doommap* _map;
     treenode* target = nullptr;
     std::list<treenode> all_nodes;
     treenode root;
@@ -33,11 +33,12 @@ class path {
     void calculate_route_subsectors();
     void calculate_route_points();
     std::mutex path_calculation_in_progress;
+    const treenode& find_node_by_index(int16_t index) const;
 
   public:
     path();
     void reset();
-    void set_map(doommap& map) { _map = &map; } // TODO: Bring back const (dupa)
+    void set_map(const doommap& map) { _map = &map; }
     bool calculated{ false };
     using route_t = std::vector<point<int16_t>>;
     route_t _route;
