@@ -106,12 +106,8 @@ const std::list<int16_t>& path::get_route_subsectors() const {
 }
 
 const treenode& path::find_node_by_index(int16_t index) const {
-    for (const auto& node : all_nodes) {
-        if (node.my_index == index) {
-            return node;
-        }
-    }
-    throw std::runtime_error("Unable to find node with the index specified");
+    return *std::find_if(begin(all_nodes), end(all_nodes),
+                         [index](const auto& node) { return node.my_index == index; });
 }
 
 void path::calculate_route_points() {
