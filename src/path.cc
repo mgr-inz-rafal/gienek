@@ -3,6 +3,8 @@
 #include "toolbox.hpp"
 #include "treenode.hpp"
 
+#include <iostream>
+
 namespace gienek {
 
 path::path() {
@@ -12,15 +14,20 @@ path::path() {
 bool path::generate_children(treenode& node, int16_t target_ssector, treenode*& target_node) {
     const auto& ss = _map->get_ssectors();
     const auto& subsector = ss[node.my_index];
-    const auto& children = _map->get_adjacent_subsectors(&subsector);
+    seg dupa;
+    const auto& children = _map->get_adjacent_subsectors(&subsector, &dupa);
 
-    for (int16_t i : children) {
-        if (!is_visited(i)) {
-            visited_subsectors.insert(i);
+    for (const auto& i : children) {
+        if (!is_visited(i.first)) {
+            visited_subsectors.insert(i.first);
             treenode new_node;
             new_node.parent_index = node.my_index;
             new_node.my_depth = node.my_depth + 1;
-            new_node.my_index = i;
+            new_node.my_index = i.first;
+            new_node.through_teleport = i.second;
+            if (i.second) {
+                new_node.teleport_seg = dupa;
+            }
             auto& emplaced = flooded.emplace_back(new_node);
             all_nodes.push_back(emplaced);
             if (new_node.my_index == target_ssector) {
@@ -85,11 +92,11 @@ void path::calculate_route_subsectors() {
     const treenode* tmp = target;
     for (;;) {
         route_subsectors.push_front(tmp->my_index);
+
         int16_t parent = tmp->parent_index;
         if (parent == -1) {
             break;
         }
-
         tmp = &(*std::find_if(all_nodes.begin(), all_nodes.end(),
                               [parent](const treenode& node) { return node.my_index == parent; }));
     }
@@ -106,6 +113,7 @@ void path::calculate_route_points() {
     route_points.clear();
     auto subsectors = _map->get_ssectors();
     auto ssectors = get_route_subsectors();
+
     auto ss = ssectors.cbegin();
     for (;;) {
         auto first = *ss;
@@ -114,6 +122,19 @@ void path::calculate_route_points() {
             break;
         }
         auto second = *ss;
+        std::cout << "\t" << second << std::endl;
+
+        std::optional<point<double>> teleport_line_center;
+        int idupa = -1;
+        for (const auto& xdupa : all_nodes) {
+            ++idupa;
+            if (xdupa.my_index == second) {
+                if (xdupa.through_teleport) {
+                    teleport_line_center = _map->get_middle_point_of_seg(xdupa.teleport_seg);
+                }
+                break;
+            }
+        }
 
         auto pt1 = subsectors[first].get_barycenter();
         auto pt2 = subsectors[second].get_barycenter();
@@ -132,6 +153,8 @@ void path::calculate_route_points() {
                 route_points.push_back({ 1 });
             }
             route_points.push_back({ 0, pt2d });
+        } else {
+            route_points.push_back({ 0, *teleport_line_center });
         }
     }
 }

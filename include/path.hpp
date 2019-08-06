@@ -19,7 +19,7 @@ class doommap;
 class line;
 
 class path {
-    const doommap* _map;
+    doommap* _map; // TODO: Bring back const (dupa)
     treenode* target = nullptr;
     std::list<treenode> all_nodes;
     treenode root;
@@ -37,7 +37,7 @@ class path {
   public:
     path();
     void reset();
-    void set_map(const doommap& map) { _map = &map; }
+    void set_map(doommap& map) { _map = &map; } // TODO: Bring back const (dupa)
     bool calculated{ false };
     using route_t = std::vector<point<int16_t>>;
     route_t _route;

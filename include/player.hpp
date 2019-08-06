@@ -21,7 +21,7 @@ class doom_controller;
 class player {
     actor _player;
     doom_controller& _doom_controller;
-    const doommap& _map;
+    doommap& _map; // TODO: Bring back const (dupa)
     std::optional<point<int16_t>> _target;
     std::optional<std::vector<route_component>::const_iterator> _next_target_point;
     player_states _state;

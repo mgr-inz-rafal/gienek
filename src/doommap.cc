@@ -160,25 +160,31 @@ int16_t doommap::find_subsector_with_item(int16_t sector_tag) const {
     return 7;
 }
 
-const std::vector<std::int16_t> doommap::get_adjacent_subsectors(const subsector* ss) const {
-    std::vector<std::int16_t> result;
+const std::vector<std::pair<std::int16_t, bool>> doommap::get_adjacent_subsectors(
+    const subsector* ss,
+    seg* dupa) { // TODO: Bring back "const" after dupa is returned via return value
+    std::vector<std::pair<std::int16_t, bool>> result;
     std::size_t index = 0;
     for (std::size_t index = 0; index < ssectors.size(); ++index) {
         if (&ssectors[index] == ss) {
             continue;
         }
         for (const auto& seg1 : ssectors[index].segs) {
+            int index1 = -1;
             for (const auto& seg2 : ss->segs) {
+                ++index1;
                 if (seg1 == seg2) {
                     auto line = get_line_from_seg(seg1);
                     std::optional<int16_t> target_teleport_tag;
                     if (can_step_into_subsector(ss, &ssectors[index], line, target_teleport_tag)) {
-                        result.push_back(static_cast<int16_t>(index));
+                        result.push_back({ static_cast<int16_t>(index), false });
                         if (target_teleport_tag) {
                             const auto teleport_destination_sector = find_sector_by_tag(*target_teleport_tag);
                             const auto subsector_with_teleport_destination =
                                 find_subsector_with_item(teleport_destination_sector);
-                            result.push_back(subsector_with_teleport_destination);
+                            result.push_back({ subsector_with_teleport_destination,
+                                               true }); // TODO: Needed, as we are now passing dupa?
+                            *dupa = seg1;
                         }
                     }
                 }
